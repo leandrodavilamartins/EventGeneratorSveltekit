@@ -80,6 +80,11 @@
 	let codMotAfast = '';
 	let dtDeslig = '';
 	let dtIniCessao = '';
+	let tpInscSuc = '';
+	let nrInscSuc = '';
+	let matricAnt = '';
+	let dtTransfSuc = '';
+	let observacaoSuc = '';
 	function xmlS2200() {
 		let msg = `<?xml version="1.0" encoding="UTF-8"?>
 <eSocial xmlns="http://www.esocial.gov.br/schema/evt/evtAdmissao/v_S_01_03_00">
@@ -214,11 +219,11 @@
                 </treiCap>
             </infoContrato>
             <sucessaoVinc>
-                <tpInsc></tpInsc>
-                <nrInsc></nrInsc>
-                <matricAnt></matricAnt>
-                <dtTransf></dtTransf>
-                <observacao></observacao>
+                <tpInsc>${tpInscSuc}</tpInsc>
+                <nrInsc>${nrInscSuc}</nrInsc>
+                <matricAnt${matricAnt}></matricAnt>
+                <dtTransf>${dtTransfSuc}</dtTransf>
+                <observacao>${observacaoSuc}</observacao>
             </sucessaoVinc>
             <transfDom><!-- Informações do empregado doméstico transferido--></transfDom>
             <mudancaCPF><!-- Em caso de mudança do CPF do trabalhador --></mudancaCPF>
