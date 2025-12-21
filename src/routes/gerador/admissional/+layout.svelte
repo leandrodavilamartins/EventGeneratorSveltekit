@@ -1,11 +1,11 @@
 <script>
-	let indRetif = '';
-	let nrRecibo = '';
-	let tpAmb = '';
-	let procEmi = '';
-	let verProc = '';
-	let tpInsc = '';
-	let nrInsc = '';
+	let indRetif = ''; // hardcoded
+	let nrRecibo = ''; // hardcoded
+	let tpAmb = ''; // hardcoded
+	let procEmi = ''; // hardcoded
+	let verProc = ''; // hardcoded
+	let tpInsc = ''; // hardcoded
+	let nrInsc = ''; // hardcoded
 	let cpfTrab = '';
 	let nmTrab = '';
 	let sexo = '';
@@ -247,6 +247,73 @@
 
 <div id="container">
 	<input type="text" placeholder="Nome" class="input" />
+	<input type="text" placeholder="CPF do Trabalhador" class="input" />
+	<input type="text" placeholder="Número do Trabalhador" class="input" />
+	<input type="text" placeholder="Sexo" class="input" />
+	<input type="text" placeholder="Cor" class="input" />
+	<input type="text" placeholder="Estado Civil" class="input" />
+	<input type="text" placeholder="Grau de Instrução" class="input" />
+	<input type="date" placeholder="Data de Nascimento" class="input" />
+	<input type="text" placeholder="País de Nascimento" class="input" defaultValue="Brasil" />
+	<input type="text" placeholder="Nacionalidade" class="input" />
+	<input type="text" placeholder="Tipo de Logradouro" class="input" />
+	<input type="text" placeholder="Descrição do Logradouro" class="input" />
+	<input type="text" placeholder="Número do Logradouro" class="input" />
+	<input type="text" placeholder="Complemento" class="input" />
+	<input type="text" placeholder="Bairro" class="input" />
+	<input type="text" placeholder="CEP" class="input" />
+	<input type="text" placeholder="Código do Município" class="input" />
+	<input type="text" placeholder="Unidade da Federação" class="input" />
+	<input type="text" placeholder="Telefone" class="input" />
+	<input type="email" placeholder="E-mail" class="validator input" />
+	<input type="text" placeholder="Cadastro Inicial" class="input" />
+	<input type="date" placeholder="Data de Admissão" class="input" />
+	<input type="text" placeholder="Tipo de Admissão" class="input" />
+	<input type="text" placeholder="Índice de Admissão" class="input" />
+	<input type="text" placeholder="Número de Processo Trabalho" class="input" />
+	<input type="text" placeholder="Tipo de Registro de Jornada" class="input" />
+	<input type="text" placeholder="Natureza da Atividade" class="input" />
+	<input type="date" placeholder="Data Base" class="input" />
+	<input type="text" placeholder="CNPJ do Sindicato" class="input" />
+	<input type="text" placeholder="Matrícula no S-8200" class="input" />
+	<input type="text" placeholder="Índice de Admissão" class="input" />
+	<input type="date" placeholder="Data da opção pelo FGTS" class="input" />
+	<input type="text" placeholder="Nome do Cargo" class="input" />
+	<input type="text" placeholder="CBO do Cargo" class="input" />
+	<input type="date" placeholder="Data de Ingresso no Cargo" class="input" />
+	<input type="text" placeholder="Nome da Função de Confiança" class="input" />
+	<input type="text" placeholder="Índice de Admissão" class="input" />
+	<input type="text" placeholder="CBO da Função de Confiança" class="input" />
+	<input type="text" placeholder="Cargo ou Função acumulável ?" class="input" />
+	<input type="text" placeholder="Índice de Admissão" class="input" />
+	<input type="text" placeholder="Código da Categoria" class="input" />
+	<input
+		type="text"
+		placeholder="Salário Base do Trabalhador ( parte fixa da remuneração )"
+		class="input"
+	/>
+	<input type="text" placeholder="Unidade de pagamento da parte fixa" class="input" />
+	<input type="text" placeholder="Descrição do salário por tarefa ou variável" class="input" />
+	<input type="text" placeholder="Tipo de Contrato" class="input" />
+	<input type="date" placeholder="Data do Término do Contrato" class="input" />
+	<input type="text" placeholder="Contém Cláusula Assecuratória ?" class="input" />
+	<input type="text" placeholder="Objeto Determinante da Contratação" class="input" />
+	<input type="text" placeholder="Tipo de Inscrição do Local de Trabalho" class="input" />
+	<input type="text" placeholder="Número de Inscrição do Local de Trabalho" class="input" />
+	<input type="text" placeholder="Descrição Complementar do Local de Trabalho" class="input" />
+	<input type="text" placeholder="Quantidade de Horas Semanais" class="input" />
+	<input type="text" placeholder="Tipo de Jornada" class="input" />
+	<input type="text" placeholder="Tipo de Contrato em Tempo Parcial" class="input" />
+	<input type="text" placeholder="Horário Noturno ?" class="input" />
+	<input type="text" placeholder="Descrição da Jornada Semanal Contratual" class="input" />
+	<input type="text" placeholder="Número do Processo Judicial" class="input" />
+	<input type="text" placeholder="Observação relacionada ao Contrato de Trabalho" class="input" />
+	<input type="text" placeholder="Treinamentos e Capacitações" class="input" />
+	<input type="text" placeholder="Código do Treinamento de Capacitação" class="input" />
+	<input type="date" placeholder="Data de Início do Afastamento" class="input" />
+	<input type="text" placeholder="Código do Motivo do Afastamento" class="input" />
+	<input type="date" placeholder="Data do Desligamento" class="input" />
+	<input type="text" placeholder="Data do Início da Cessão" class="input" />
 </div>
 
 <slot></slot>
@@ -254,8 +321,11 @@
 <style>
 	#container {
 		display: flex;
-		margin: auto;
-		width: 50%;
-		justify-items: center;
+		flex-direction: column;
+		margin-left: 10%;
+		width: 80%;
+		justify-items: left;
+		row-gap: 15px;
+		flex-wrap: wrap;
 	}
 </style>
