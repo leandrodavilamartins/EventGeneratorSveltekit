@@ -1,4 +1,85 @@
 <script>
+	let indRetif = '';
+	let nrRecibo = '';
+	let tpAmb = '';
+	let procEmi = '';
+	let verProc = '';
+	let tpInsc = '';
+	let nrInsc = '';
+	let cpfTrab = '';
+	let nmTrab = '';
+	let sexo = '';
+	let racaCor = '';
+	let estCiv = '';
+	let grauInstr = '';
+	let nmSoc = '';
+	let dtNascto = '';
+	let paisNascto = '';
+	let paisNac = '';
+	let tpLograd = '';
+	let dscLograd = '';
+	let nrLograd = '';
+	let complemento = '';
+	let bairro = '';
+	let cep = '';
+	let codMunic = '';
+	let uf = '';
+	let tpDep = '';
+	let nrDep = '';
+	let dtNasctoDep = '';
+	let cpfDep = '';
+	let sexoDep = '';
+	let depIRRF = '';
+	let depSF = '';
+	let incTrab = '';
+	let descrDep = '';
+	let fonePrinc = '';
+	let emailPrinc = '';
+	let matricula = '';
+	let tpRegTrab = '';
+	let tpRegPrev = '';
+	let cadIni = '';
+	let dtAdm = '';
+	let tpAdmissao = '';
+	let indAdmissao = '';
+	let nrProcTrab = '';
+	let tpRegJor = '';
+	let natAtividade = '';
+	let dtBase = '';
+	let cnpjSindCategProf = '';
+	let matAnotJud = '';
+	let dtOpcFGTS = '';
+	let ideEstabVinc = '';
+	let ideTrabSubstituido = '';
+	let nmCargo = '';
+	let CBOCargo = '';
+	let dtIngrCargo = '';
+	let nmFuncao = '';
+	let CBOFuncao = '';
+	let acumCargo = '';
+	let codCateg = '';
+	let vrSalFx = '';
+	let undSalFixo = '';
+	let dscSalVar = '';
+	let tpContr = '';
+	let dtTerm = '';
+	let clauAssec = '';
+	let objDet = '';
+	let tpInsclocalTrabalho = '';
+	let nrInsclocalTrabalho = '';
+	let descComp = '';
+	let qtdHrsSem = '';
+	let tpJornada = '';
+	let tmpParc = '';
+	let horNoturno = '';
+	let dscJorn = '';
+	let nrProcJud = '';
+	let observacao = '';
+	let codTreiCap = '';
+	let dtIniAfast = '';
+	let codMotAfast = '';
+	let dtDeslig = '';
+	let dtIniCessao = '';
 	function xmlS2200() {
 		let msg = `<?xml version="1.0" encoding="UTF-8"?>
 <eSocial xmlns="http://www.esocial.gov.br/schema/evt/evtAdmissao/v_S_01_03_00">
@@ -46,15 +127,15 @@
                 <!-- Campos ignorados. Preencher somente em caso de portador de deficiência -->
             </infoDeficiencia>
             <dependente> <!-- Preencher os campos abaixo em caso de dependente-->
-                <tpDep></tpDep>
-                <nmDep></nmDep>
-                <dtNascto></dtNascto>
-                <cpfDep></cpfDep>
-                <sexoDep></sexoDep>
-                <depIRRF></depIRRF>
-                <depSF></depSF>
-                <incTrab></incTrab>
-                <descrDep></descrDep>
+                <tpDep>${tpDep}</tpDep>
+                <nmDep>${nrDep}</nmDep>
+                <dtNascto>${dtNasctoDep}</dtNascto>
+                <cpfDep>${cpfDep}</cpfDep>
+                <sexoDep>${sexoDep}</sexoDep>
+                <depIRRF>${depIRRF}</depIRRF>
+                <depSF>${depSF}</depSF>
+                <incTrab>${incTrab}</incTrab>
+                <descrDep>${descrDep}</descrDep>
             </dependente>
             <contato>
                 <fonePrinc>${fonePrinc}</fonePrinc>
