@@ -1,23 +1,96 @@
 <script>
-    let estados = ['AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA', 'MT', 'MS', 'MG', 'PA', 'PB', 'PR', 'PE', 'PI', 'RJ', 'RN', 'RS', 'RO', 'RR', 'SC', 'SP', 'SE', 'TO']
+    import {db} from '$lib/firebaseApp'
+    import {collection, addDoc} from 'firebase/firestore'; 
+
+    const estados = ['AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA', 'MT', 'MS', 'MG', 'PA', 'PB', 'PR', 'PE', 'PI', 'RJ', 'RN', 'RS', 'RO', 'RR', 'SC', 'SP', 'SE', 'TO']
     let dependentes = ''; 
+    let cpfTrab = ''; 
+    let nmTrab = ''; 
+    let sexo = ''; 
+    let racaCor = ''; 
+    let estCiv = ''; 
+    let grauInstr = ''; 
+    let dtNascto = ''; 
+    let paisNascto = ''; 
+    let paisNac = ''; 
+    let tpLograd = ''; 
+    let dscLograd = ''; 
+    let nrLograd = ''; 
+    let complemento = ''; 
+    let bairro = ''; 
+    let cep = ''; 
+    let codMunic = ''; 
+    let uf = ''; 
+    let defFisica = ''; 
+    let defVisual = ''; 
+    let defAuditiva = ''; 
+    let defMental = ''; 
+    let defIntelectual = ''; 
+    let reabReadap = ''; 
+    let infoCota = ''; 
+    let observacao = ''; 
+    let fonePrinc = ''; 
+    let emailPrinc = ''; 
+
+    async function cadastrarTrab(){
+        try {
+            const docRef = await addDoc(collection(db, "cadastrados"), {
+                cpfTrab: `${cpfTrab}`,
+                nmTrab: `${nmTrab}`,
+                sexo: `${sexo}`, 
+                racaCor: `${racaCor}`, 
+                estCiv: `${estCiv}`, 
+                grauInstr: `${grauInstr}`,
+                dtNascto: `${dtNascto}`, 
+                paisNascto: `${paisNascto}`,
+                paisNac: `${paisNac}`, 
+                tpLograd: `${tpLograd}`, 
+                dscLograd: `${dscLograd}`, 
+                nrLograd: `${nrLograd}`,
+                complemento: `${complemento}`,
+                bairro: `${bairro}`,
+                cep: `${cep}`,
+                codMunic: `${codMunic}`,
+                uf: `${uf}`,
+                defFisica: `${defFisica}`,
+                defVisual: `${defVisual}`,
+                defAuditiva: `${defAuditiva}`,
+                defMental: `${defMental}`,
+                defIntelectual: `${defIntelectual}`,
+                reabReadap: `${reabReadap}`,
+                infoCota: `${infoCota}`,
+                observacao: `${observacao}`,
+                fonePrinc: `${fonePrinc}`,
+                emailPrinc: `${emailPrinc}`
+            });
+            console.log("Document written with ID: ", docRef.id);
+        } catch (e) {
+            console.error("Error adding document: ", e);
+        }
+        return ; 
+    }
+
 </script>
 
 <div class="container">
-    <input class="input" placeholder="Nome do Trabalhador" />
-    <input class="input" placeholder="CPF" />
-    <select class="select">
+    <input class="input" placeholder="Nome do Trabalhador" bind:value={nmTrab}/>
+    <input class="input" placeholder="CPF" bind:value={cpfTrab}/>
+    <select class="select" bind:value={sexo}>
         <option disabled selected>Sexo</option>
         <option value="M">M</option>
         <option value="F">F</option>
     </select>
-    <input class="date" placeholder="Data de Nascimento" />
-    <select class="select">
+    <fieldset class="fieldset">
+        <legend class="fieldset-legend">Data de Nascimento</legend>
+        <input class="input" type="date" placeholder="Data de Nascimento" bind:value={dtNascto} />
+        <span class="label">Obrigatório</span>
+    </fieldset>
+    <select class="select" bind:value={paisNascto}>
         <option disabled selected>País de Nascimento</option>
         <option>Brasil</option>
         <option>Exterior</option>
     </select>
-    <select class="select">
+    <select class="select" bind:value={estCiv}>
         <option disabled selected>Estado Civil</option>
         <option value="1">1 - Solteiro</option>
         <option value="2">2 - Casado</option>
@@ -25,7 +98,7 @@
         <option value="4">4 - Separado</option>
         <option value="5">5 - Viúvo</option>
     </select>
-    <select class="select">
+    <select class="select" bind:value={racaCor}>
         <option disabled selected>Etnia/Raça</option>
         <option value="1">1 - Branca</option>
         <option value="2">2 - Preta</option>
@@ -34,7 +107,7 @@
         <option value="5">5 - Indígena</option>
         <option value="6">6 - Não informado</option>
     </select>
-    <select class="select">
+    <select class="select" bind:value={grauInstr}>
         <option disabled selected>Grau de Instrução do Trabalhador</option>
         <option value="01">01 - Analfabeto, inclusive o que, embora tenha recebido instrução, não se alfabetizou</option>
         <option value="02">02 - Até o 5º ano incompleto do ensino fundamental (antiga 4ª série) ou que se tenha alfabetizado sem ter frequentado escola regular</option>
@@ -49,7 +122,7 @@
         <option value="11">11 - Mestrado completo</option>
         <option value="12">12 - Doutorado completo</option>
     </select>
-    <select class="select">
+    <select class="select" bind:value={tpLograd}>
         <option disabled selected>Tipo de Logradouro</option>
     	<option value="R">Rua</option>
     	<option value="AV">Avenida</option>
@@ -61,51 +134,51 @@
     	<option value="SIT">Sítio</option>
     	<option value="VL">Vila</option>
     </select>
-    <input type="text" placeholder="Descrição do Logradouro" class="input" />
-    <input type="text" placeholder="Número do Logradouro" class="input" defaultValue="S/N" />
-    <input type="text" placeholder="Complemento" class="input" />
-    <input type="text" placeholder="Bairro" class="input" />
-    <input type="text" placeholder="CEP" class="input" />
-    <input type="text" placeholder="Código do Município" class="input" /> <!-- Consultar código do município na tabela do IBGE -->
-    <select class="select">
+    <input type="text" placeholder="Descrição do Logradouro" class="input" bind:value={dscLograd} />
+    <input type="text" placeholder="Número do Logradouro" class="input" defaultValue="S/N" bind:value={nrLograd}/>
+    <input type="text" placeholder="Complemento" class="input" bind:value={complemento}/>
+    <input type="text" placeholder="Bairro" class="input"  bind:value={bairro}/>
+    <input type="text" placeholder="CEP" class="input" bind:value={cep} />
+    <input type="text" placeholder="Código do Município" class="input" bind:value={codMunic} /> <!-- Consultar código do município na tabela do IBGE -->
+    <select class="select" bind:value={uf}>
         <option disabled selected>Unidade Federativa</option>
     	{#each estados as estado}
     	<option value={estado}>{estado}</option>
     	{/each}
     </select>
-    <input type="text" placeholder="Telefone" class="input" />
-    <input type="email" placeholder="E-mail" class="validator input" />
-    <select class="select">
+    <input type="text" placeholder="Telefone" class="input" bind:value={fonePrinc} />
+    <input type="email" placeholder="E-mail" class="validator input" bind:value={emailPrinc}/>
+    <select class="select" bind:value={defFisica}>
         <option disabled selected>Deficiência física</option>
         <option value="S">S - Sim</option>
         <option value="N">N - Não</option>
     </select>
-    <select class="select">
+    <select class="select" bind:value={defVisual}>
         <option disabled selected>Deficiência visual</option>
         <option value="S">S - Sim</option>
         <option value="N">N - Não</option>
     </select>
-    <select class="select">
+    <select class="select" bind:value={defAuditiva}>
         <option disabled selected>Deficiência auditiva</option>
         <option value="S">S - Sim</option>
         <option value="N">N - Não</option>
     </select>
-    <select class="select">
+    <select class="select" bind:value={defMental}>
         <option disabled selected>Deficiência mental</option>
         <option value="S">S - Sim</option>
         <option value="N">N - Não</option>
     </select>
-    <select class="select">
+    <select class="select" bind:value={defIntelectual}>
         <option disabled selected>Deficiência intelectual</option>
         <option value="S">S - Sim</option>
         <option value="N">N - Não</option>
     </select>
-    <select class="select">
+    <select class="select" bind:value={reabReadap}>
         <option disabled selected>Trabalhador reabilitado ou readaptado ?</option>
         <option value="S">S - Sim</option>
         <option value="N">N - Não</option>
     </select>
-    <select class="select">
+    <select class="select" bind:value={infoCota}>
         <option disabled selected>Cota para deficientes ou beneficiário reabilitado ? </option>
         <option value="S">S - Sim</option>
         <option value="N">N - Não</option>
@@ -121,4 +194,5 @@
     {#if dependentes == "S"}
     <button class="btn">Adicionar dependente</button>
     {/if}
+    <button class="btn" on:click={cadastrarTrab}>Cadastrar Trabalhador</button>
 </div>
