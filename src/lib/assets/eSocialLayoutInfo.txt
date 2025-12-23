@@ -1,0 +1,29 @@
+Significado de cada coluna do layout
+
+Grupo/Campo: Conjuntos de informações logicamente relacionados, que comportam dados.
+
+Grupo Pai: Identifica o grupo de informações hierarquicamente superior ao qual o campo está vinculado.
+
+Elem. (Elemento): Quando preenchidos com "A" e "E", possuem seus campos preenchidos com informações de detalhes. Mas quando preenchidos com "G", indicam grupos de informação.
+
+Tipo: Indica o tipo de informação que é esperado para esse campo. São eles:
+"C": Caractere;
+"N": Numérico;
+"D": Data
+
+Condição - refere-se a obrigatoriedade ou não da existência de registro para determinado grupo de informações. 
+As condições podem ser: • "O" = obrigatoriedade de prestação de informações naquele grupo; • "N" = não obrigatoriedade de prestação de informações para o grupo e  "OC" = obrigatório se existir informação.
+
+Ocor. (Ocorrência): os indicativos desta coluna são compostos por dois numerais separados entre si por um hífen. O numeral da esquerda indica a quantidade mínima de registros e o numeral da direita, a quantidade máxima. 
+Se a quantidade mínima é zero, o empregador/contribuinte somente deverá prestar informação se, de fato, ela existir, caso contrário nada deve ser informado, nem mesmo informação zerada. 
+Se o numeral da direita indicar um valor entre 1 e 99, o limite máximo de registros de informações será 99. Seguem alguns exemplos:
+0-1: campo não obrigatório ou com no máximo um registro;
+1-1:  significa que deve conter no mínimo um (portanto é obrigatório) e no máximo um registro;  
+1-99: deve existir no mínimo um (portanto é obrigatório) e no máximo noventa e nove registros;  
+0-999: campo não obrigatório com o máximo de 999 registros.
+
+Tamanho: Estabelece o número máximo de dígitos esperados para este campo.
+
+Dec (Decimais):  indica quantos dígitos serão considerados como "decimais" (à direita do ponto), sendo que o próprio ponto decimal não conta como dígito
+
+Descrição: breve descrição do conteúdo do campo e de sua regra de validação (quando houver).
