@@ -5,6 +5,8 @@
 @import '@skeletonlabs/skeleton/themes/cerberus';
 @plugin '@tailwindcss/forms';
 @plugin '@tailwindcss/typography';
+
+/*
 @plugin 'daisyui' {
 	themes:
 		light --default,
@@ -12,3 +14,4 @@
 		dracula,
 		synthwave;
 }
+*/
