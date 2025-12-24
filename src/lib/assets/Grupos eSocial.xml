@@ -1,0 +1,88 @@
+Grupos eSocial
+
+Grupo <trabalhador>
+
+cpfTrab - 
+nmTrab 
+sexo 
+racaCor
+estCiv 
+grauInstr
+nmSoc
+
+Grupo <nascimento>
+dtNascto
+paisNascto
+paisNac 
+
+Grupo <brasil>
+tpLograd
+dscLograd
+nrLograd
+complemento
+bairro 
+cep
+codMunic
+uf 
+
+Grupo <infoDeficiencia>
+defFisica
+defVisual
+defAuditiva
+defMental
+defIntelectual
+reabReadap
+infoCota
+observacao
+
+Grupo <dependente>
+tpDep
+nmDep
+dtNascto
+cpfDep
+sexoDep
+depIRRF
+depSF
+incTrab
+descrDep
+
+Grupo <contato>
+fonePrinc
+emailPrinc
+
+Grupo <medico> 
+nmMed
+nrCRM 
+ufCRM 
+
+Grupo <respMonit>
+cpfResp
+nmResp
+nrCRM
+ufCRM
+
+Grupo <exame>
+dtExm
+procRealizado
+obsProc
+ordExame
+indResult
+
+Grupo <aso>
+dtAso 
+resAso 
+
+Grupo <exMedOcup>
+tpExameOcup
+
+Grupo <ideEmpregador>
+tpInsc
+nrInsc
+
+Grupo <infoDep>
+cpfDep
+dtNascto
+nome
+depIRRF
+tpDep
+descrDep
