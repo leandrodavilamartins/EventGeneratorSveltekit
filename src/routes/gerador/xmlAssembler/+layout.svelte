@@ -1,5 +1,7 @@
 <script>
 
+    import xmlFormat from 'xml-formatter'; 
+
     let cpfTrab = $state(''); 
     let nmTrab = $state(''); 
     let sexo = $state(''); 
@@ -29,7 +31,11 @@
     `)
 
     function gerarXML(){
-        console.log(msg); 
+        let formattedXML = xmlFormat.minify(msg, {
+            filter: (node) => node.type !== 'Comment',
+            collapseContent: true
+        })
+        console.log(formattedXML); 
     }
 </script>
 
