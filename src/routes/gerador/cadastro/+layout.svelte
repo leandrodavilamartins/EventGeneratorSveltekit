@@ -1,6 +1,6 @@
 <script>
     import {db} from '$lib/firebaseApp'
-    import {collection, addDoc} from 'firebase/firestore'; 
+    import {collection, addDoc, setDoc, doc} from 'firebase/firestore'; 
 
     const estados = ['AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA', 'MT', 'MS', 'MG', 'PA', 'PB', 'PR', 'PE', 'PI', 'RJ', 'RN', 'RS', 'RO', 'RR', 'SC', 'SP', 'SE', 'TO']
     let dependentes = ''; 

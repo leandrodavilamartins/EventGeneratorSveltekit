@@ -1,0 +1,35 @@
+- Os dados do grupo trabalhador podem vir do banco de dados. 
+
+- Os layouts devem ser construídos com o objetivo de reduzir ao máximo o número de inputs necessários para geração do XML do evento. 
+
+- Podemos separar o evento de Admissão ( S - 2200 ) em quatro grandes "supergrupos" ( nesta sequência ): 
+    <ideEvento>
+    <ideEmpregador>
+    <trabalhador>
+    <vinculo>
+
+- Supergrupo "<trabalhador>" : 
+    Para minimizar o número de inputs, podemos criar uma rota para cadastro do trabalhador. Dessa forma, 
+    para a geração do XML do evento, os dados desse "supergrupo" seriam automaticamente preenchidos por 
+    meio de uma chamada ao banco de dados. 
+    * OBS: Dentro desse "supergrupo", o grupo "dependente" é dinâmico, diferente dos demais grupos, que são
+    estáticos. Isso quer dizer que o XML relativo a esse grupo requer algum tipo de "automatização" na rota 
+    de cadastro do trabalhador, tendo em vista o número variável de dependentes. 
+
+- Supergrupo "<ideEvento>" : 
+    A geração do XML desse "supergrupo", a princípio, deveria ocorrer por meio de inputs do usuário na 
+    própria rota de geração do XML do evento. Portanto, não ocorreria de forma automática. 
+
+- Supergrupo "<ideEmpregador>" : 
+    A geração do XML desse "supergrupo" ocorreria por meio de inputs do usuário na própria rota de geração
+    do XML do evento. 
+
+- Supergrupo "<vinculo>" : 
+    A geração do XML desse "supergrupo" ocorreria por meio de inputs do usuário na própria rota de geração 
+    do XML do evento. Entretanto, por se tratar de um "supergrupo" de maior complexidade, poderíamos 
+    utilizar procedimentos de "automatização" e "validação" dentro da própria rota. 
+
+
+    TABS e SUPERGRUPOS 
+
+- Seria ienteressante que cada Supergrupo tivesse a sua própria tab ou rota. 
