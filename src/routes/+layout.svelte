@@ -6,4 +6,5 @@
 </script>
 
 <svelte:head><link rel="icon" href={favicon} /></svelte:head>
+<div>MENU</div>
 {@render children()}

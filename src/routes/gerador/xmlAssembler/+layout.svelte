@@ -1,6 +1,4 @@
 <script>
-	import { info } from 'console';
-
 
     import xmlFormat from 'xml-formatter'; 
 
@@ -138,352 +136,368 @@
 	let codPostalExt = $state(''); 
 	let matriculaVinc = $state(''); 
 	let tpRegTrabVinc = $state(''); 
-	let tpRegPrevVinc = state(''); 
+	let tpRegPrevVinc = $state(''); 
 	let cadIni = $state(''); 
 	let tpInscIdeEstabVinc = $state('');
 	let nrInscIdeEstabVinc = $state('');  
+	let matricula = $state(''); 
+	let tpRegTrab = $state(''); 
+	let tpRegPrev = $state(''); 
+	let tpInscIdeEmpregador = $state(''); 
+	let nrInscIdeEmpregador = $state(''); 
+	let tmpResid = $state(''); 
+	let condImig = $state(''); 
+	let matricAntSucessaoVinc = $state(''); 
+	let dtTransfSucessaoVinc = $state(''); 
+	let observacaoSucessaoVinc = $state(''); 
+	let cpfAnt = $state(''); 
+	let matricAntMudancaCPF = $state(''); 
+	let dtAltCPF = $state(''); 
+	let observacaoMudancaCPF = $state(''); 
+	// control variables 
+	let eventoTab = $state(true);  
+	let empregadorTab = $state(true); 
+	let trabalhadorTab = $state(true);  
+	let vinculoTab = $state(true); 
+	// optional variables 
+	let nrReciboExists = $state(''); 
 
 
-
-
-	
-
-
-    let grupos = $derived({
-        'trabalhador': `
-        <trabalhador>
-            <cpfTrab>${cpfTrab}</cpfTrab>
-            <nmTrab>${nmTrab}</nmTrab>
-            <sexo>${sexo}</sexo>
-            <racaCor>${racaCor}</racaCor>
-            <estCiv>${estCiv}</estCiv>
-            <grauInstr>${grauInstr}</grauInstr>
-            <nmSoc></nmSoc>
-        </trabalhador>
-        `,
-        'nascimento' : `
-		<nascimento>
-			<dtNascto>${dtNascto}</dtNascto>
-			<paisNascto>${paisNascto}</paisNascto>
-			<paisNac>${paisNac}</paisNac>
-		</nascimento>
-		`, 
-		'brasil' : `
-		<brasil>
-			<tpLogra>${tpLograd}</tpLograd>
-			<dscLograd>${dscLograd}</dscLograd>
-			<nrLograd>${nrLograd}</nrLograd>
-			<complemento>${complemento}</complemento>
-			<bairro>${bairro}</bairro>
-			<cep>${cep}</cep>
-			<codMunic>${codMunic}</codMunic>
-			<uf>${uf}</uf>
-		</brasil>
-		`,
-		'infoDeficiencia': `
-		<infoDeficiencia>
-			<defFisica>${defFisica}</defFisica>
-			<defVisual>${defVisual}</defVisual>
-			<defAuditiva>${defAuditiva}</defAuditiva>
-			<defMental>${defMental}</defMental>
-			<defIntelectual>${defIntelectual}</defIntelectual>
-			<reabReadap>${reabReadap}</reabReadap>
-			<infoCota>${infoCota}</infoCota>
-			<observacao>${observacaoInfoDeficiencia}</observacao>
-		</infoDeficiencia>
-		`,
-		'dependente': `
-		<dependente>
-			<tpDep>${tpDep}</tpDep>
-			<nmDep>${nmDep}</nmDep>
-			<dtNascto>${dtNasctoDep}</dtNascto>
-			<cpfDep>${cpfDep}</cpfDep>
-			<sexoDep>${sexoDep}</sexoDep>
-			<depIRRF>${depIRRF}</depIRRF>
-			<depSF>${depSF}</depSF>
-			<incTrab>${incTrab}</incTrab>
-			<descrDep>${descrDep}</descrDep>
-		</dependente>
-		`, 
-		'contato' : `
-		<contato>
-			<fonePrinc>${fonePrinc}</fonePrinc>
-			<emailPrinc>${emailPrinc}</emailPrinc>
-		</contato>
-		`, 
-		'vinculo': `
-		<matricula>${matricula}</matricula>
-		<tpRegTrab>${tpRegTrab}</tpRegTrab>
-		<tpRegPrev>${tpRegPrev}</tpRegPrev>
-		<cadIni>${cadIni}</cadIni>
-		`, 
-		'infoCeletista': `
-		<infoCeletista>
-			<dtAdm>${dtAdm}</dtAdm>
-			<tpAdmissao>${tpAdmissao}</tpAdmissao>
-			<indAdmissao>${indAdmissao}</indAdmissao>
-			<nrProcTrab>${nrProcTrab}</nrProcTrab>
-			<tpRegJor>${tpRegJor}</tpRegJor>
-			<natAtividade>${natAtividade}</natAtividade>
-			<dtBase>${dtBase}</dtBase>
-			<cnpjSindCategProf>${cnpjSindCategProf}</cnpjSindCategProf>
-			<matAnotJud>${matAnotJud}</matAnotJud>
-			${grupos.FGTS}
-			${grupos.trabTemporario}
-			${grupos.aprend}	
-		</infoCeletista>
-		`,
-		'FGTS' : `
-		<FGTS>
-			<dtOpcFGTS>${dtOpcFGTS}</dtOpcFGTS>
-		</FGTS>
-		`,
-		'trabTemporario':`
-		<trabTemporario>
-			<hipLeg>${hipLeg}</hipLeg>
-			<justContr>${justContr}</justContr>
-			${grupos.ideEstabVinc}
-			${grupos.ideTrabSubstituido}
-		</trabTemporario>
-		`,
-		'ideEstabVinc':`
-			<ideEstabVinc>
-				<tpInsc>${tpInscVinc}</tpInsc>
-				<nrInsc>${nrInscVinc}</nrInsc>	
-			</ideEstabVinc>
-		`, 
-		'ideTrabSubstituido': `
-			<ideTrabSubstituido>
-				<cpfTrabSubst>${cpfTrabSubst}</cpfTrabSubst>
-			<ideTrabSubstituido>
-		`,
-		'aprend' : `
-		<aprend>
-			<indAprend>${indAprend}</indAprend>
-			<cnpjEntQual>${cnpjEntQual}</cnpjEntQual>
-			<tpInsc>${tpInscAprend}</tpInsc>
-			<nrInsc>${nrInscAprend}</nrInsc>
-			<cnpjPrat>${cnpjPrat}</cnpjPrat>
-		</aprend>
-		`,
-		'infoEstatutario': `
-			<infoEstatutario>
-				<tpProv>${tpProv}</tpProv>
-				<dtExercicio>${dtExercicio}</dtExercicio>
-				<tpPlanRP>${tpPlanRP}</tpPlanRP>
-				<indTetoRGPS>${indTetoRGPS}</indTetoRGPS>
-				<indAbonoPerm>${indAbonoPerm}</indAbonoPerm>
-				<dtIniAbono>${dtIniAbono}</dtIniAbono>
-			</infoEstatutario>
-		`,
-		'infoContrato': `
-			<infoContrato>
-				<nmCargo>${nmCargo}</nmCargo>
-				<CBOCargo>${CBOCargo}</CBOCargo>
-				<dtIngrCargo>${dtIngrCargo}</dtIngrCargo>
-				<nmFuncao>${nmFuncao}</nmFuncao>
-				<CBOFuncao>${CBOFuncao}</CBOFuncao>
-				<acumCargo>${acumCargo}</acumCargo>
-				<codCateg>${codCateg}</codCateg>
-				${grupos.remuneracao}
-				${grupos.duracao}
-				<localTrabalho>
-					${grupos.localTrabGeral}
-					${grupos.localTempDom}	
-				</localTrabalho>
-				${grupos.horContratual}
-				${grupos.alvaraJudicial}
-				${grupos.observacoes}
-				${grupos.treiCap}
-			</infoContrato>
-		`,
-		'remuneracao' : `
-			<remuneracao>
-				<vrSalFx>${vrSalFx}</vrSalFx>
-				<undSalFixo>${undSalFixo}</undSalFixo>
-				<dscSalVar>${dscSalVar}</dscSalVar>
-			</remuneracao>
-		`,
-		'duracao': `
-			<duracao>
-				<tpContr>${tpContr}</tpContr>
-				<dtTerm>${dtTerm}</dtTerm>
-				<clauAssec>${clauAssec}</clauAssec>
-				<objDet>${objDet}</objDet>	
-			</duracao>
-		`,
-		'localTrabGeral': `
-			<localTrabGeral>
-				<tpInsc>${tpInscLocalTrabGeral}</tpInsc>
-				<nrInsc>${nrInscLocalTrabGeral}</nrInsc>
-				<descComp>${descComp}</descComp>
-			</localTrabGeral>
-		`,
-		'horContratual': `
-			<horContratual>
-				<qtdHrsSem>${qtdHrsSem}</qtdHrsSem>
-				<tpJornada>${tpJornada}</tpJornada>
-				<tmpParc>${tmpParc}</tmpParc>
-				<horNoturno>${horNoturno}</horNoturno>
-				<dscJorn>${dscJorn}</dscJorn>
-			</horContratual>
-		`,
-		'alvaraJudicial': `
-			<alvaraJudicial>
-				<nrProcJud>${nrProcJud}</nrProcJud>	
-			</alvaraJudicial>
-		`,
-		'observacoes': `
-			<observacoes>
-				<observacao>${observacao}</observacao>
-			</observacoes>
-		`,
-		'treiCap': `
-			<treiCap>
-				<codTreiCap>${codTreiCap}</codTreiCap>	
-			</treiCap>
-		`,
-		'sucessaoVinc' : `
-			<sucessaoVinc>
-				<tpInsc>${tpInscVinc}</tpInsc>
-				<nrInsc>${nrInscVinc}</nrInsc>
-				<matricAnt>${matricAnt}</matricAnt>
-				<dtTransf>${dtTransfVinc}</dtTransf>
-				<observacao>${observacaoVinc}<observacao>
-			</sucessaoVinc>
-		`,
-		'transfDom' : `
-			<transfDom>
-				<cpfSubstituido>${cpfSubstituido}</cpfSubstituido>
-				<matricAnt>${matriculaAntTransfDom}</matricAnt>
-				<dtTransf>${dtTransfTransfDom}</dtTransf>	
-			</transfDom>
-		`,
-		'mudancaCPF': `
-			<mudancaCPF>
-				<cpfAnt>${cpfAnt}</cpfAnt>
-				<matricAnt>${matricAntMudancaCPF}</matricAnt>
-				<dtAltCPF>${dtAltCPF}</dtAltCPF>
-				<observacao>${observacaoMudancaCPF}</observacao>	
-			</mudancaCPF>
-		`,
-		'afastamento': `
-			<afastamento>
-				<dtIniAfast>${dtIniAfast}</dtIniAfast>
-				<codMotAfast>${codMotAfast}</codMotAfast>	
-			</afastamento>
-		`,
-		'desligamento': `
-			<desligamento>
-				<dtDeslig>${dtDeslig}</dtDeslig>
-			</desligamento>
-		`,
-		'cessao': `
-			<cessao>
-				<dtIniCessao>${dtIniCessao}</dtIniCessao>
-			</cessao>
-		`,
-		'localTempDom' : `
-			<localTempDom>${localTempDom}</localTempDom>
-		`,
-		'ideEvento': `
-			<ideEvento>
-				<indRetif>${indRetif}</indRetif>
-				<nrRecibo>${nrRecibo}</nrRecibo>
-				<tpAmb>${tpAmb}</tpAmb>
-				<procEmi>${procEmi}</procEmi>
-				<verProc>${verProc}</verProc>
-			</ideEvento>
-		`,
-		'ideEmpregador': `
-			<ideEmpregador>
-				<tpInsc>${tpInscIdeEmpregador}</tpInsc>
-				<nrInsc>${nrInscIdeEmpregador}</nrInsc>	
-			</ideEmpregador>
-		`,
-		'ideVinculo' : `
-			<ideVinculo>
-				<cpfTrab>${cpfTrabIdeVinculo}</cpfTrab>
-				<matricula>${matriculaIdeVinculo}</matricula>
-				<codCateg>${codCategIdeVinculo}</codCateg>
-			</ideVinculo>
-		`,
-		'exMedOcup' : `
-			<exMedOcup>
-				<tpExameOcup>${tpExameOcup}</tpExameOcup>
-			</exMedOcup>
-		`,
-		'aso': `
-			<aso>
-				<dtAso>${dtAso}</dtAso>
-				<resAso>${resAso}</resAso>
-			</aso>
-		`,
-		'exame' : `
-			<exame>
-				<dtExm>${dtExm}</dtExm>
-				<procRealizado>${procRealizado}</procRealizado>
-				<obsProc>${obsProc}</obsProc>
-				<ordExame>${ordExame}</ordExame>
-				<indResult>${indResult}</indResult>	
-			</exame>
-			
-		`,
-		'medico' : `
-			<medico>
-				<nmMed>${nmMed}</nmMed>
-				<nrCRM>${nrCRM}</nrCRM>
-				<ufCRM>${ufCRM}</ufCRM>
-			</medico>
-		`,
-		'respMonit' : `
-			<respMonit>
-				<cpfResp>${cpfResp}</cpfResp>
-				<nmResp>${nmResp}</nmResp>
-				<nrCRM>${nrCRMRespMonit}</nrCRM>
-				<ufCRM>${ufCRMRespMonit}</ufCRM>
-			</respMonit>
-		`,
-    })
-
-	let gruposCompostos = $derived({"trabalhador": `
-		<trabalhador>
-			<cpfTrab>${cpfTrab}</cpfTrab>
-            <nmTrab>${nmTrab}</nmTrab>
-            <sexo>${sexo}</sexo>
-            <racaCor>${racaCor}</racaCor>
-            <estCiv>${estCiv}</estCiv>
-            <grauInstr>${grauInstr}</grauInstr>
-            <nmSoc></nmSoc>
-			${grupos.nascimento}
-			<endereco>
-				${grupos.brasil}
-				${grupos.exterior}
-			</endereco>
-			${grupos.infoDeficiencia}
-			${grupos.dependente}
-			${grupos.contato}
-		</trabalhador>
-	`, 
-	"vinculo" : `
-		<vinculo>
-			<matricula>${matriculaVinc}</matricula>
-			<tpRegTrab>${tpRegTrab}</tpRegTrab>
-			<tpRegPrev>${tpRegPrev}</tpRegPrev>
-			<cadIni>${cadIni}</cadIni>
-			<infoRegimeTrab>
-				${grupos.infoCeletista}
-				${grupos.infoEstatutario}
-			</infoRegimeTrab>
-			${grupos.infoContrato}
-			${grupos.sucessaoVinc}
-			${grupos.transfDom}
-			${grupos.mudancaCPF}
-			${grupos.afastamento}
-			${grupos.desligamento}
-			${grupos.cessao}
-		</vinculo>
-	`,})
+//    let grupos = $derived({
+//        'trabalhador': `
+//        <trabalhador>
+//            <cpfTrab>${cpfTrab}</cpfTrab>
+//            <nmTrab>${nmTrab}</nmTrab>
+//            <sexo>${sexo}</sexo>
+//            <racaCor>${racaCor}</racaCor>
+//            <estCiv>${estCiv}</estCiv>
+//            <grauInstr>${grauInstr}</grauInstr>
+//            <nmSoc></nmSoc>
+//        </trabalhador>
+//        `,
+//        'nascimento' : `
+//		<nascimento>
+//			<dtNascto>${dtNascto}</dtNascto>
+//			<paisNascto>${paisNascto}</paisNascto>
+//			<paisNac>${paisNac}</paisNac>
+//		</nascimento>
+//		`, 
+//		'brasil' : `
+//		<brasil>
+//			<tpLogra>${tpLograd}</tpLograd>
+//			<dscLograd>${dscLograd}</dscLograd>
+//			<nrLograd>${nrLograd}</nrLograd>
+//			<complemento>${complemento}</complemento>
+//			<bairro>${bairro}</bairro>
+//			<cep>${cep}</cep>
+//			<codMunic>${codMunic}</codMunic>
+//			<uf>${uf}</uf>
+//		</brasil>
+//		`,
+//		'infoDeficiencia': `
+//		<infoDeficiencia>
+//			<defFisica>${defFisica}</defFisica>
+//			<defVisual>${defVisual}</defVisual>
+//			<defAuditiva>${defAuditiva}</defAuditiva>
+//			<defMental>${defMental}</defMental>
+//			<defIntelectual>${defIntelectual}</defIntelectual>
+//			<reabReadap>${reabReadap}</reabReadap>
+//			<infoCota>${infoCota}</infoCota>
+//			<observacao>${observacaoInfoDeficiencia}</observacao>
+//		</infoDeficiencia>
+//		`,
+//		'dependente': `
+//		<dependente>
+//			<tpDep>${tpDep}</tpDep>
+//			<nmDep>${nmDep}</nmDep>
+//			<dtNascto>${dtNasctoDep}</dtNascto>
+//			<cpfDep>${cpfDep}</cpfDep>
+//			<sexoDep>${sexoDep}</sexoDep>
+//			<depIRRF>${depIRRF}</depIRRF>
+//			<depSF>${depSF}</depSF>
+//			<incTrab>${incTrab}</incTrab>
+//			<descrDep>${descrDep}</descrDep>
+//		</dependente>
+//		`, 
+//		'contato' : `
+//		<contato>
+//			<fonePrinc>${fonePrinc}</fonePrinc>
+//			<emailPrinc>${emailPrinc}</emailPrinc>
+//		</contato>
+//		`, 
+//		'vinculo': `
+//		<matricula>${matricula}</matricula>
+//		<tpRegTrab>${tpRegTrab}</tpRegTrab>
+//		<tpRegPrev>${tpRegPrev}</tpRegPrev>
+//		<cadIni>${cadIni}</cadIni>
+//		`, 
+//		'infoCeletista': `
+//		<infoCeletista>
+//			<dtAdm>${dtAdm}</dtAdm>
+//			<tpAdmissao>${tpAdmissao}</tpAdmissao>
+//			<indAdmissao>${indAdmissao}</indAdmissao>
+//			<nrProcTrab>${nrProcTrab}</nrProcTrab>
+//			<tpRegJor>${tpRegJor}</tpRegJor>
+//			<natAtividade>${natAtividade}</natAtividade>
+//			<dtBase>${dtBase}</dtBase>
+//			<cnpjSindCategProf>${cnpjSindCategProf}</cnpjSindCategProf>
+//			<matAnotJud>${matAnotJud}</matAnotJud>
+//			${grupos.FGTS}
+//			${grupos.trabTemporario}
+//			${grupos.aprend}	
+//		</infoCeletista>
+//		`,
+//		'FGTS' : `
+//		<FGTS>
+//			<dtOpcFGTS>${dtOpcFGTS}</dtOpcFGTS>
+//		</FGTS>
+//		`,
+//		'trabTemporario':`
+//		<trabTemporario>
+//			<hipLeg>${hipLeg}</hipLeg>
+//			<justContr>${justContr}</justContr>
+//			${grupos.ideEstabVinc}
+//			${grupos.ideTrabSubstituido}
+//		</trabTemporario>
+//		`,
+//		'ideEstabVinc':`
+//			<ideEstabVinc>
+//				<tpInsc>${tpInscVinc}</tpInsc>
+//				<nrInsc>${nrInscVinc}</nrInsc>	
+//			</ideEstabVinc>
+//		`, 
+//		'ideTrabSubstituido': `
+//			<ideTrabSubstituido>
+//				<cpfTrabSubst>${cpfTrabSubst}</cpfTrabSubst>
+//			<ideTrabSubstituido>
+//		`,
+//		'aprend' : `
+//		<aprend>
+//			<indAprend>${indAprend}</indAprend>
+//			<cnpjEntQual>${cnpjEntQual}</cnpjEntQual>
+//			<tpInsc>${tpInscAprend}</tpInsc>
+//			<nrInsc>${nrInscAprend}</nrInsc>
+//			<cnpjPrat>${cnpjPrat}</cnpjPrat>
+//		</aprend>
+//		`,
+//		'infoEstatutario': `
+//			<infoEstatutario>
+//				<tpProv>${tpProv}</tpProv>
+//				<dtExercicio>${dtExercicio}</dtExercicio>
+//				<tpPlanRP>${tpPlanRP}</tpPlanRP>
+//				<indTetoRGPS>${indTetoRGPS}</indTetoRGPS>
+//				<indAbonoPerm>${indAbonoPerm}</indAbonoPerm>
+//				<dtIniAbono>${dtIniAbono}</dtIniAbono>
+//			</infoEstatutario>
+//		`,
+//		'infoContrato': `
+//			<infoContrato>
+//				<nmCargo>${nmCargo}</nmCargo>
+//				<CBOCargo>${CBOCargo}</CBOCargo>
+//				<dtIngrCargo>${dtIngrCargo}</dtIngrCargo>
+//				<nmFuncao>${nmFuncao}</nmFuncao>
+//				<CBOFuncao>${CBOFuncao}</CBOFuncao>
+//				<acumCargo>${acumCargo}</acumCargo>
+//				<codCateg>${codCateg}</codCateg>
+//				${grupos.remuneracao}
+//				${grupos.duracao}
+//				<localTrabalho>
+//					${grupos.localTrabGeral}
+//					${grupos.localTempDom}	
+//				</localTrabalho>
+//				${grupos.horContratual}
+//				${grupos.alvaraJudicial}
+//				${grupos.observacoes}
+//				${grupos.treiCap}
+//			</infoContrato>
+//		`,
+//		'remuneracao' : `
+//			<remuneracao>
+//				<vrSalFx>${vrSalFx}</vrSalFx>
+//				<undSalFixo>${undSalFixo}</undSalFixo>
+//				<dscSalVar>${dscSalVar}</dscSalVar>
+//			</remuneracao>
+//		`,
+//		'duracao': `
+//			<duracao>
+//				<tpContr>${tpContr}</tpContr>
+//				<dtTerm>${dtTerm}</dtTerm>
+//				<clauAssec>${clauAssec}</clauAssec>
+//				<objDet>${objDet}</objDet>	
+//			</duracao>
+//		`,
+//		'localTrabGeral': `
+//			<localTrabGeral>
+//				<tpInsc>${tpInscLocalTrabGeral}</tpInsc>
+//				<nrInsc>${nrInscLocalTrabGeral}</nrInsc>
+//				<descComp>${descComp}</descComp>
+//			</localTrabGeral>
+//		`,
+//		'horContratual': `
+//			<horContratual>
+//				<qtdHrsSem>${qtdHrsSem}</qtdHrsSem>
+//				<tpJornada>${tpJornada}</tpJornada>
+//				<tmpParc>${tmpParc}</tmpParc>
+//				<horNoturno>${horNoturno}</horNoturno>
+//				<dscJorn>${dscJorn}</dscJorn>
+//			</horContratual>
+//		`,
+//		'alvaraJudicial': `
+//			<alvaraJudicial>
+//				<nrProcJud>${nrProcJud}</nrProcJud>	
+//			</alvaraJudicial>
+//		`,
+//		'observacoes': `
+//			<observacoes>
+//				<observacao>${observacao}</observacao>
+//			</observacoes>
+//		`,
+//		'treiCap': `
+//			<treiCap>
+//				<codTreiCap>${codTreiCap}</codTreiCap>	
+//			</treiCap>
+//		`,
+//		'sucessaoVinc' : `
+//			<sucessaoVinc>
+//				<tpInsc>${tpInscVinc}</tpInsc>
+//				<nrInsc>${nrInscVinc}</nrInsc>
+//				<matricAnt>${matricAnt}</matricAnt>
+//				<dtTransf>${dtTransfVinc}</dtTransf>
+//				<observacao>${observacaoVinc}<observacao>
+//			</sucessaoVinc>
+//		`,
+//		'transfDom' : `
+//			<transfDom>
+//				<cpfSubstituido>${cpfSubstituido}</cpfSubstituido>
+//				<matricAnt>${matriculaAntTransfDom}</matricAnt>
+//				<dtTransf>${dtTransfTransfDom}</dtTransf>	
+//			</transfDom>
+//		`,
+//		'mudancaCPF': `
+//			<mudancaCPF>
+//				<cpfAnt>${cpfAnt}</cpfAnt>
+//				<matricAnt>${matricAntMudancaCPF}</matricAnt>
+//				<dtAltCPF>${dtAltCPF}</dtAltCPF>
+//				<observacao>${observacaoMudancaCPF}</observacao>	
+//			</mudancaCPF>
+//		`,
+//		'afastamento': `
+//			<afastamento>
+//				<dtIniAfast>${dtIniAfast}</dtIniAfast>
+//				<codMotAfast>${codMotAfast}</codMotAfast>	
+//			</afastamento>
+//		`,
+//		'desligamento': `
+//			<desligamento>
+//				<dtDeslig>${dtDeslig}</dtDeslig>
+//			</desligamento>
+//		`,
+//		'cessao': `
+//			<cessao>
+//				<dtIniCessao>${dtIniCessao}</dtIniCessao>
+//			</cessao>
+//		`,
+//		'localTempDom' : `
+//			<localTempDom>${localTempDom}</localTempDom>
+//		`,
+//		'ideEvento': `
+//			<ideEvento>
+//				<indRetif>${indRetif}</indRetif>
+//				<nrRecibo>${nrRecibo}</nrRecibo>
+//				<tpAmb>${tpAmb}</tpAmb>
+//				<procEmi>${procEmi}</procEmi>
+//				<verProc>${verProc}</verProc>
+//			</ideEvento>
+//		`,
+//		'ideEmpregador': `
+//			<ideEmpregador>
+//				<tpInsc>${tpInscIdeEmpregador}</tpInsc>
+//				<nrInsc>${nrInscIdeEmpregador}</nrInsc>	
+//			</ideEmpregador>
+//		`,
+//		'ideVinculo' : `
+//			<ideVinculo>
+//				<cpfTrab>${cpfTrabIdeVinculo}</cpfTrab>
+//				<matricula>${matriculaIdeVinculo}</matricula>
+//				<codCateg>${codCategIdeVinculo}</codCateg>
+//			</ideVinculo>
+//		`,
+//		'exMedOcup' : `
+//			<exMedOcup>
+//				<tpExameOcup>${tpExameOcup}</tpExameOcup>
+//			</exMedOcup>
+//		`,
+//		'aso': `
+//			<aso>
+//				<dtAso>${dtAso}</dtAso>
+//				<resAso>${resAso}</resAso>
+//			</aso>
+//		`,
+//		'exame' : `
+//			<exame>
+//				<dtExm>${dtExm}</dtExm>
+//				<procRealizado>${procRealizado}</procRealizado>
+//				<obsProc>${obsProc}</obsProc>
+//				<ordExame>${ordExame}</ordExame>
+//				<indResult>${indResult}</indResult>	
+//			</exame>
+//			
+//		`,
+//		'medico' : `
+//			<medico>
+//				<nmMed>${nmMed}</nmMed>
+//				<nrCRM>${nrCRM}</nrCRM>
+//				<ufCRM>${ufCRM}</ufCRM>
+//			</medico>
+//		`,
+//		'respMonit' : `
+//			<respMonit>
+//				<cpfResp>${cpfResp}</cpfResp>
+//				<nmResp>${nmResp}</nmResp>
+//				<nrCRM>${nrCRMRespMonit}</nrCRM>
+//				<ufCRM>${ufCRMRespMonit}</ufCRM>
+//			</respMonit>
+//		`,
+//    })
+//
+//	let gruposCompostos = $derived({"trabalhador": `
+//		<trabalhador>
+//			<cpfTrab>${cpfTrab}</cpfTrab>
+//            <nmTrab>${nmTrab}</nmTrab>
+//            <sexo>${sexo}</sexo>
+//            <racaCor>${racaCor}</racaCor>
+//            <estCiv>${estCiv}</estCiv>
+//            <grauInstr>${grauInstr}</grauInstr>
+//            <nmSoc></nmSoc>
+//			${grupos.nascimento}
+//			<endereco>
+//				${grupos.brasil}
+//				${grupos.exterior}
+//			</endereco>
+//			${grupos.infoDeficiencia}
+//			${grupos.dependente}
+//			${grupos.contato}
+//		</trabalhador>
+//	`, 
+//	"vinculo" : `
+//		<vinculo>
+//			<matricula>${matriculaVinc}</matricula>
+//			<tpRegTrab>${tpRegTrab}</tpRegTrab>
+//			<tpRegPrev>${tpRegPrev}</tpRegPrev>
+//			<cadIni>${cadIni}</cadIni>
+//			<infoRegimeTrab>
+//				${grupos.infoCeletista}
+//				${grupos.infoEstatutario}
+//			</infoRegimeTrab>
+//			${grupos.infoContrato}
+//			${grupos.sucessaoVinc}
+//			${grupos.transfDom}
+//			${grupos.mudancaCPF}
+//			${grupos.afastamento}
+//			${grupos.desligamento}
+//			${grupos.cessao}
+//		</vinculo>
+//	`,})
 
 
 	let eventos = $derived({'s2200': `
@@ -688,26 +702,69 @@
     </evtAdmissao>
 </eSocial>`})
 
-    let msg = $derived(`
-    <eSocial>
-		<evtAdmissao>
-		${grupos.ideEvento}
-		${grupos.ideEmpregador}
-        ${gruposCompostos.trabalhador}
-		${gruposCompostos.vinculo}
-		</evtAdmissao>
-    </eSocial>
-    `)
+//    let msg = $derived(`
+//    <eSocial>
+//		<evtAdmissao>
+//		${grupos.ideEvento}
+//		${grupos.ideEmpregador}
+//        ${gruposCompostos.trabalhador}
+//		${gruposCompostos.vinculo}
+//		</evtAdmissao>
+//    </eSocial>
+//    `)
 
     function gerarXML(){
-        let formattedXML = xmlFormat.minify(msg, {
+        let formattedXML = xmlFormat.minify(eventos.s2200, {
             filter: (node) => node.type !== 'Comment',
             collapseContent: true
         })
         console.log(formattedXML); 
     }
 </script>
+{#if eventoTab}
+<div class="container">
+	<fieldset>
+	<label class="label">
+	<span class="label-text">Selecione o tipo de Evento ( original ou retificação )</span>
+	<select class="select" bind:value={indRetif} placeholder="Tipo de Evento">
+		<option checked disabled>Tipo de Evento</option>
+		<option value="1">1 - Original</option>
+		<option value="2">2 - Retificação</option>
+	</select>
+	</label>
+	</fieldset>
+	{#if indRetif == "2"}
+	<fieldset>
+		<label class="label">
+			<span><br></span>
+			<span class="label-text">Digite o número do recibo</span>
+	<input class="input" placeholder="Número do Recibo"/>
+		</label>
+	</fieldset>
+	{/if}
+	<fieldset>
+		<label class="select">
+			<span class="label-text">Evento</span>
+		<select class="select">
+			<option disabled checked>Selecionar Evento</option>
+			<option value="s2200">S-2200</option>
+			<option value="s2220">S-2220</option>
+		</select>
+		</label>
+	</fieldset>
+	<button class="button" onclick={eventoTab = false}>Salvar</button>
+</div>
+{/if}
 
+{#if empregadorTab}
+<div class="container">
+	<input class="input" placeholder="CPF"/>
+	<input class="input" placeholder="Número de Inscrição" />
+	<button class="button" onclick={ () => empregadorTab = false}>Gerar Formulário</button>
+</div>
+{/if}
+
+{#if trabalhadorTab}
 <div class="container">
 	<input type="text" placeholder="Nome" class="input" />
 	<input type="text" placeholder="CPF do Trabalhador" class="input" />
@@ -778,11 +835,148 @@
 	<input type="email" placeholder="E-mail" class="validator input" />
 
 	<!--Informcações relativas ao empregador --> <!-- Grupo :  'ideEmpregador' -->
-
-
-
-    <button class="btn" onclick={gerarXML}>Gerar XML</button>
+    <button class="btn" onclick={ () => trabalhadorTab = false}>Criar Vínculo</button>
 </div>
+{/if}
+
+{#if vinculoTab}
+<div class="container">
+	<input type="text" placeholder="Matrícula do Vínculo" class="input" />
+	<select class="select">
+		<option disabled selected>Tipo de Regime Trabalhista</option>
+		<option value="1">1 - CLT - Consolidação das Leis de Trabalho e legislações trabalhistas específicas</option>
+		<option value="2">2 - Estatutário/legislações específicas (servidor temporário, militar, agente político, etc.)</option>
+	</select>
+		<select class="select">
+		<option disabled selected>Tipo de Regime Previdenciário</option>
+		<option value="1">1 - Regime Geral de Previdência Social - RGPS</option>
+		<option value="2">2 - Regime Próprio de Previdência Social - RPPS, Regime dos Parlamentares e Sistema de Proteção dos Militares dos Estados/DF</option>
+		<option value="3">3 - Regime de Previdência Social no exterior</option>
+		<option value="4">4 - Sistema de Proteção Social dos Militares das Forças Armadas - SPSMFA</option>
+	</select>
+	<select class="select">
+		<option>Cadastro Inicial</option>
+		<option value="S">S - Sim (Cadastramento Inicial)</option>
+		<option value="N">N - Não (Admissão)</option>
+	</select>
+	<input type="date" placeholder="Data de Admissão" class="input" />
+	<select class="select">
+		<option disabled selected>Tipo de Admissão</option>
+		<option value="1">1 - Admissão</option>
+		<option value="2">2 - Transferência de empresa do mesmo grupo econômico ou transferência entre órgãos do mesmo Ente Federativo</option>
+		<option value="3">3 - Transferência de empresa consorciada ou de consórcio</option>
+		<option value="4">4 - Transferência por motivo de sucessão, incorporação, cisão ou fusão</option>
+		<option value="5">5 - Transferência do empregado doméstico para outro representante da mesma unidade familiar</option>
+		<option value="6">6 - Mudança de CPF</option>
+		<option value="7">7 - Transferência quando a empresa sucedida é considerada inapta por inexistência de fato</option>
+	</select>
+	<select class="select">
+		<option disabled selected>Indicativo de Admissão</option>
+		<option value="1">1 - Normal</option>
+		<option value="2">2 - Decorrente de ação fiscal</option>
+		<option value="3">3 - Decorrente de decisão judicial</option>
+	</select>
+	<input type="text" placeholder="Número de Processo Trabalho" class="input" />
+	<select class="select" bind:value={tpRegJor}>
+		<option disabled selected>Regime de jornada do empregado</option>
+		<option value="1">1 - Submetido a horário de trabalho (Capítulo II do Título II da CLT)</option>
+		<option value="2">2 - Atividade externa especificada no inciso I do art. 62 da CLT</option>
+		<option value="3">3 - Função especificada no inciso II do art. 62 da CLT</option>
+		<option value="4">4 - Teletrabalho, previsto no inciso III do art. 62 da CLT</option>
+	</select>
+	<select class="select">
+    	<option disabled selected>Natureza da Atividade</option>
+    	<option value="1">1 - Trabalho urbano</option>
+    	<option value="2">2 - Trabalho rural</option>
+	</select>
+	<input type="date" placeholder="Data Base" class="input" />
+	<input type="text" placeholder="CNPJ do Sindicato" class="input" />
+	<input type="text" placeholder="Matrícula no S-8200" class="input" />
+	<input type="text" placeholder="Índice de Admissão" class="input" />
+	<input type="date" placeholder="Data da opção pelo FGTS" class="input" /> <!-- 85-->
+	<input type="text" placeholder="Nome do Cargo" class="input" /> <!-- 108-->
+	<input type="text" placeholder="CBO do Cargo" class="input" /> <!-- 109.  Ver tabela de CBO -->
+	<input type="date" placeholder="Data de Ingresso no Cargo" class="input" />
+	<input type="text" placeholder="Nome da Função de Confiança/Cargo em comissão" class="input" />
+	<input type="text" placeholder="CBO da Função de Confiança" class="input" />
+	<select class="select">
+    	<option disabled selected>Cargo ou Função Acumulável ?</option>
+    	<option value="S">S - Sim</option>
+    	<option value="N">N - Não</option>
+	</select>
+	<input type="text" placeholder="Código da Categoria" class="input" />
+	<input
+		type="text"
+		placeholder="Salário Base do Trabalhador ( parte fixa da remuneração )"
+		class="input"
+	/>
+	<select class="select">
+        <option disabled selected>Unidade de pagamento da parte fixa da remuneração</option>
+        <option value="1">1 - Por hora</option>
+        <option value="2">2 - Por dia</option>
+        <option value="3">3 - Por semana</option>
+		<option value="4">4 - Por quinzena</option>
+        <option value="5">5 - Por mês</option>
+        <option value="6">6 - Por tarefa</option>
+		<option value="7">7 - Não aplicável - Salário exclusivamente variável</option>
+    </select>
+	<input type="text" placeholder="Descrição do salário por tarefa ou variável" class="input" />
+    <select class="select">
+        <option disabled selected>Tipo de contrato de trabalho</option>
+        <option value="1">1 - Prazo indeterminado</option>
+        <option value="2">2 - Prazo determinado, definido em dias</option>
+        <option value="3">3 - Prazo determinado, vinculado à ocorrência de um fato</option>
+    </select>
+	<input type="date" placeholder="Data do Término do Contrato por prazo determinado" class="input" />
+    <select class="select">
+        <option disabled selected>Contém cláusula assecuratória ?</option>
+        <option value="S">S - Sim</option>
+        <option value="N">N - Não</option>
+    </select>
+	<input type="text" placeholder="Objeto Determinante da Contratação por prazo determinado ( obra, serviço, safra, etc. )" class="input" />
+    <select class="select">
+        <option disabled selected>Tipo de inscrição do local de trabalho</option>
+        <option value="1">1 - CNPJ</option>
+        <option value="3">3 - CAEPF</option>
+        <option value="4">4 - CNO</option>
+    </select>
+	<input type="text" placeholder="Número de Inscrição do Local de Trabalho" class="input" /> <!-- Deve ser um número de inscrição válido e existente na tabela de estabelecimentos S-1005 -->
+	<input type="text" placeholder="Descrição Complementar do Local de Trabalho" class="input" />
+	<input type="text" placeholder="Quantidade de Horas Semanais" class="input" />
+    <select class="select">
+        <option disabled selected>Tipo de Jornada</option>
+        <option value="2">2 - Jornada 12 x 36 (12 horas de trabalho seguidas de 36 horas ininterruptas de descanso)</option>
+        <option value="3">3 - Jornada com horário diário fixo e folga variável</option>
+        <option value="4">4 - Jornada com horário diário fixo e folga fixa (no domingo)</option>
+		<option value="5">5 - Jornada com horário diário fixo e folga fixa (exceto no domingo)</option>
+		<option value="6">6 - Jornada com horário diário fixo e folga fixa (em outro dia da semana), com folga adicional periódica no domingo</option>
+		<option value="7">7 - Turno ininterrupto de revezamento</option>
+		<option value="9">9 - Demais tipos de jornada</option>
+    </select>
+    <select class="select">
+        <option disabled selected>Código relativo ao tipo de contrato em tempo parcial</option>
+        <option value="0">0 - Não é contrato em tempo parcial</option>
+        <option value="1">1 - Limitado a 25 horas semanais</option>
+        <option value="2">2 - Limitado a 30 horas semanais</option>
+		<option value="3">3 - Limitado a 26 horas semanais</option>
+    </select>
+    <select class="select">
+        <option disabled selected>Horário noturno</option>
+        <option value="S">S - Sim</option>
+        <option value="N">N - Não</option>
+    </select>
+	<input type="text" placeholder="Descrição da Jornada Semanal Contratual" class="input" />
+	<input type="text" placeholder="Número do Processo Judicial" class="input" />
+	<input type="text" placeholder="Observação relacionada ao Contrato de Trabalho" class="input" /> <!-- 139 -->
+	<input type="text" placeholder="Treinamentos e Capacitações" class="input" />
+	<input type="text" placeholder="Código do Treinamento de Capacitação" class="input" /> <!-- 141  conforme tabela 28 -->
+	<input type="date" placeholder="Data de Início do Afastamento" class="input" />
+	<input type="text" placeholder="Código do Motivo do Afastamento" class="input" /> <!-- 159  código do motivo de afastamento temporário ,  tabela 18 -->
+	<input type="date" placeholder="Data do Desligamento" class="input" />
+	<input type="date" placeholder="Data do Início da Cessão" class="input" />
+	<button class="btn">Imprimir Banco de dados</button>
+</div>
+{/if}
 
 <style>
     .container{
