@@ -36,6 +36,7 @@
 		"vite": "^7.2.6"
 	},
 	"dependencies": {
+		"fast-csv": "^5.0.5",
 		"fast-xml-parser": "^5.3.3",
 		"firebase": "^12.7.0",
 		"tailgrids": "^2.3.0",

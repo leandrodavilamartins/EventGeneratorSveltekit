@@ -159,6 +159,8 @@
 	let empregadorTab = $state(true); 
 	let trabalhadorTab = $state(true);  
 	let vinculoTab = $state(true); 
+	let celetista = $state(false); 
+	let estatutario = $state(false); 
 	// optional variables 
 	let nrReciboExists = $state(''); 
 
@@ -825,7 +827,9 @@
 	<input type="text" placeholder="Complemento" class="input" />
 	<input type="text" placeholder="Bairro" class="input" />
 	<input type="text" placeholder="CEP" class="input" />
-	<input type="text" placeholder="Código do Município" class="input" /> <!-- Consultar código do município na tabela do IBGE -->
+	<input type="text" placeholder="Código do Município" class="input" />
+	<a href="https://www.ibge.gov.br/explica/codigos-dos-municipios.php" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded shadow-md transition duration-300">Consultar código do município no site do IBGE</a>
+	<br> <!-- Consultar código do município na tabela do IBGE -->
 	<select class="select" placeholder="Unidade Federativa">
 		{#each estados as estado}
 		<option value={estado}>{estado}</option>
@@ -838,9 +842,11 @@
     <button class="btn" onclick={ () => trabalhadorTab = false}>Criar Vínculo</button>
 </div>
 {/if}
-
-{#if vinculoTab}
+<!--Informações do vínculo -->
+<!---->
+<!---->
 <div class="container">
+	{#if vinculoTab}
 	<input type="text" placeholder="Matrícula do Vínculo" class="input" />
 	<select class="select">
 		<option disabled selected>Tipo de Regime Trabalhista</option>
@@ -859,6 +865,7 @@
 		<option value="S">S - Sim (Cadastramento Inicial)</option>
 		<option value="N">N - Não (Admissão)</option>
 	</select>
+	{#if celetista }
 	<input type="date" placeholder="Data de Admissão" class="input" />
 	<select class="select">
 		<option disabled selected>Tipo de Admissão</option>
@@ -892,8 +899,20 @@
 	<input type="date" placeholder="Data Base" class="input" />
 	<input type="text" placeholder="CNPJ do Sindicato" class="input" />
 	<input type="text" placeholder="Matrícula no S-8200" class="input" />
-	<input type="text" placeholder="Índice de Admissão" class="input" />
+	<!---->
 	<input type="date" placeholder="Data da opção pelo FGTS" class="input" /> <!-- 85-->
+	<!-- trabTemporario -->
+	 <fieldset>
+		<label class="label">
+			<span class="label-text">Hipótese Legal</span>
+			<select class="select">
+				<option>1 - Necessidade de substituição transitória de pessoal permanente</option>
+				<option>2 - Demanda complementar de serviços</option>
+			</select>
+		</label>
+	 </fieldset>
+	{/if}
+	{#if estatutario }
 	<input type="text" placeholder="Nome do Cargo" class="input" /> <!-- 108-->
 	<input type="text" placeholder="CBO do Cargo" class="input" /> <!-- 109.  Ver tabela de CBO -->
 	<input type="date" placeholder="Data de Ingresso no Cargo" class="input" />
@@ -975,8 +994,11 @@
 	<input type="date" placeholder="Data do Desligamento" class="input" />
 	<input type="date" placeholder="Data do Início da Cessão" class="input" />
 	<button class="btn">Imprimir Banco de dados</button>
-</div>
+
+
 {/if}
+{/if}
+</div>
 
 <style>
     .container{
