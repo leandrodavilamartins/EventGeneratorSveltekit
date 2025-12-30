@@ -156,13 +156,37 @@
 	let observacaoMudancaCPF = $state(''); 
 	// control variables 
 	let eventoTab = $state(true);  
-	let empregadorTab = $state(true); 
-	let trabalhadorTab = $state(true);  
-	let vinculoTab = $state(true); 
-	let celetista = $state(false); 
-	let estatutario = $state(false); 
+	let empregadorTab = $state(false); 
+	let trabalhadorTab = $state(false);  
+	let vinculoTab = $state(false); 
+	let celetista = $derived(tpRegTrab == '1'); // avalia condição ( true or false )
+
+	let estatutario = $derived(tpRegTrab == '2');  // avalia condição ( true or false )
 	// optional variables 
 	let nrReciboExists = $state(''); 
+
+	let evento = $state(''); // contains the type of the event 
+	let cpfEmpregador = $state(''); // CPF do empregador
+	let nrTrab = $state(''); 
+	let tpInscSucessaoVinc = $state(''); 
+
+	function salvarBtn() {
+		eventoTab = false; 
+		empregadorTab = true;
+		return;  
+	}
+
+	function gerarFormBtn(){
+		empregadorTab = false; 
+		trabalhadorTab = true; 
+		return; 
+	}
+
+	function criarVinculoBtn() {
+		trabalhadorTab = false; 
+		vinculoTab = true; 
+		return;
+	}
 
 
 //    let grupos = $derived({
@@ -725,187 +749,380 @@
 </script>
 {#if eventoTab}
 <div class="container">
-	<fieldset>
-	<label class="label">
-	<span class="label-text">Selecione o tipo de Evento ( original ou retificação )</span>
-	<select class="select" bind:value={indRetif} placeholder="Tipo de Evento">
-		<option checked disabled>Tipo de Evento</option>
-		<option value="1">1 - Original</option>
-		<option value="2">2 - Retificação</option>
-	</select>
-	</label>
-	</fieldset>
+	<form class="w-full max-w-md space-y-4 p-4">
+		<fieldset>
+		<label class="label">
+		<span class="label-text">Selecione o tipo de Evento ( original ou retificação )</span>
+		<select class="select" bind:value={indRetif} placeholder="Tipo de Evento">
+			<option checked disabled>Tipo de Evento</option>
+			<option value="1">1 - Original</option>
+			<option value="2">2 - Retificação</option>
+		</select>
+		</label>
+		</fieldset>
+
 	{#if indRetif == "2"}
 	<fieldset>
 		<label class="label">
 			<span><br></span>
 			<span class="label-text">Digite o número do recibo</span>
-	<input class="input" placeholder="Número do Recibo"/>
+			<input class="input" placeholder="Número do Recibo" bind:value={nrRecibo}/>
 		</label>
 	</fieldset>
 	{/if}
 	<fieldset>
-		<label class="select">
+		<label class="label">
 			<span class="label-text">Evento</span>
-		<select class="select">
-			<option disabled checked>Selecionar Evento</option>
-			<option value="s2200">S-2200</option>
-			<option value="s2220">S-2220</option>
-		</select>
+			<select class="select" bind:value={evento}>
+				<option disabled checked>Selecionar Evento</option>
+				<option value="s2200">S-2200</option>
+				<option value="s2220">S-2220</option>
+			</select>
 		</label>
 	</fieldset>
-	<button class="button" onclick={eventoTab = false}>Salvar</button>
+	<span></span>
+	<button type="button" class="btn preset-filled" onclick={salvarBtn}>Salvar</button>
+	</form>
 </div>
 {/if}
 
 {#if empregadorTab}
 <div class="container">
-	<input class="input" placeholder="CPF"/>
-	<input class="input" placeholder="Número de Inscrição" />
-	<button class="button" onclick={ () => empregadorTab = false}>Gerar Formulário</button>
+	<form class="w-full max-w-md space-y-4 p-4">
+		<fieldset>
+			<label class="label">
+				<span class="label-text">CPF</span>
+				<input class="input" type="text" placeholder="CPF" bind:value={cpfEmpregador}/>
+			</label>
+		</fieldset>
+		<fieldset>
+			<label class="label">
+				<span class="label-text">Número de Inscrição</span>
+				<input class="input" type="text" placeholder="Número de Inscrição" bind:value={nrInscIdeEmpregador}/>
+			</label>
+		</fieldset>
+		<button type="button" class="btn preset-filled" onclick={gerarFormBtn}>Gerar Formulário</button>
+	</form>
 </div>
 {/if}
 
 {#if trabalhadorTab}
 <div class="container">
-	<input type="text" placeholder="Nome" class="input" />
-	<input type="text" placeholder="CPF do Trabalhador" class="input" />
-	<input type="text" placeholder="Número do Trabalhador" class="input" />
-	<select class="select" bind:value={sexo} >
-		<option disabled selected>Sexo</option>
-		<option value="M">M - Masculino</option>
-		<option value="F">F - Feminino</option>
-	</select>
-	<select class="select" bind:value={racaCor} >
-		<option disabled selected>Raça/Cor</option>
-		<option value="1">1 - Branca</option>
-		<option value="2">2 - Preta</option>
-		<option value="3">3 - Parda</option>
-		<option value="4">4 - Amarela</option>
-		<option value="5">5 - Indígena</option>
-		<option value="6">6 - Não informado</option>
-	</select>
-	<select class="select" bind:value={estCiv}>
-		<option disabled selected>Estado Civil</option>
-		<option value="1">Solteiro</option>
-		<option value="2">Casado</option>
-		<option value="3">Divorciado</option>
-		<option value="4">Separado</option>
-		<option value="5">Viúvo</option>
-	</select>
-	<select class="select" bind:value={grauInstr}>
-		<option disabled selected>Grau de Instrução</option>
-		<option value="01">Analfabeto, inclusive o que, embora tenha recebido instrução, não se alfabetizou</option>
-		<option value="02">Até o 5º ano incompleto do ensino fundamental (antiga 4ª série) ou que se tenha alfabetizado sem ter frequentado escola regular</option>
-		<option value="03">5º ano completo do ensino fundamental</option>
-		<option value="04">Do 6º ao 9º ano do ensino fundamental incompleto (antiga 5ª a 8ª série)</option>
-		<option value="05">Ensino fundamental completo</option>
-		<option value="06">Ensino médio incompleto</option>
-		<option value="07">Ensino médio completo</option>
-		<option value="08">Educação superior incompleta</option>
-		<option value="09">Educação superior completa</option>
-		<option value="10">Pós-graduação completa</option>
-		<option value="11">Mestrado completo</option>
-		<option value="12">Doutorado completo</option>
-	</select>
-	<input type="date" placeholder="Data de Nascimento" class="input" />
-	<input type="text" placeholder="País de Nascimento" class="input" defaultValue="105" /> <!--105 é o código para o "Brasil"-->
-	<input type="text" placeholder="Nacionalidade" class="input" defaultValue="105"/> <!--105 é o código para o "Brasil"-->
-	<select class="select" placeholder="Tipo de Logradouro">
-		<option value="R">Rua</option>
-		<option value="AV">Avenida</option>
-		<option value="PC">Praça</option>
-		<option value="ROD">Rodovia</option>
-		<option value="EST">Estrada</option>
-		<option value="FAZ">Fazenda</option>
-		<option value="GJA">Granja</option>
-		<option value="SIT">Sítio</option>
-		<option value="VL">Vila</option>
-	</select>
-	<input type="text" placeholder="Descrição do Logradouro" class="input" />
-	<input type="text" placeholder="Número do Logradouro" class="input" defaultValue="S/N" />
-	<input type="text" placeholder="Complemento" class="input" />
-	<input type="text" placeholder="Bairro" class="input" />
-	<input type="text" placeholder="CEP" class="input" />
-	<input type="text" placeholder="Código do Município" class="input" />
-	<a href="https://www.ibge.gov.br/explica/codigos-dos-municipios.php" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded shadow-md transition duration-300">Consultar código do município no site do IBGE</a>
-	<br> <!-- Consultar código do município na tabela do IBGE -->
-	<select class="select" placeholder="Unidade Federativa">
-		{#each estados as estado}
-		<option value={estado}>{estado}</option>
-		{/each}
-	</select>
-	<input type="text" placeholder="Telefone" class="input" />
-	<input type="email" placeholder="E-mail" class="validator input" />
+	<form class="w-full max-w-md space-y-4 p-4">
+		<fieldset>
+			<label class="label">
+				<span class="label-text">Nome</span>
+				<input type="text" placeholder="Nome" class="input" bind:value={nmTrab} />
+			</label>
+		</fieldset>
+				<fieldset>
+			<label class="label">
+				<span class="label-text">CPF</span>
+				<input type="text" placeholder="CPF do Trabalhador" class="input" bind:value={cpfTrab}/>
+			</label>
+		</fieldset>
+				<fieldset>
+			<label class="label">
+				<span class="label-text">Número do Trabalhador</span>
+				<input type="text" placeholder="Número do Trabalhador" class="input" bind:value={nrTrab} />
+			</label>
+		</fieldset>
+	<fieldset>
+		<label class="label">
+			<span class="label-text">Sexo</span>
+			<select class="select" bind:value={sexo} >
+				<option disabled selected>Sexo</option>
+				<option value="M">M - Masculino</option>
+				<option value="F">F - Feminino</option>
+			</select>
+		</label>
+	</fieldset>
+	<fieldset>
+		<label class="label">
+			<span class="label-text">Raça/Cor</span>
+			<select class="select" bind:value={racaCor} >
+				<option disabled selected>Raça/Cor</option>
+				<option value="1">1 - Branca</option>
+				<option value="2">2 - Preta</option>
+				<option value="3">3 - Parda</option>
+				<option value="4">4 - Amarela</option>
+				<option value="5">5 - Indígena</option>
+				<option value="6">6 - Não informado</option>
+			</select>
+		</label>
+	</fieldset>
+	<fieldset>
+		<label class="label-text">
+			<span>Estado Civil</span>
+			<select class="select" bind:value={estCiv}>
+				<option disabled selected>Estado Civil</option>
+				<option value="1"> Solteiro</option>
+				<option value="2"> Casado</option>
+				<option value="3"> Divorciado</option>
+				<option value="4"> Separado</option>
+				<option value="5"> Viúvo</option>
+			</select>
+		</label>
+	</fieldset>
+	<fieldset>
+		<label class="label">
+			<span class="label-text">Escolaridade</span>
+			<select class="select" bind:value={grauInstr}>
+				<option disabled selected>Grau de Instrução</option>
+				<option value="01">Analfabeto, inclusive o que, embora tenha recebido instrução, não se alfabetizou</option>
+				<option value="02">Até o 5º ano incompleto do ensino fundamental (antiga 4ª série) ou que se tenha alfabetizado sem ter frequentado escola regular</option>
+				<option value="03">5º ano completo do ensino fundamental</option>
+				<option value="04">Do 6º ao 9º ano do ensino fundamental incompleto (antiga 5ª a 8ª série)</option>
+				<option value="05">Ensino fundamental completo</option>
+				<option value="06">Ensino médio incompleto</option>
+				<option value="07">Ensino médio completo</option>
+				<option value="08">Educação superior incompleta</option>
+				<option value="09">Educação superior completa</option>
+				<option value="10">Pós-graduação completa</option>
+				<option value="11">Mestrado completo</option>
+				<option value="12">Doutorado completo</option>
+			</select>
+		</label>
+	</fieldset>
+	<fieldset>
+			<label class="label">
+				<span class="label-text">Data de Nascimento</span>
+				<input type="date" placeholder="Data de Nascimento" class="input" bind:value={dtNascto}/>
+			</label>
+	</fieldset>
+	<fieldset>
+			<label class="label">
+				<span class="label-text">País de Nascimento</span>
+				<input type="text" placeholder="País de Nascimento" class="input" defaultValue="105" bind:value={paisNascto} /> <!--105 é o código para o "Brasil"-->
+			</label>
+	</fieldset>
+	<fieldset>
+			<label class="label">
+				<span class="label-text">Nacionalidade</span>
+				<input type="text" placeholder="Nacionalidade" class="input" defaultValue="105" bind:value={paisNac}/> <!--105 é o código para o "Brasil"-->
+			</label>
+	</fieldset>
+	<fieldset>
+		<label class="label">
+			<span class="label-text">Logradouro</span>
+			<select class="select" placeholder="Tipo de Logradouro" bind:value={tpLograd}>
+				<option disabled selected>Logradouro</option>
+				<option value="R">Rua</option>
+				<option value="AV">Avenida</option>
+				<option value="PC">Praça</option>
+				<option value="ROD">Rodovia</option>
+				<option value="EST">Estrada</option>
+				<option value="FAZ">Fazenda</option>
+				<option value="GJA">Granja</option>
+				<option value="SIT">Sítio</option>
+				<option value="VL">Vila</option>
+			</select>
+		</label>
+	</fieldset>
+	<fieldset>
+			<label class="label">
+				<span class="label-text">Descrição do Logradouro</span>
+				<input type="text" placeholder="Descrição do Logradouro" class="input" bind:value={dscLograd} />
+			</label>
+	</fieldset>
+	<fieldset>
+			<label class="label">
+				<span class="label-text">Número</span>
+				<input type="text" placeholder="Número do Logradouro" class="input" defaultValue="S/N" bind:value={nrLograd}/>
+			</label>
+	</fieldset>
+	<fieldset>
+			<label class="label">
+				<span class="label-text">Complemento</span>
+				<input type="text" placeholder="Complemento" class="input" bind:value={complemento}/>
+			</label>
+	</fieldset>
+	<fieldset>
+			<label class="label">
+				<span class="label-text">Bairro</span>
+				<input type="text" placeholder="Bairro" class="input" bind:value={bairro}/>
+			</label>
+	</fieldset>
+	<fieldset>
+			<label class="label">
+				<span class="label-text">CEP</span>
+				<input type="text" placeholder="CEP" class="input" bind:value={cep}/>
+			</label>
+	</fieldset>
+	<fieldset>
+			<label class="label">
+				<span class="label-text">Código do Município</span>
+				<input type="text" placeholder="Código do Município" class="input" bind:value={codMunic} />
+			</label>
+	</fieldset>
+	<fieldset>
+		<span></span>
+		<a href="https://www.ibge.gov.br/explica/codigos-dos-municipios.php" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded shadow-md transition duration-300">Consultar código do município no site do IBGE</a>
+		<span><br><br></span> <!-- Consultar código do município na tabela do IBGE -->
+	</fieldset>
+	<fieldset>
+		<label class="label">
+			<span class="label-text">Unidade Federativa</span>
+			<select class="select" placeholder="Unidade Federativa" bind:value={uf}>
+				{#each estados as estado}
+				<option value={estado}>{estado}</option>
+				{/each}
+			</select>
+	 	</label>
+	</fieldset>
+	<fieldset>
+			<label class="label">
+				<span class="label-text">Telefone</span>
+				<input type="text" placeholder="Telefone" class="input" bind:value={fonePrinc} />
+			</label>
+	</fieldset>
+	<fieldset>
+			<label class="label">
+				<span class="label-text">E-mail</span>
+				<input type="email" placeholder="E-mail" class="validator input" bind:value={emailPrinc}/>
+			</label>
+	</fieldset>
+
 
 	<!--Informcações relativas ao empregador --> <!-- Grupo :  'ideEmpregador' -->
-    <button class="btn" onclick={ () => trabalhadorTab = false}>Criar Vínculo</button>
+    <button type="button" class="btn preset-filled" onclick={criarVinculoBtn}>Criar Vínculo</button>
+	</form>
 </div>
 {/if}
 <!--Informações do vínculo -->
 <!---->
 <!---->
 <div class="container">
+<form class="w-full max-w-md space-y-4 p-4">
 	{#if vinculoTab}
-	<input type="text" placeholder="Matrícula do Vínculo" class="input" />
-	<select class="select">
-		<option disabled selected>Tipo de Regime Trabalhista</option>
-		<option value="1">1 - CLT - Consolidação das Leis de Trabalho e legislações trabalhistas específicas</option>
-		<option value="2">2 - Estatutário/legislações específicas (servidor temporário, militar, agente político, etc.)</option>
-	</select>
-		<select class="select">
-		<option disabled selected>Tipo de Regime Previdenciário</option>
-		<option value="1">1 - Regime Geral de Previdência Social - RGPS</option>
-		<option value="2">2 - Regime Próprio de Previdência Social - RPPS, Regime dos Parlamentares e Sistema de Proteção dos Militares dos Estados/DF</option>
-		<option value="3">3 - Regime de Previdência Social no exterior</option>
-		<option value="4">4 - Sistema de Proteção Social dos Militares das Forças Armadas - SPSMFA</option>
-	</select>
-	<select class="select">
-		<option>Cadastro Inicial</option>
-		<option value="S">S - Sim (Cadastramento Inicial)</option>
-		<option value="N">N - Não (Admissão)</option>
-	</select>
+	<fieldset>
+			<label class="label">
+				<span class="label-text">Matrícula do Vínculo</span>
+				<input type="text" placeholder="Matrícula do Vínculo" class="input" bind:value={matriculaVinc} />
+			</label>
+	</fieldset>
+	<fieldset>
+		<label class="label">
+			<span class="label-text">Regime Trabalhista</span>
+			<select class="select" bind:value={tpRegTrab} >
+				<option disabled>Tipo de Regime Trabalhista</option>
+				<option value="1">1 - CLT - Consolidação das Leis de Trabalho e legislações trabalhistas específicas</option>
+				<option value="2">2 - Estatutário/legislações específicas (servidor temporário, militar, agente político, etc.)</option>
+			</select>
+		</label>
+	</fieldset>
+	<fieldset>
+		<label class="label">
+			<span class="label-text">Tipo de Regime Previdenciário</span>
+			<select class="select" bind:value={tpRegPrev}>
+				<option disabled selected>Tipo de Regime Previdenciário</option>
+				<option value="1">1 - Regime Geral de Previdência Social - RGPS</option>
+				<option value="2">2 - Regime Próprio de Previdência Social - RPPS, Regime dos Parlamentares e Sistema de Proteção dos Militares dos Estados/DF</option>
+				<option value="3">3 - Regime de Previdência Social no exterior</option>
+				<option value="4">4 - Sistema de Proteção Social dos Militares das Forças Armadas - SPSMFA</option>
+			</select>
+		</label>
+	</fieldset>
+	<fieldset>
+		<label class="label">
+			<span class="label-text">Cadastro Inicial</span>
+			<select class="select" bind:value={cadIni}>
+				<option>Cadastro Inicial</option>
+				<option value="S">S - Sim (Cadastramento Inicial)</option>
+				<option value="N">N - Não (Admissão)</option>
+			</select>
+		</label>
+	</fieldset>
 	{#if celetista }
-	<input type="date" placeholder="Data de Admissão" class="input" />
-	<select class="select">
-		<option disabled selected>Tipo de Admissão</option>
-		<option value="1">1 - Admissão</option>
-		<option value="2">2 - Transferência de empresa do mesmo grupo econômico ou transferência entre órgãos do mesmo Ente Federativo</option>
-		<option value="3">3 - Transferência de empresa consorciada ou de consórcio</option>
-		<option value="4">4 - Transferência por motivo de sucessão, incorporação, cisão ou fusão</option>
-		<option value="5">5 - Transferência do empregado doméstico para outro representante da mesma unidade familiar</option>
-		<option value="6">6 - Mudança de CPF</option>
-		<option value="7">7 - Transferência quando a empresa sucedida é considerada inapta por inexistência de fato</option>
-	</select>
-	<select class="select">
-		<option disabled selected>Indicativo de Admissão</option>
-		<option value="1">1 - Normal</option>
-		<option value="2">2 - Decorrente de ação fiscal</option>
-		<option value="3">3 - Decorrente de decisão judicial</option>
-	</select>
-	<input type="text" placeholder="Número de Processo Trabalho" class="input" />
-	<select class="select" bind:value={tpRegJor}>
-		<option disabled selected>Regime de jornada do empregado</option>
-		<option value="1">1 - Submetido a horário de trabalho (Capítulo II do Título II da CLT)</option>
-		<option value="2">2 - Atividade externa especificada no inciso I do art. 62 da CLT</option>
-		<option value="3">3 - Função especificada no inciso II do art. 62 da CLT</option>
-		<option value="4">4 - Teletrabalho, previsto no inciso III do art. 62 da CLT</option>
-	</select>
-	<select class="select">
-    	<option disabled selected>Natureza da Atividade</option>
-    	<option value="1">1 - Trabalho urbano</option>
-    	<option value="2">2 - Trabalho rural</option>
-	</select>
-	<input type="date" placeholder="Data Base" class="input" />
-	<input type="text" placeholder="CNPJ do Sindicato" class="input" />
-	<input type="text" placeholder="Matrícula no S-8200" class="input" />
-	<!---->
-	<input type="date" placeholder="Data da opção pelo FGTS" class="input" /> <!-- 85-->
+	<fieldset>
+			<label class="label">
+				<span class="label-text">Data de Admissão</span>
+				<input type="date" placeholder="Data de Admissão" class="input" bind:value={dtAdm}/>
+			</label>
+	</fieldset>
+	<fieldset>
+		<label class="label">
+			<span class="label-text">Tipo de Admissão</span>
+			<select class="select" bind:value={tpAdmissao}>
+				<option disabled selected>Tipo de Admissão</option>
+				<option value="1">1 - Admissão</option>
+				<option value="2">2 - Transferência de empresa do mesmo grupo econômico ou transferência entre órgãos do mesmo Ente Federativo</option>
+				<option value="3">3 - Transferência de empresa consorciada ou de consórcio</option>
+				<option value="4">4 - Transferência por motivo de sucessão, incorporação, cisão ou fusão</option>
+				<option value="5">5 - Transferência do empregado doméstico para outro representante da mesma unidade familiar</option>
+				<option value="6">6 - Mudança de CPF</option>
+				<option value="7">7 - Transferência quando a empresa sucedida é considerada inapta por inexistência de fato</option>
+			</select>
+		</label>
+	</fieldset>
+	<fieldset>
+		<label class="label">
+			<span class="label-text">Indicativo de Admissão</span>
+			<select class="select" bind:value={indAdmissao}>
+				<option disabled selected>Indicativo de Admissão</option>
+				<option value="1">1 - Normal</option>
+				<option value="2">2 - Decorrente de ação fiscal</option>
+				<option value="3">3 - Decorrente de decisão judicial</option>
+			</select>
+		</label>
+	</fieldset>
+			<fieldset>
+			<label class="label">
+				<span class="label-text">Número de Processo do Trabalho</span>
+				<input type="text" placeholder="Número de Processo Trabalho" class="input" bind:value={nrProcTrab}/>
+			</label>
+	</fieldset>
+	<fieldset>
+		<label class="label">
+			<span class="label-text">Regime de Jornada do Empregado</span>
+			<select class="select" bind:value={tpRegJor}>
+				<option disabled selected>Regime de jornada do empregado</option>
+				<option value="1">1 - Submetido a horário de trabalho (Capítulo II do Título II da CLT)</option>
+				<option value="2">2 - Atividade externa especificada no inciso I do art. 62 da CLT</option>
+				<option value="3">3 - Função especificada no inciso II do art. 62 da CLT</option>
+				<option value="4">4 - Teletrabalho, previsto no inciso III do art. 62 da CLT</option>
+			</select>
+		</label>
+	</fieldset>
+	<fieldset>
+		<label class="label">
+			<span class="label-text">Natureza da Atividade</span>
+			<select class="select" bind:value={natAtividade}>
+    			<option disabled selected>Natureza da Atividade</option>
+    			<option value="1">1 - Trabalho urbano</option>
+    			<option value="2">2 - Trabalho rural</option>
+			</select>
+		</label>
+	</fieldset>
+	<fieldset>
+			<label class="label">
+				<span class="label-text">Data Base</span>
+				<input type="date" placeholder="Data Base" class="input" bind:value={dtBase} />
+			</label>
+	</fieldset>
+	<fieldset>
+			<label class="label">
+				<span class="label-text">CNPJ do Sindicato</span>
+				<input type="text" placeholder="CNPJ do Sindicato" class="input" bind:value={cnpjSindCategProf}/>
+			</label>
+	</fieldset>
+	<fieldset>
+			<label class="label">
+				<span class="label-text">Matrícula no S-8200</span>
+				<input type="text" placeholder="Matrícula no S-8200" class="input" bind:value={matAnotJud} />
+			</label>
+	</fieldset>
+	<fieldset>
+			<label class="label">
+				<span class="label-text">Data da opção pelo FGTS</span>
+				<input type="date" placeholder="Data da opção pelo FGTS" class="input" bind:value={dtOpcFGTS} /> <!-- 85-->
+			</label>
+	</fieldset>
 	<!-- trabTemporario -->
 	 <fieldset>
 		<label class="label">
 			<span class="label-text">Hipótese Legal</span>
-			<select class="select">
+			<select class="select" bind:value={hipLeg}>
 				<option>1 - Necessidade de substituição transitória de pessoal permanente</option>
 				<option>2 - Demanda complementar de serviços</option>
 			</select>
@@ -913,91 +1130,235 @@
 	 </fieldset>
 	{/if}
 	{#if estatutario }
-	<input type="text" placeholder="Nome do Cargo" class="input" /> <!-- 108-->
-	<input type="text" placeholder="CBO do Cargo" class="input" /> <!-- 109.  Ver tabela de CBO -->
-	<input type="date" placeholder="Data de Ingresso no Cargo" class="input" />
-	<input type="text" placeholder="Nome da Função de Confiança/Cargo em comissão" class="input" />
-	<input type="text" placeholder="CBO da Função de Confiança" class="input" />
-	<select class="select">
-    	<option disabled selected>Cargo ou Função Acumulável ?</option>
-    	<option value="S">S - Sim</option>
-    	<option value="N">N - Não</option>
-	</select>
-	<input type="text" placeholder="Código da Categoria" class="input" />
-	<input
-		type="text"
-		placeholder="Salário Base do Trabalhador ( parte fixa da remuneração )"
-		class="input"
-	/>
-	<select class="select">
-        <option disabled selected>Unidade de pagamento da parte fixa da remuneração</option>
-        <option value="1">1 - Por hora</option>
-        <option value="2">2 - Por dia</option>
-        <option value="3">3 - Por semana</option>
-		<option value="4">4 - Por quinzena</option>
-        <option value="5">5 - Por mês</option>
-        <option value="6">6 - Por tarefa</option>
-		<option value="7">7 - Não aplicável - Salário exclusivamente variável</option>
-    </select>
-	<input type="text" placeholder="Descrição do salário por tarefa ou variável" class="input" />
-    <select class="select">
-        <option disabled selected>Tipo de contrato de trabalho</option>
-        <option value="1">1 - Prazo indeterminado</option>
-        <option value="2">2 - Prazo determinado, definido em dias</option>
-        <option value="3">3 - Prazo determinado, vinculado à ocorrência de um fato</option>
-    </select>
-	<input type="date" placeholder="Data do Término do Contrato por prazo determinado" class="input" />
-    <select class="select">
-        <option disabled selected>Contém cláusula assecuratória ?</option>
-        <option value="S">S - Sim</option>
-        <option value="N">N - Não</option>
-    </select>
-	<input type="text" placeholder="Objeto Determinante da Contratação por prazo determinado ( obra, serviço, safra, etc. )" class="input" />
-    <select class="select">
-        <option disabled selected>Tipo de inscrição do local de trabalho</option>
-        <option value="1">1 - CNPJ</option>
-        <option value="3">3 - CAEPF</option>
-        <option value="4">4 - CNO</option>
-    </select>
-	<input type="text" placeholder="Número de Inscrição do Local de Trabalho" class="input" /> <!-- Deve ser um número de inscrição válido e existente na tabela de estabelecimentos S-1005 -->
-	<input type="text" placeholder="Descrição Complementar do Local de Trabalho" class="input" />
-	<input type="text" placeholder="Quantidade de Horas Semanais" class="input" />
-    <select class="select">
-        <option disabled selected>Tipo de Jornada</option>
-        <option value="2">2 - Jornada 12 x 36 (12 horas de trabalho seguidas de 36 horas ininterruptas de descanso)</option>
-        <option value="3">3 - Jornada com horário diário fixo e folga variável</option>
-        <option value="4">4 - Jornada com horário diário fixo e folga fixa (no domingo)</option>
-		<option value="5">5 - Jornada com horário diário fixo e folga fixa (exceto no domingo)</option>
-		<option value="6">6 - Jornada com horário diário fixo e folga fixa (em outro dia da semana), com folga adicional periódica no domingo</option>
-		<option value="7">7 - Turno ininterrupto de revezamento</option>
-		<option value="9">9 - Demais tipos de jornada</option>
-    </select>
-    <select class="select">
-        <option disabled selected>Código relativo ao tipo de contrato em tempo parcial</option>
-        <option value="0">0 - Não é contrato em tempo parcial</option>
-        <option value="1">1 - Limitado a 25 horas semanais</option>
-        <option value="2">2 - Limitado a 30 horas semanais</option>
-		<option value="3">3 - Limitado a 26 horas semanais</option>
-    </select>
-    <select class="select">
-        <option disabled selected>Horário noturno</option>
-        <option value="S">S - Sim</option>
-        <option value="N">N - Não</option>
-    </select>
-	<input type="text" placeholder="Descrição da Jornada Semanal Contratual" class="input" />
-	<input type="text" placeholder="Número do Processo Judicial" class="input" />
-	<input type="text" placeholder="Observação relacionada ao Contrato de Trabalho" class="input" /> <!-- 139 -->
-	<input type="text" placeholder="Treinamentos e Capacitações" class="input" />
-	<input type="text" placeholder="Código do Treinamento de Capacitação" class="input" /> <!-- 141  conforme tabela 28 -->
-	<input type="date" placeholder="Data de Início do Afastamento" class="input" />
-	<input type="text" placeholder="Código do Motivo do Afastamento" class="input" /> <!-- 159  código do motivo de afastamento temporário ,  tabela 18 -->
-	<input type="date" placeholder="Data do Desligamento" class="input" />
-	<input type="date" placeholder="Data do Início da Cessão" class="input" />
-	<button class="btn">Imprimir Banco de dados</button>
-
-
+	<fieldset>
+			<label class="label">
+				<span class="label-text">Nome do Cargo</span>
+				<input type="text" placeholder="Nome do Cargo" class="input" bind:value={nmCargo}/> <!-- 108-->
+			</label>
+	</fieldset>
+	<fieldset>
+			<label class="label">
+				<span class="label-text">CBO do Cargo</span>
+				<input type="text" placeholder="CBO do Cargo" class="input" bind:value={CBOCargo} /> <!-- 109.  Ver tabela de CBO -->
+			</label>
+	</fieldset>
+	<fieldset>
+			<label class="label">
+				<span class="label-text">Data de Ingresso no Cargo</span>
+				<input type="date" placeholder="Data de Ingresso no Cargo" class="input" bind:value={dtIngCargo} />
+			</label>
+	</fieldset>
+	<fieldset>
+			<label class="label">
+				<span class="label-text">Nome da Função de Confiança/Cargo em comissão</span>
+				<input type="text" placeholder="Nome da Função de Confiança/Cargo em comissão" class="input" bind:value={nmFuncao} />
+			</label>
+	</fieldset>
+	<fieldset>
+			<label class="label">
+				<span class="label-text">CBO da Função de Confiança</span>
+				<input type="text" placeholder="CBO da Função de Confiança" class="input" bind:value={CBOFuncao} />
+			</label>
+	</fieldset>
+	<fieldset>
+		<label class="label">
+			<span class="label-text">Cargo ou Função Acumulável ? </span>
+			<select class="select" bind:value={acumCargo}>
+    			<option disabled selected>Cargo ou Função Acumulável ?</option>
+    			<option value="S">S - Sim</option>
+    			<option value="N">N - Não</option>
+			</select>
+		</label>
+	</fieldset>
+	<fieldset>
+			<label class="label">
+				<span class="label-text">Código da Categoria</span>
+				<input type="text" placeholder="Código da Categoria" class="input" bind:value={codCateg}/>
+			</label>
+	</fieldset>
+	<fieldset>
+			<label class="label">
+				<span class="label-text">Salário Base do Trabalhador</span>
+				<input
+					type="text"
+					placeholder="Salário Base do Trabalhador ( parte fixa da remuneração )"
+					class="input"
+					bind:value={vrSalFx}
+				/>
+			</label>
+	</fieldset>
+	<fieldset>
+		<label class="label">
+			<span class="label-text">Unidade de pagamento da parte fixa da remuneração</span>
+			<select class="select" bind:value={undSalFixo}>
+        		<option disabled selected>Unidade de pagamento da parte fixa da remuneração</option>
+        		<option value="1">1 - Por hora</option>
+        		<option value="2">2 - Por dia</option>
+        		<option value="3">3 - Por semana</option>
+				<option value="4">4 - Por quinzena</option>
+        		<option value="5">5 - Por mês</option>
+        		<option value="6">6 - Por tarefa</option>
+			<option value="7">7 - Não aplicável - Salário exclusivamente variável</option>
+    		</select>
+		</label>
+	</fieldset>
+	<fieldset>
+		<label class="label">
+			<span class="label-text">Descrição do salário por tarefa ou variável</span>
+			<input type="text" placeholder="Descrição do salário por tarefa ou variável" class="input" bind:value={dscSalVar}/>
+		</label>
+	</fieldset>
+	<fieldset>
+			<label class="label">
+				<span class="label-text">Tipo de Contrato de Trabalho</span>
+    			<select class="select" bind:value={tpContr}>
+    			    <option disabled selected>Tipo de contrato de trabalho</option>
+    			    <option value="1">1 - Prazo indeterminado</option>
+    			    <option value="2">2 - Prazo determinado, definido em dias</option>
+    			    <option value="3">3 - Prazo determinado, vinculado à ocorrência de um fato</option>
+    			</select>
+			</label>
+	</fieldset>
+			<fieldset>
+			<label class="label">
+				<span class="label-text">Data do Término do Contrato por prazo determinado</span>
+				<input type="date" placeholder="Data do Término do Contrato por prazo determinado" class="input" bind:value={dtTerm}/>
+			</label>
+		</fieldset>
+	<fieldset>
+		<label class="label">
+			<span class="label-text">Cláusula Assecuratória ?</span>
+    		<select class="select" bind:value={clauAssec}>
+    		    <option disabled selected>Contém cláusula assecuratória ?</option>
+    		    <option value="S">S - Sim</option>
+    		    <option value="N">N - Não</option>
+    		</select>
+		</label>
+	</fieldset>
+	<fieldset>
+			<label class="label">
+				<span class="label-text">Objeto Determinante da Contratação por prazo determinado</span>
+				<input type="text" placeholder="Objeto Determinante da Contratação por prazo determinado ( obra, serviço, safra, etc. )" class="input" bind:value={objDet} />
+			</label>
+	</fieldset>
+	<fieldset>
+		<label class="label">
+			<span class="label-text">Tipo de Inscrição do Local de Trabalho</span>
+    		<select class="select" bind:value={tpInscLocalTrabGeral}>
+    		    <option disabled selected>Tipo de inscrição do local de trabalho</option>
+    		    <option value="1">1 - CNPJ</option>
+    		    <option value="3">3 - CAEPF</option>
+    		    <option value="4">4 - CNO</option>
+    		</select>
+		</label>
+	</fieldset>
+			<fieldset>
+			<label class="label">
+				<span class="label-text">Número de Inscrição do Local de Trabalho</span>
+				<input type="text" placeholder="Número de Inscrição do Local de Trabalho" class="input" bind:value={nrInscLocalTrabGeral} /> <!-- Deve ser um número de inscrição válido e existente na tabela de estabelecimentos S-1005 -->
+			</label>
+		</fieldset>
+				<fieldset>
+			<label class="label">
+				<span class="label-text">Descrição Complementar do Local de Trabalho</span>
+				<input type="text" placeholder="Descrição Complementar do Local de Trabalho" class="input" bind:value={descComp} />
+			</label>
+		</fieldset>
+				<fieldset>
+			<label class="label">
+				<span class="label-text">Quantidade de Horas Semanais</span>
+				<input type="text" placeholder="Quantidade de Horas Semanais" class="input" bind:value={qtdHrsSem} />
+			</label>
+		</fieldset>
+	<fieldset>
+		<label class="label">
+			<span class="label-text">Tipo de Jornada</span>
+    		<select class="select" bind:value={tpJornada}>
+        		<option disabled selected>Tipo de Jornada</option>
+        		<option value="2">2 - Jornada 12 x 36 (12 horas de trabalho seguidas de 36 horas ininterruptas de descanso)</option>
+        		<option value="3">3 - Jornada com horário diário fixo e folga variável</option>
+        		<option value="4">4 - Jornada com horário diário fixo e folga fixa (no domingo)</option>
+				<option value="5">5 - Jornada com horário diário fixo e folga fixa (exceto no domingo)</option>
+				<option value="6">6 - Jornada com horário diário fixo e folga fixa (em outro dia da semana), com folga adicional periódica no domingo</option>
+				<option value="7">7 - Turno ininterrupto de revezamento</option>
+				<option value="9">9 - Demais tipos de jornada</option>
+    		</select>
+		</label>
+	</fieldset>
+	<fieldset>
+		<label class="label">
+			<span class="label-text">Código do tipo de contrato em tempo parcial</span>
+    		<select class="select" bind:value={tmpParc}>
+    		    <option disabled selected>Código relativo ao tipo de contrato em tempo parcial</option>
+    		    <option value="0">0 - Não é contrato em tempo parcial</option>
+    		    <option value="1">1 - Limitado a 25 horas semanais</option>
+    		    <option value="2">2 - Limitado a 30 horas semanais</option>
+				<option value="3">3 - Limitado a 26 horas semanais</option>
+    		</select>
+		</label>
+	</fieldset>
+	<fieldset>
+		<label class="label">
+			<span class="label-text">Horário Noturno ? </span>
+    		<select class="select" bind:value={horNoturno}>
+    		    <option disabled selected>Horário noturno</option>
+    		    <option value="S">S - Sim</option>
+    		    <option value="N">N - Não</option>
+    		</select>
+		</label>
+	</fieldset>
+	<fieldset>
+			<label class="label">
+				<span class="label-text">Descrição da Jornada Semanal Contratual</span>
+				<input type="text" placeholder="Descrição da Jornada Semanal Contratual" class="input" bind:value={dscJorn} />
+			</label>
+	</fieldset>
+	<fieldset>
+			<label class="label">
+				<span class="label-text">Número do Processo Judicial</span>
+				<input type="text" placeholder="Número do Processo Judicial" class="input" bind:value={nrProcJud} />
+			</label>
+	</fieldset>
+	<fieldset>
+			<label class="label">
+				<span class="label-text">Observação relacionada ao Contrato de Trabalho</span>
+				<input type="text" placeholder="Observação relacionada ao Contrato de Trabalho" class="input" bind:value={observacao} /> <!-- 139 -->
+			</label>
+	</fieldset>
+	<fieldset>
+			<label class="label">
+				<span class="label-text">Código do Treinamento de Capacitação</span>
+				<input type="text" placeholder="Código do Treinamento de Capacitação" class="input" bind:value={codTreiCap} /> <!-- 141  conforme tabela 28 -->
+			</label>
+	</fieldset>
+	<fieldset>
+			<label class="label">
+				<span class="label-text">Data do Início do Afastamento</span>
+				<input type="date" placeholder="Data de Início do Afastamento" class="input" bind:value={tpInscVinc}/>
+			</label>
+	</fieldset>
+	<fieldset>
+			<label class="label">
+				<span class="label-text">Código do Motivo do Afastamento</span>
+				<input type="text" placeholder="Código do Motivo do Afastamento" class="input" bind:value={codMotAfast}/> <!-- 159  código do motivo de afastamento temporário ,  tabela 18 -->
+			</label>
+	</fieldset>
+	<fieldset>
+			<label class="label">
+				<span class="label-text">Data do Desligamento</span>
+				<input type="date" placeholder="Data do Desligamento" class="input" bind:value={dtDeslig}/>
+			</label>
+	</fieldset>
+	<fieldset>
+			<label class="label">
+				<span class="label-text">Data do Início da Cessão</span>
+				<input type="date" placeholder="Data do Início da Cessão" class="input" bind:value={dtIniCessao} />
+			</label>
+	</fieldset>
+	<button type="button" class="btn preset-filled">Imprimir Banco de dados</button>
 {/if}
 {/if}
+</form>
 </div>
 
 <style>
