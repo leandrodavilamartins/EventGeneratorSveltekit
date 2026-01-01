@@ -1,36 +1,152 @@
 <script>
     import {db} from '$lib/firebaseApp'
     import {collection, addDoc, setDoc, doc} from 'firebase/firestore'; 
+    import { fade, fly } from 'svelte/transition'; 
 
     const estados = ['AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA', 'MT', 'MS', 'MG', 'PA', 'PB', 'PR', 'PE', 'PI', 'RJ', 'RN', 'RS', 'RO', 'RR', 'SC', 'SP', 'SE', 'TO']
-    let dependentes = ''; 
-    let cpfTrab = ''; 
-    let nmTrab = ''; 
-    let sexo = ''; 
-    let racaCor = ''; 
-    let estCiv = ''; 
-    let grauInstr = ''; 
-    let dtNascto = ''; 
-    let paisNascto = ''; 
-    let paisNac = ''; 
-    let tpLograd = ''; 
-    let dscLograd = ''; 
-    let nrLograd = ''; 
-    let complemento = ''; 
-    let bairro = ''; 
-    let cep = ''; 
-    let codMunic = ''; 
-    let uf = ''; 
-    let defFisica = ''; 
-    let defVisual = ''; 
-    let defAuditiva = ''; 
-    let defMental = ''; 
-    let defIntelectual = ''; 
-    let reabReadap = ''; 
-    let infoCota = ''; 
-    let observacao = ''; 
-    let fonePrinc = ''; 
-    let emailPrinc = ''; 
+    let dependentes = $state(''); 
+    let cpfTrab = $state(''); 
+    let nmTrab = $state(''); 
+    let sexo = $state(''); 
+    let racaCor = $state(''); 
+    let estCiv = $state(''); 
+    let grauInstr = $state(''); 
+    let dtNascto = $state(''); 
+    let paisNascto = $state(''); 
+    let paisNac = $state(''); 
+    let tpLograd = $state(''); 
+    let dscLograd = $state(''); 
+    let nrLograd = $state(''); 
+    let complemento = $state(''); 
+    let bairro = $state(''); 
+    let cep = $state(''); 
+    let codMunic = $state(''); 
+    let uf = $state(''); 
+    let defFisica = $state(''); 
+    let defVisual = $state(''); 
+    let defAuditiva = $state(''); 
+    let defMental = $state(''); 
+    let defIntelectual = $state(''); 
+    let reabReadap = $state(''); 
+    let infoCota = $state(''); 
+    let observacao = $state(''); 
+    let fonePrinc = $state(''); 
+    let emailPrinc = $state(''); 
+    // control variables 
+    let dependenteFormControl = $state(''); 
+    
+    let dependenteHTML = `
+    <div class="w-full space-y-4 text-center">
+        <p></p>
+	    <hr class="hr" />
+        <p></p>
+    </div>
+    <form class="mx-auto w-full max-w-md space-y-4">
+        <fieldset>
+            <label class="label">
+                <span class="label-text">Tipo de Dependente</span>
+                <select class="select">
+                    <option value="01">Cônjuge</option>
+                    <option value="02">Companheiro(a) com o(a) qual tenha filho ou viva há mais de 5 (cinco) anos ou possua declaração de união estável</option>
+                    <option value="03">Filho(a) ou enteado(a)</option>
+                    <option value="04">Filho(a) ou enteado(a), universitário(a) ou cursando escola técnica de 2º grau</option>
+                    <option value="06">Irmão(ã), neto(a) ou bisneto(a) sem arrimo dos pais, do(a) qual detenha a guarda judicial</option>
+                    <option value="07">Irmão(ã), neto(a) ou bisneto(a) sem arrimo dos pais, universitário(a) ou cursando escola técnica de 2° grau, do(a) qual detenha a guarda judicial</option>
+                    <option value="09">Pais, avós e bisavós</option>
+                    <option value="10">Menor pobre do qual detenha a guarda judicial</option>
+                    <option value="11">A pessoa absolutamente incapaz, da qual seja tutor ou curador</option>
+                    <option value="12">Ex-cônjuge</option>
+                    <option value="99">Agregado/Outros</option>
+                </select> 
+            </label>
+        </fieldset>
+        <fieldset>
+            <label class="label">
+                <span class="label-text">Nome do Dependente</span>
+                <input class="input" type="text" />
+            </label>
+        </fieldset>
+        <fieldset>
+            <label class="label">
+                <span class="label-text">Data de Nascimento</span>
+                <input class="input" type="date"/>
+            </label>
+        </fieldset>
+                <fieldset>
+            <label class="label">
+                <span class="label-text">CPF</span>
+                <input class="input" type="text" />
+            </label>
+        </fieldset>
+        <fieldset>
+            <label class="label">
+                <span class="label-text">Sexo</span>
+                <select class="select">
+                    <option value="M">Masculino</option>
+                    <option value="F">Feminino</option>
+                </select>
+            </label>
+        </fieldset>
+        <fieldset>
+            <label class="label">
+                <span class="label-text">Dependente IRRF</span>
+                <select class="select">
+                    <option value="S">Sim</option>
+                    <option value="N">Não</option>
+                </select>
+            </label>
+        </fieldset>
+        <fieldset>
+            <label class="label">
+                <span class="label-text">Dependente Salário-Família</span>
+                <select class="select">
+                    <option value="S">Sim</option>
+                    <option value="N">Não</option>
+                </select>
+            </label>
+        </fieldset>
+        <fieldset>
+            <label class="label">
+                <span class="label-text">Incapacidade para o trabalho ? </span>
+                <select class="select">
+                    <option value="S">Sim</option>
+                    <option value="N">Não</option>
+                </select>
+            </label>
+        </fieldset>
+        <fieldset>
+            <label class="label">
+                <span class="label-text">Descrição da Dependência </span>
+                <input class="input" type="text" />
+            </label>
+        </fieldset>
+        </form>`
+
+    // formulário do dependente
+    function dependenteForm(){
+        let msg = `
+            <dependente>
+                <tpDep></tpDep>
+                <nmDep></nmDep>
+                <dtNascto></dtNascto>
+                <cpfDep></cpfDep>
+                <sexoDep></sexoDep>
+                <depIRRF></depIRRF>
+                <depSF></depSF>
+                <incTrab></incTrab>
+                <descrDep></descrDep>
+            </dependente>`
+
+            return msg; 
+    }
+
+    function adicionarDependente(){
+        let divDependente = document.querySelector('#dependenteElement')
+        console.log(divDependente); 
+        divDependente.innerHTML = divDependente.innerHTML + dependenteHTML; 
+        window.scrollTo({top:document.body.scrollHeight, left:0, behavior:'smooth'}); 
+        return ; 
+    }
 
     async function cadastrarTrab(){
         try {
@@ -72,7 +188,7 @@
 
 </script>
 
-<div class="container">
+<div class="container" >
     <input class="input" placeholder="Nome do Trabalhador" bind:value={nmTrab}/>
     <input class="input" placeholder="CPF" bind:value={cpfTrab}/>
     <select class="select" bind:value={sexo}>
@@ -191,8 +307,14 @@
            <option value="N">N - Não</option>
         </select>
     </fieldset>
+    <div class="w-full space-y-4 text-center">
+	    <hr class="hr" />
+    </div>
+    <div id="dependenteElement" >
+    </div>
     {#if dependentes == "S"}
-    <button class="btn">Adicionar dependente</button>
+    <button class="btn" onclick={adicionarDependente}>Adicionar dependente</button>
     {/if}
-    <button class="btn" on:click={cadastrarTrab}>Cadastrar Trabalhador</button>
+    <button class="btn" onclick={cadastrarTrab}>Finalizar Cadastro</button>
+    <!-- Formulário dos dependentes-->
 </div>
