@@ -171,6 +171,16 @@
 	let nrTrab = $state(''); 
 	let tpInscSucessaoVinc = $state(''); 
 
+
+	// 'Id ' attribute variables 
+	let ano = $state(''); 
+	let mes = $state(''); 
+	let dia = $state(''); 
+	let hora = $state(''); 
+	let minuto = $state(''); 
+	let segundo = $state(''); 
+	let sequencial = $state('00001'); 
+
 	function salvarBtn() {
 		eventoTab = false; 
 		empregadorTab = true;
@@ -529,7 +539,7 @@
 
 	let eventos = $derived({'s2200': `
 <eSocial xmlns="http://www.esocial.gov.br/schema/evt/evtAdmissao/v_S_01_03_00">
-    <evtAdmissao Id="">
+    <evtAdmissao Id="ID${tpInscIdeEmpregador}${nrInscIdeEmpregador}${ano}${mes}${dia}${hora}${minuto}${segundo}${sequencial}">
         <ideEvento>
 			<indRetif>${indRetif}</indRetif>
 			<nrRecibo>${nrRecibo}</nrRecibo>
@@ -776,7 +786,7 @@
 				<nrInsc>31301171000184</nrInsc>
 			</ideTransmissor>
 			<eventos>
-				<evento Id="">
+				<evento Id="ID${tpInscIdeEmpregador}${nrInscIdeEmpregador}${ano}${mes}${dia}${hora}${minuto}${segundo}${sequencial}">
 					${eventos.s2200}
 				</evento>
 			</eventos>
