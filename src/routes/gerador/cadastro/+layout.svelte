@@ -22,14 +22,15 @@
     let cep = $state(''); 
     let codMunic = $state(''); 
     let uf = $state(''); 
-    let defFisica = $state(''); 
-    let defVisual = $state(''); 
-    let defAuditiva = $state(''); 
-    let defMental = $state(''); 
-    let defIntelectual = $state(''); 
-    let reabReadap = $state(''); 
-    let infoCota = $state(''); 
-    let observacao = $state(''); 
+    let deficiencia = $state(false); 
+    let defFisica = $state('N'); 
+    let defVisual = $state('N'); 
+    let defAuditiva = $state('N'); 
+    let defMental = $state('N'); 
+    let defIntelectual = $state('N'); 
+    let reabReadap = $state('N'); 
+    let infoCota = $state('N'); 
+    let observacaoDef = $state(''); 
     let fonePrinc = $state(''); 
     let emailPrinc = $state(''); 
     // control variables 
@@ -148,6 +149,11 @@
         return ; 
     }
 
+    function deficienciaForm() {
+        window.scrollTo({top: document.body.scrollHeight, left:0, behavior:"smooth"}); 
+        return ; 
+    }
+
     async function cadastrarTrab(){
         try {
             const docRef = await addDoc(collection(db, "cadastrados"), {
@@ -189,132 +195,324 @@
 </script>
 
 <div class="container" >
-    <input class="input" placeholder="Nome do Trabalhador" bind:value={nmTrab}/>
-    <input class="input" placeholder="CPF" bind:value={cpfTrab}/>
-    <select class="select" bind:value={sexo}>
-        <option disabled selected>Sexo</option>
-        <option value="M">M</option>
-        <option value="F">F</option>
-    </select>
-    <fieldset class="fieldset">
-        <legend class="fieldset-legend">Data de Nascimento</legend>
-        <input class="input" type="date" placeholder="Data de Nascimento" bind:value={dtNascto} />
-        <span class="label">Obrigatório</span>
+    <form class="w-full max-w-md space-y-4 p-4">
+
+    <fieldset>
+        <label class="label">
+            <span class="label-text">Nome do Trabalhador</span>
+            <input class="input" placeholder="Nome do Trabalhador" bind:value={nmTrab}/>
+        </label>
     </fieldset>
-    <select class="select" bind:value={paisNascto}>
-        <option disabled selected>País de Nascimento</option>
-        <option>Brasil</option>
-        <option>Exterior</option>
-    </select>
-    <select class="select" bind:value={estCiv}>
-        <option disabled selected>Estado Civil</option>
-        <option value="1">1 - Solteiro</option>
-        <option value="2">2 - Casado</option>
-        <option value="3">3 - Divorciado</option>
-        <option value="4">4 - Separado</option>
-        <option value="5">5 - Viúvo</option>
-    </select>
-    <select class="select" bind:value={racaCor}>
-        <option disabled selected>Etnia/Raça</option>
-        <option value="1">1 - Branca</option>
-        <option value="2">2 - Preta</option>
-        <option value="3">3 - Parda</option>
-        <option value="4">4 - Amarela</option>
-        <option value="5">5 - Indígena</option>
-        <option value="6">6 - Não informado</option>
-    </select>
-    <select class="select" bind:value={grauInstr}>
-        <option disabled selected>Grau de Instrução do Trabalhador</option>
-        <option value="01">01 - Analfabeto, inclusive o que, embora tenha recebido instrução, não se alfabetizou</option>
-        <option value="02">02 - Até o 5º ano incompleto do ensino fundamental (antiga 4ª série) ou que se tenha alfabetizado sem ter frequentado escola regular</option>
-        <option value="03">03 - 5º ano completo do ensino fundamental</option>
-        <option value="04">04 - Do 6º ao 9º ano do ensino fundamental incompleto (antiga 5ª a 8ª série)</option>
-        <option value="05">05 - Ensino fundamental completo</option>
-        <option value="06">06 - Ensino médio incompleto</option>
-        <option value="07">07 - Ensino médio completo</option>
-        <option value="08">08 - Educação superior incompleta</option>
-        <option value="09">09 - Educação superior completa</option>
-        <option value="10">10 - Pós-graduação completa</option>
-        <option value="11">11 - Mestrado completo</option>
-        <option value="12">12 - Doutorado completo</option>
-    </select>
-    <select class="select" bind:value={tpLograd}>
-        <option disabled selected>Tipo de Logradouro</option>
-    	<option value="R">Rua</option>
-    	<option value="AV">Avenida</option>
-    	<option value="PC">Praça</option>
-    	<option value="ROD">Rodovia</option>
-    	<option value="EST">Estrada</option>
-    	<option value="FAZ">Fazenda</option>
-    	<option value="GJA">Granja</option>
-    	<option value="SIT">Sítio</option>
-    	<option value="VL">Vila</option>
-    </select>
-    <input type="text" placeholder="Descrição do Logradouro" class="input" bind:value={dscLograd} />
-    <input type="text" placeholder="Número do Logradouro" class="input" defaultValue="S/N" bind:value={nrLograd}/>
-    <input type="text" placeholder="Complemento" class="input" bind:value={complemento}/>
-    <input type="text" placeholder="Bairro" class="input"  bind:value={bairro}/>
-    <input type="text" placeholder="CEP" class="input" bind:value={cep} />
-    <input type="text" placeholder="Código do Município" class="input" bind:value={codMunic} /> <!-- Consultar código do município na tabela do IBGE -->
-    <select class="select" bind:value={uf}>
-        <option disabled selected>Unidade Federativa</option>
-    	{#each estados as estado}
-    	<option value={estado}>{estado}</option>
-    	{/each}
-    </select>
-    <input type="text" placeholder="Telefone" class="input" bind:value={fonePrinc} />
-    <input type="email" placeholder="E-mail" class="validator input" bind:value={emailPrinc}/>
-    <select class="select" bind:value={defFisica}>
-        <option disabled selected>Deficiência física</option>
-        <option value="S">S - Sim</option>
-        <option value="N">N - Não</option>
-    </select>
-    <select class="select" bind:value={defVisual}>
-        <option disabled selected>Deficiência visual</option>
-        <option value="S">S - Sim</option>
-        <option value="N">N - Não</option>
-    </select>
-    <select class="select" bind:value={defAuditiva}>
-        <option disabled selected>Deficiência auditiva</option>
-        <option value="S">S - Sim</option>
-        <option value="N">N - Não</option>
-    </select>
-    <select class="select" bind:value={defMental}>
-        <option disabled selected>Deficiência mental</option>
-        <option value="S">S - Sim</option>
-        <option value="N">N - Não</option>
-    </select>
-    <select class="select" bind:value={defIntelectual}>
-        <option disabled selected>Deficiência intelectual</option>
-        <option value="S">S - Sim</option>
-        <option value="N">N - Não</option>
-    </select>
-    <select class="select" bind:value={reabReadap}>
-        <option disabled selected>Trabalhador reabilitado ou readaptado ?</option>
-        <option value="S">S - Sim</option>
-        <option value="N">N - Não</option>
-    </select>
-    <select class="select" bind:value={infoCota}>
-        <option disabled selected>Cota para deficientes ou beneficiário reabilitado ? </option>
-        <option value="S">S - Sim</option>
-        <option value="N">N - Não</option>
-    </select>
+
+    <fieldset>
+        <label class="label">
+            <span class="label-text">CPF do Trabalhador</span>
+            <input class="input" placeholder="CPF" bind:value={cpfTrab}/>
+        </label>
+    </fieldset>
+
+    <fieldset>
+        <label class="label">
+            <span class="label-text">Sexo</span>
+            <select class="select" bind:value={sexo}>
+                <option disabled selected>Sexo</option>
+                <option value="M">M</option>
+                <option value="F">F</option>
+            </select>
+        </label>
+    </fieldset>
+
+
     <fieldset class="fieldset">
-        <legend class="fieldset-legend">Possui dependentes ?</legend>
+        <label class="label">
+            <span class="label-text">Data de Nascimento</span>
+            <input class="input" type="date" placeholder="Data de Nascimento" bind:value={dtNascto} />
+        </label>
+    </fieldset>
+
+    <fieldset>
+        <label class="label">
+            <span class="label-text">País de Nascimento</span>
+            <select class="select" bind:value={paisNascto}>
+                <option disabled selected>País de Nascimento</option>
+                <option>Brasil</option>
+                <option>Exterior</option>
+            </select>
+        </label>
+    </fieldset>
+
+    <fieldset>
+        <label class="label">
+            <span class="label-text">Estado Civil</span>
+            <select class="select" bind:value={estCiv}>
+                <option disabled selected>Estado Civil</option>
+                <option value="1">1 - Solteiro</option>
+                <option value="2">2 - Casado</option>
+                <option value="3">3 - Divorciado</option>
+                <option value="4">4 - Separado</option>
+                <option value="5">5 - Viúvo</option>
+            </select>
+        </label>
+    </fieldset>
+
+    <fieldset>
+        <label class="label">
+            <span class="label-text">Raça/Cor</span>
+            <select class="select" bind:value={racaCor}>
+                <option disabled selected>Etnia/Raça</option>
+                <option value="1">1 - Branca</option>
+                <option value="2">2 - Preta</option>
+                <option value="3">3 - Parda</option>
+                <option value="4">4 - Amarela</option>
+                <option value="5">5 - Indígena</option>
+                <option value="6">6 - Não informado</option>
+            </select>
+        </label>
+    </fieldset>
+
+    <fieldset>
+        <label class="label">
+            <span class="label-text">Grau de Instrução</span>
+            <select class="select" bind:value={grauInstr}>
+                <option disabled selected>Grau de Instrução do Trabalhador</option>
+                <option value="01">01 - Analfabeto, inclusive o que, embora tenha recebido instrução, não se alfabetizou</option>
+                <option value="02">02 - Até o 5º ano incompleto do ensino fundamental (antiga 4ª série) ou que se tenha alfabetizado sem ter frequentado escola regular</option>
+                <option value="03">03 - 5º ano completo do ensino fundamental</option>
+                <option value="04">04 - Do 6º ao 9º ano do ensino fundamental incompleto (antiga 5ª a 8ª série)</option>
+                <option value="05">05 - Ensino fundamental completo</option>
+                <option value="06">06 - Ensino médio incompleto</option>
+                <option value="07">07 - Ensino médio completo</option>
+                <option value="08">08 - Educação superior incompleta</option>
+                <option value="09">09 - Educação superior completa</option>
+                <option value="10">10 - Pós-graduação completa</option>
+                <option value="11">11 - Mestrado completo</option>
+                <option value="12">12 - Doutorado completo</option>
+            </select>
+        </label>
+    </fieldset>
+
+
+    <fieldset>
+        <label class="label">
+            <span class="label-text">Tipo de Logradouro</span>
+            <select class="select" bind:value={tpLograd}>
+                <option disabled selected>Tipo de Logradouro</option>
+            	<option value="R">Rua</option>
+            	<option value="AV">Avenida</option>
+            	<option value="PC">Praça</option>
+            	<option value="ROD">Rodovia</option>
+            	<option value="EST">Estrada</option>
+            	<option value="FAZ">Fazenda</option>
+            	<option value="GJA">Granja</option>
+            	<option value="SIT">Sítio</option>
+            	<option value="VL">Vila</option>
+            </select>
+        </label>
+    </fieldset>
+
+    <fieldset>
+        <label class="label">
+            <span class="label-text">Descrição do Logradouro</span>
+            <input type="text" placeholder="Descrição do Logradouro" class="input" bind:value={dscLograd} />
+        </label>
+    </fieldset>
+
+    <fieldset>
+        <label class="label">
+            <span class="label-text">Número</span>
+            <input type="text" placeholder="Número do Logradouro" class="input" defaultValue="S/N" bind:value={nrLograd}/>
+        </label>
+    </fieldset>
+
+
+    <fieldset>
+        <label class="label">
+            <span class="label-text">Complemento</span>
+            <input type="text" placeholder="Complemento" class="input" bind:value={complemento}/>
+        </label>
+    </fieldset>
+
+    <fieldset>
+        <label class="label">
+            <span class="label-text">Bairro</span>
+            <input type="text" placeholder="Bairro" class="input"  bind:value={bairro}/>
+        </label>
+    </fieldset>
+
+    <fieldset>
+        <label class="label">
+            <span class="label-text">CEP</span>
+            <input type="text" placeholder="CEP" class="input" bind:value={cep} />
+        </label>
+    </fieldset>
+
+    <fieldset>
+        <label class="label">
+            <span class="label-text">Código do Município ( de acordo com tabela do IBGE )</span>
+            <input type="text" placeholder="Código do Município" class="input" bind:value={codMunic} /> <!-- Consultar código do município na tabela do IBGE -->
+        </label>
+    </fieldset>
+
+    <fieldset>
+        <label class="label">
+            <span class="label-text">Unidade Federativa</span>
+            <select class="select" bind:value={uf}>
+                <option disabled selected>Unidade Federativa</option>
+            	{#each estados as estado}
+            	<option value={estado}>{estado}</option>
+            	{/each}
+            </select>
+        </label>
+    </fieldset>
+
+    <fieldset>
+        <label class="label">
+            <span class="label-text">Telefone</span>
+            <input type="text" placeholder="Telefone" class="input" bind:value={fonePrinc} />
+        </label>
+    </fieldset>
+
+    <fieldset>
+        <label class="label">
+            <span class="label-text">E-mail</span>
+            <input type="email" placeholder="E-mail" class="validator input" bind:value={emailPrinc}/>
+        </label>
+    </fieldset>
+
+    <fieldset>
+        <label class="label">
+            <span class="label-text">Deficiente ?</span>
+            <select class="select" bind:value={deficiencia} onclick={deficienciaForm}>
+                <option value="N">N - Não</option>
+                <option value="S">S - Sim</option>
+            </select>
+        </label>
+    </fieldset>
+
+    {#if deficiencia }
+    <div class="w-full space-y-4 text-center">
+        <p></p>
+	    <hr class="hr" />
+        <p></p>
+    </div>
+    <fieldset>
+        <label class="label">
+            <span class="label-text">Deficiência Física ? </span>
+            <select class="select" bind:value={defFisica}>
+                <option value="N">N - Não</option>
+                <option value="S">S - Sim</option>
+            </select>
+        </label>
+    </fieldset>
+
+        <fieldset>
+        <label class="label">
+            <span class="label-text">Deficiência Visual ? </span>
+            <select class="select" bind:value={defVisual}>
+                <option value="N">N - Não</option>
+                <option value="S">S - Sim</option>
+            </select>
+        </label>
+    </fieldset>
+
+    <fieldset>
+        <label class="label">
+            <span class="label-text">Deficiência Auditiva ? </span>
+            <select class="select" bind:value={defAuditiva} >
+                <option disabled selected>Deficiência auditiva</option>
+                <option value="N">N - Não</option>
+                <option value="S">S - Sim</option>
+            </select>
+        </label>
+    </fieldset>
+
+        <fieldset>
+        <label class="label">
+            <span class="label-text">Deficiência Mental ?</span>
+            <select class="select" bind:value={defMental}>
+                <option disabled selected>Deficiência mental</option>
+                <option value="N">N - Não</option>
+                <option value="S">S - Sim</option>
+            </select>
+        </label>
+    </fieldset>
+
+    <fieldset>
+        <label class="label">
+            <span class="label-text">Deficiência Intelectual ? </span>
+            <select class="select" bind:value={defIntelectual}>
+                <option disabled selected>Deficiência intelectual</option>
+                <option value="N">N - Não</option>
+                <option value="S">S - Sim</option>
+            </select>
+        </label>
+    </fieldset>
+
+        <fieldset>
+        <label class="label">
+            <span class="label-text">Reabilitado ou Readaptado</span>
+            <select class="select" bind:value={reabReadap}>
+                <option disabled selected>Trabalhador reabilitado ou readaptado ?</option>
+                <option value="N">N - Não</option>
+                <option value="S">S - Sim</option>
+            </select>
+        </label>
+    </fieldset>
+
+    <fieldset>
+        <label class="label">
+            <span class="label-text">Cota para Deficientes ou Beneficiário Reabilitado ? </span>
+            <select class="select" bind:value={infoCota}>
+                <option disabled selected>Cota para deficientes ou beneficiário reabilitado ? </option>
+                <option value="N">N - Não</option>
+                <option value="S">S - Sim</option>
+            </select>
+        </label>
+    </fieldset>
+
+    <fieldset>
+        <label class="label">
+            <span class="label-text">Observação sobre Deficiência</span>
+            <input class="input" type="text" placeholder="Observação" bind:value={observacaoDef}/>
+        </label>
+    </fieldset>
+    <div class="w-full space-y-4 text-center">
+        <p></p>
+	    <hr class="hr" />
+        <p></p>
+    </div>
+    {/if}
+
+    <fieldset class="fieldset">
+        <span class="label-text">Possui Dependentes ?</span>
         <select class="select" bind:value={dependentes}>
            <option disabled selected> Dependentes ?</option>
-           <option value="S">S - Sim</option>
            <option value="N">N - Não</option>
+           <option value="S">S - Sim</option>
         </select>
     </fieldset>
+
+
+
     <div class="w-full space-y-4 text-center">
 	    <hr class="hr" />
     </div>
     <div id="dependenteElement" >
     </div>
     {#if dependentes == "S"}
-    <button class="btn" onclick={adicionarDependente}>Adicionar dependente</button>
+    <button type="button" class="btn preset-filled" onclick={adicionarDependente} transition:fade>Adicionar dependente</button>
     {/if}
-    <button class="btn" onclick={cadastrarTrab}>Finalizar Cadastro</button>
+    <button type="button" class="btn preset-filled" onclick={cadastrarTrab}>Finalizar Cadastro</button>
     <!-- Formulário dos dependentes-->
+     </form>
 </div>
+
+<slot></slot>
+
+<style>
+    .container{
+        display: flex;
+        margin: auto;
+        justify-content: center;
+    }
+</style>

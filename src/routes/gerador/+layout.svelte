@@ -4,10 +4,9 @@
 
 <Tabs>
     <Tabs.List>
-        <Tabs.Trigger value="Evento">Evento</Tabs.Trigger>
-        <Tabs.Trigger value="Empregador">Empregador</Tabs.Trigger>
-        <Tabs.Trigger value="Trabalhador">Trabalhador</Tabs.Trigger>
-        <Tabs.Trigger value="Vínculo">Vínculo</Tabs.Trigger>
+        <Tabs.Trigger value="Evento"><a href="/gerador/xmlAssembler">Emitir Evento</a></Tabs.Trigger>
+        <Tabs.Trigger value="Empregador">Cadastrar Empregador</Tabs.Trigger>
+        <Tabs.Trigger value="Trabalhador"><a href="/gerador/cadastro">Cadastrar Trabalhador</a></Tabs.Trigger>
     </Tabs.List>
 </Tabs>
 

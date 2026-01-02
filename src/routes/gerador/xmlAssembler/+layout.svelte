@@ -165,6 +165,7 @@
 	// optional variables 
 	let nrReciboExists = $state(''); 
 
+
 	let evento = $state(''); // contains the type of the event 
 	let cpfEmpregador = $state(''); // CPF do empregador
 	let nrTrab = $state(''); 
@@ -527,7 +528,6 @@
 
 
 	let eventos = $derived({'s2200': `
-<?xml version="1.0" encoding="UTF-8"?>
 <eSocial xmlns="http://www.esocial.gov.br/schema/evt/evtAdmissao/v_S_01_03_00">
     <evtAdmissao Id="">
         <ideEvento>
@@ -726,6 +726,7 @@
             </cessao>
         </vinculo>
     </evtAdmissao>
+	${signature}
 </eSocial>`})
 
 //    let msg = $derived(`
@@ -738,6 +739,52 @@
 //		</evtAdmissao>
 //    </eSocial>
 //    `)
+
+	let signature = `
+				<ds:Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+				<SignedInfo>
+				<CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n20010315" />
+				<SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsasha256" />
+				<Reference URI="">
+				<Transforms>
+				<Transform Algorithm="http://www.w3.org/2000/09/xmldsig#envelopedsignature" />
+				<Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+				</Transforms>
+				<DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
+				<DigestValue>CFJEIy1dUko99nNUW/ICvG9ZNoij0o9IOhdP6Nt1j1k=</DigestValue>
+				</Reference>
+				</SignedInfo>
+				<SignatureValue>...</SignatureValue>
+				<KeyInfo>
+				<X509Data>
+				<X509Certificate>...</X509Certificate>
+				</X509Data>
+				</KeyInfo>
+				</ds:Signature>
+				</eSocial>`
+
+	let lote = $derived(`
+	<?xml version="1.0" encoding="UTF-8"?>
+	<eSocial xmlns="http://www.esocial.gov.br/schema/evt/evtAdmissao/v_S_01_03_00">
+		<envioLoteEventos grupo="2">
+			<ideEmpregador>
+				<tpInsc>${tpInscIdeEmpregador}</tpInsc>
+				<nrInsc>${nrInscIdeEmpregador}</nrInsc>
+			</ideEmpregador>
+			<ideTransmissor>
+				<tpInsc>1</tpInsc>
+				<nrInsc>31301171000184</nrInsc>
+			</ideTransmissor>
+			<eventos>
+				<evento Id="">
+					${eventos.s2200}
+				</evento>
+			</eventos>
+		</envioLoteEventos>
+	`); 
+
+
+
 
     function gerarXML(){
         let formattedXML = xmlFormat.minify(eventos.s2200, {
@@ -790,9 +837,11 @@
 <div class="container">
 	<form class="w-full max-w-md space-y-4 p-4">
 		<fieldset>
+			<legend>Dados do Empregador</legend>
+			<br>
 			<label class="label">
-				<span class="label-text">CPF</span>
-				<input class="input" type="text" placeholder="CPF" bind:value={cpfEmpregador}/>
+				<span class="label-text">Tipo de Inscrição ( 1-CNPJ ; 2-CPF )</span>
+				<input class="input" type="text" placeholder="CPF" bind:value={tpInscIdeEmpregador}/>
 			</label>
 		</fieldset>
 		<fieldset>
@@ -808,185 +857,8 @@
 
 {#if trabalhadorTab}
 <div class="container">
-	<form class="w-full max-w-md space-y-4 p-4">
-		<fieldset>
-			<label class="label">
-				<span class="label-text">Nome</span>
-				<input type="text" placeholder="Nome" class="input" bind:value={nmTrab} />
-			</label>
-		</fieldset>
-				<fieldset>
-			<label class="label">
-				<span class="label-text">CPF</span>
-				<input type="text" placeholder="CPF do Trabalhador" class="input" bind:value={cpfTrab}/>
-			</label>
-		</fieldset>
-				<fieldset>
-			<label class="label">
-				<span class="label-text">Número do Trabalhador</span>
-				<input type="text" placeholder="Número do Trabalhador" class="input" bind:value={nrTrab} />
-			</label>
-		</fieldset>
-	<fieldset>
-		<label class="label">
-			<span class="label-text">Sexo</span>
-			<select class="select" bind:value={sexo} >
-				<option disabled selected>Sexo</option>
-				<option value="M">M - Masculino</option>
-				<option value="F">F - Feminino</option>
-			</select>
-		</label>
-	</fieldset>
-	<fieldset>
-		<label class="label">
-			<span class="label-text">Raça/Cor</span>
-			<select class="select" bind:value={racaCor} >
-				<option disabled selected>Raça/Cor</option>
-				<option value="1">1 - Branca</option>
-				<option value="2">2 - Preta</option>
-				<option value="3">3 - Parda</option>
-				<option value="4">4 - Amarela</option>
-				<option value="5">5 - Indígena</option>
-				<option value="6">6 - Não informado</option>
-			</select>
-		</label>
-	</fieldset>
-	<fieldset>
-		<label class="label-text">
-			<span>Estado Civil</span>
-			<select class="select" bind:value={estCiv}>
-				<option disabled selected>Estado Civil</option>
-				<option value="1"> Solteiro</option>
-				<option value="2"> Casado</option>
-				<option value="3"> Divorciado</option>
-				<option value="4"> Separado</option>
-				<option value="5"> Viúvo</option>
-			</select>
-		</label>
-	</fieldset>
-	<fieldset>
-		<label class="label">
-			<span class="label-text">Escolaridade</span>
-			<select class="select" bind:value={grauInstr}>
-				<option disabled selected>Grau de Instrução</option>
-				<option value="01">Analfabeto, inclusive o que, embora tenha recebido instrução, não se alfabetizou</option>
-				<option value="02">Até o 5º ano incompleto do ensino fundamental (antiga 4ª série) ou que se tenha alfabetizado sem ter frequentado escola regular</option>
-				<option value="03">5º ano completo do ensino fundamental</option>
-				<option value="04">Do 6º ao 9º ano do ensino fundamental incompleto (antiga 5ª a 8ª série)</option>
-				<option value="05">Ensino fundamental completo</option>
-				<option value="06">Ensino médio incompleto</option>
-				<option value="07">Ensino médio completo</option>
-				<option value="08">Educação superior incompleta</option>
-				<option value="09">Educação superior completa</option>
-				<option value="10">Pós-graduação completa</option>
-				<option value="11">Mestrado completo</option>
-				<option value="12">Doutorado completo</option>
-			</select>
-		</label>
-	</fieldset>
-	<fieldset>
-			<label class="label">
-				<span class="label-text">Data de Nascimento</span>
-				<input type="date" placeholder="Data de Nascimento" class="input" bind:value={dtNascto}/>
-			</label>
-	</fieldset>
-	<fieldset>
-			<label class="label">
-				<span class="label-text">País de Nascimento</span>
-				<input type="text" placeholder="País de Nascimento" class="input" defaultValue="105" bind:value={paisNascto} /> <!--105 é o código para o "Brasil"-->
-			</label>
-	</fieldset>
-	<fieldset>
-			<label class="label">
-				<span class="label-text">Nacionalidade</span>
-				<input type="text" placeholder="Nacionalidade" class="input" defaultValue="105" bind:value={paisNac}/> <!--105 é o código para o "Brasil"-->
-			</label>
-	</fieldset>
-	<fieldset>
-		<label class="label">
-			<span class="label-text">Logradouro</span>
-			<select class="select" placeholder="Tipo de Logradouro" bind:value={tpLograd}>
-				<option disabled selected>Logradouro</option>
-				<option value="R">Rua</option>
-				<option value="AV">Avenida</option>
-				<option value="PC">Praça</option>
-				<option value="ROD">Rodovia</option>
-				<option value="EST">Estrada</option>
-				<option value="FAZ">Fazenda</option>
-				<option value="GJA">Granja</option>
-				<option value="SIT">Sítio</option>
-				<option value="VL">Vila</option>
-			</select>
-		</label>
-	</fieldset>
-	<fieldset>
-			<label class="label">
-				<span class="label-text">Descrição do Logradouro</span>
-				<input type="text" placeholder="Descrição do Logradouro" class="input" bind:value={dscLograd} />
-			</label>
-	</fieldset>
-	<fieldset>
-			<label class="label">
-				<span class="label-text">Número</span>
-				<input type="text" placeholder="Número do Logradouro" class="input" defaultValue="S/N" bind:value={nrLograd}/>
-			</label>
-	</fieldset>
-	<fieldset>
-			<label class="label">
-				<span class="label-text">Complemento</span>
-				<input type="text" placeholder="Complemento" class="input" bind:value={complemento}/>
-			</label>
-	</fieldset>
-	<fieldset>
-			<label class="label">
-				<span class="label-text">Bairro</span>
-				<input type="text" placeholder="Bairro" class="input" bind:value={bairro}/>
-			</label>
-	</fieldset>
-	<fieldset>
-			<label class="label">
-				<span class="label-text">CEP</span>
-				<input type="text" placeholder="CEP" class="input" bind:value={cep}/>
-			</label>
-	</fieldset>
-	<fieldset>
-			<label class="label">
-				<span class="label-text">Código do Município</span>
-				<input type="text" placeholder="Código do Município" class="input" bind:value={codMunic} />
-			</label>
-	</fieldset>
-	<fieldset>
-		<span></span>
-		<a href="https://www.ibge.gov.br/explica/codigos-dos-municipios.php" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded shadow-md transition duration-300">Consultar código do município no site do IBGE</a>
-		<span><br><br></span> <!-- Consultar código do município na tabela do IBGE -->
-	</fieldset>
-	<fieldset>
-		<label class="label">
-			<span class="label-text">Unidade Federativa</span>
-			<select class="select" placeholder="Unidade Federativa" bind:value={uf}>
-				{#each estados as estado}
-				<option value={estado}>{estado}</option>
-				{/each}
-			</select>
-	 	</label>
-	</fieldset>
-	<fieldset>
-			<label class="label">
-				<span class="label-text">Telefone</span>
-				<input type="text" placeholder="Telefone" class="input" bind:value={fonePrinc} />
-			</label>
-	</fieldset>
-	<fieldset>
-			<label class="label">
-				<span class="label-text">E-mail</span>
-				<input type="email" placeholder="E-mail" class="validator input" bind:value={emailPrinc}/>
-			</label>
-	</fieldset>
-
-
 	<!--Informcações relativas ao empregador --> <!-- Grupo :  'ideEmpregador' -->
     <button type="button" class="btn preset-filled" onclick={criarVinculoBtn}>Criar Vínculo</button>
-	</form>
 </div>
 {/if}
 <!--Informações do vínculo -->
@@ -1360,6 +1232,8 @@
 {/if}
 </form>
 </div>
+
+<slot></slot>
 
 <style>
     .container{

@@ -1,0 +1,9 @@
+Finalização do App 
+
+- Formatação de inputs 
+- Autenticação 
+- Hosting 
+- Checar Validações 
+- Template do Evento 
+- Implementar assinatura 
+
