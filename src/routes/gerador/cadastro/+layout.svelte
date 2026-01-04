@@ -86,6 +86,7 @@
                     <option value="M">Masculino</option>
                     <option value="F">Feminino</option>
                 </select>
+                <span>*Preenchimento obrigatório em caso de dedução do Imposto de Renda</span>
             </label>
         </fieldset>
         <fieldset>
@@ -119,6 +120,7 @@
             <label class="label">
                 <span class="label-text">Descrição da Dependência </span>
                 <input class="input" type="text" />
+                <span>* Obrigatório em caso de "Agregado/outros". </span>
             </label>
         </fieldset>
         </form>`

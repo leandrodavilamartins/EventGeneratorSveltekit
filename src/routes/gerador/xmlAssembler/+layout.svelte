@@ -1,6 +1,5 @@
 <script>
-
-    import xmlFormat from 'xml-formatter'; 
+	import xmlFormat from 'xml-formatter'; 
 
     let cpfTrab = $state(''); 
     let nmTrab = $state(''); 
@@ -160,6 +159,15 @@
 	let trabalhadorTab = $state(false);  
 	let vinculoTab = $state(false); 
 	let celetista = $derived(tpRegTrab == '1'); // avalia condição ( true or false )
+	let treinamento = $state('')
+	let treinamentoControl = $state(false) // exibe formulário de treinamento
+	let afastamento = $state(''); 
+	let afastamentoControl = $state(false); // exibe formulário de afastamento 
+	let desligamento = $state(''); 
+	let desligamentoControl = $state(false); // exibe formulário de desligamento 
+	let cessao = $state(''); 
+	let cessaoControl = $state(false);  // exibe formulário de cessão
+	let abonoControl = $state(false); // exibe formulário de abono para estatutário
 
 	let estatutario = $derived(tpRegTrab == '2');  // avalia condição ( true or false )
 	// optional variables 
@@ -172,6 +180,8 @@
 	let tpInscSucessaoVinc = $state(''); 
 
 
+
+
 	// 'Id ' attribute variables 
 	let ano = $state(''); 
 	let mes = $state(''); 
@@ -179,8 +189,12 @@
 	let hora = $state(''); 
 	let minuto = $state(''); 
 	let segundo = $state(''); 
+	let completionZeros = $state(''); 
 	let sequencial = $state('00001'); 
+	let Id = $derived( 'ID' + tpInscIdeEmpregador + nrInscIdeEmpregador + completionZeros + ano + mes + dia + hora + minuto + segundo + sequencial); 
 
+	let nrTreinamentos = $state(1); // número de treinamentos realizados 
+	let treiCapCodArray = $state([]); // Array que contém os códigos dos treinamentos de capacitação 
 	function salvarBtn() {
 		eventoTab = false; 
 		empregadorTab = true;
@@ -197,6 +211,99 @@
 		trabalhadorTab = false; 
 		vinculoTab = true; 
 		return;
+	}
+
+	function completionZerosUpdate(){
+		if(tpInscIdeEmpregador == '1') {
+			completionZeros = '';
+			console.log("Complete Zeros ", completionZeros);  
+			console.log(Id); 
+		}
+		if(tpInscIdeEmpregador == '2') {
+			completionZeros = '00000'; 
+			console.log("Complete Zeros ",completionZeros); 
+			console.log(Id); 
+		}
+		else {
+			completionZeros = ''; 
+			console.log("Complete zeros ", completionZeros); 
+			console.log(Id); 
+		}
+	}
+
+	function treinamentoUpdate() {
+		if(treinamento = 'S') {
+			treinamentoControl = true; 
+		}
+		else {
+			treinamentoControl = false; 
+		}
+	}
+
+	function afastamentoUpdate() {
+		if(afastamento = 'S') {
+			afastamentoControl = true; 
+		}
+		else {
+			afastamentoControl = false; 
+		}
+	}
+
+	function desligamentoUpdate() {
+		if(desligamento = 'S') {
+			desligamentoControl = true; 
+		}
+		else {
+			desligamentoControl = false; 
+		}
+	}
+
+	function cessaoUpdate(){
+		if(cessao = 'S') {
+			cessaoControl = true; 
+		}
+		else {
+			cessaoControl = false; 
+		}
+	}
+
+	function abonoUpdate(){
+		if(indAbonoPerm = 'S') {
+			abonoControl = true; 
+		}
+		else {
+			abonoControl = false; 
+		}
+	}
+
+	function treiCapUpdate(){ // 	NO FUTURO, TENTAR DESATIVAR O BOTÃO `SALVAR`SE INPUT VAZIO. 
+		let codigo = document.querySelector(`#treiCap0${nrTreinamentos}`).value; // o código do treinamento no elemento <input> 
+	
+		treiCapCodArray.push(codigo);   // o código é adicionado a um array junto com o índice de treinamentos ( contabilizado pela variável "nrTreinamentos")
+		document.querySelector(`#treiCap0${nrTreinamentos}`).disabled = true; // desativa o <input> após clique do botão "Salvar Treinamento" 
+		nrTreinamentos = nrTreinamentos + 1 ;  // adiciona '1' ao índice de treinamentos. 
+		console.log(treiCapCodArray); 
+
+	}
+
+
+
+	function adicionarTreiCap(){ // FUNÇÃO QUE ADICIONA O FORMULÁRIO P/ CADA TREINAMENTO 
+		let treiCapNode = document.createElement('div'); 
+		treiCapNode.innerHTML = `	
+			<fieldset> 
+				<label class="label">
+					<span>Treinamento 0${nrTreinamentos}</span>
+					<span class="label-text">Código do Treinamento de Capacitação</span>
+					<input id="treiCap0${nrTreinamentos}" type="text" placeholder="Código do Treinamento de Capacitação" class="input" value="0" /> <!-- 141  conforme tabela 28 -->
+					<span>* Conforme tabela 28</span>
+				</label>
+			</fieldset>`
+
+		let treiCapDiv = document.querySelector("#treiCapDiv"); // SELECIONA O <div> QUE CONTÉM O FORMULÁRIO DE TREINAMENTO 
+		treiCapDiv.appendChild(treiCapNode); // appendChild() requer type="Node" 
+		document.querySelector("#treiCapSalvarBtn").disabled = false;  // O BOTÃO DE SALVAR TREINAMENTO É ATIVADO APENAS SE O FORMULÁRIO DE TREINAMENTO FOR CRIADO 
+		return ; 
 	}
 
 
@@ -536,10 +643,34 @@
 //		</vinculo>
 //	`,})
 
+	let signature = `
+				<ds:Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+				<SignedInfo>
+				<CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n20010315" />
+				<SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsasha256" />
+				<Reference URI="">
+				<Transforms>
+				<Transform Algorithm="http://www.w3.org/2000/09/xmldsig#envelopedsignature" />
+				<Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+				</Transforms>
+				<DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
+				<DigestValue>CFJEIy1dUko99nNUW/ICvG9ZNoij0o9IOhdP6Nt1j1k=</DigestValue>
+				</Reference>
+				</SignedInfo>
+				<SignatureValue>...</SignatureValue>
+				<KeyInfo>
+				<X509Data>
+				<X509Certificate>...</X509Certificate>
+				</X509Data>
+				</KeyInfo>
+				</ds:Signature>
+				`
+
+
 
 	let eventos = $derived({'s2200': `
 <eSocial xmlns="http://www.esocial.gov.br/schema/evt/evtAdmissao/v_S_01_03_00">
-    <evtAdmissao Id="ID${tpInscIdeEmpregador}${nrInscIdeEmpregador}${ano}${mes}${dia}${hora}${minuto}${segundo}${sequencial}">
+    <evtAdmissao Id="ID${tpInscIdeEmpregador}${nrInscIdeEmpregador}${completionZeros}${ano}${mes}${dia}${hora}${minuto}${segundo}${sequencial}">
         <ideEvento>
 			<indRetif>${indRetif}</indRetif>
 			<nrRecibo>${nrRecibo}</nrRecibo>
@@ -621,6 +752,7 @@
             <tpRegPrev>${tpRegPrevVinc}</tpRegPrev>
             <cadIni>${cadIni}</cadIni>
             <infoRegimeTrab>
+		
                 <infoCeletista>
                     <dtAdm>${dtAdm}</dtAdm>
                     <tpAdmissao>${tpAdmissao}</tpAdmissao>
@@ -653,6 +785,7 @@
 						<cnpjPrat>${cnpjPrat}</cnpjPrat>
 					</aprend> 
                 </infoCeletista>
+
                 <infoEstatutario>
 					<tpProv>${tpProv}</tpProv>
 					<dtExercicio>${dtExercicio}</dtExercicio>
@@ -750,28 +883,6 @@
 //    </eSocial>
 //    `)
 
-	let signature = `
-				<ds:Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
-				<SignedInfo>
-				<CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n20010315" />
-				<SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsasha256" />
-				<Reference URI="">
-				<Transforms>
-				<Transform Algorithm="http://www.w3.org/2000/09/xmldsig#envelopedsignature" />
-				<Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
-				</Transforms>
-				<DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
-				<DigestValue>CFJEIy1dUko99nNUW/ICvG9ZNoij0o9IOhdP6Nt1j1k=</DigestValue>
-				</Reference>
-				</SignedInfo>
-				<SignatureValue>...</SignatureValue>
-				<KeyInfo>
-				<X509Data>
-				<X509Certificate>...</X509Certificate>
-				</X509Data>
-				</KeyInfo>
-				</ds:Signature>
-				</eSocial>`
 
 	let lote = $derived(`
 	<?xml version="1.0" encoding="UTF-8"?>
@@ -786,7 +897,7 @@
 				<nrInsc>31301171000184</nrInsc>
 			</ideTransmissor>
 			<eventos>
-				<evento Id="ID${tpInscIdeEmpregador}${nrInscIdeEmpregador}${ano}${mes}${dia}${hora}${minuto}${segundo}${sequencial}">
+				<evento Id="ID${tpInscIdeEmpregador}${nrInscIdeEmpregador}${completionZeros}${ano}${mes}${dia}${hora}${minuto}${segundo}${sequencial}">
 					${eventos.s2200}
 				</evento>
 			</eventos>
@@ -803,6 +914,11 @@
         })
         console.log(formattedXML); 
     }
+
+	function printEvento(){
+		console.log(lote); 
+		return ; 
+	}
 </script>
 {#if eventoTab}
 <div class="container">
@@ -824,6 +940,7 @@
 			<span><br></span>
 			<span class="label-text">Digite o número do recibo</span>
 			<input class="input" placeholder="Número do Recibo" bind:value={nrRecibo}/>
+			<span>*Obrigatório em caso de Retificação</span>
 		</label>
 	</fieldset>
 	{/if}
@@ -851,7 +968,7 @@
 			<br>
 			<label class="label">
 				<span class="label-text">Tipo de Inscrição ( 1-CNPJ ; 2-CPF )</span>
-				<input class="input" type="text" placeholder="CPF" bind:value={tpInscIdeEmpregador}/>
+				<input class="input" type="text" placeholder="CPF" bind:value={tpInscIdeEmpregador} onchange={completionZerosUpdate}/>
 			</label>
 		</fieldset>
 		<fieldset>
@@ -1011,7 +1128,72 @@
 		</label>
 	 </fieldset>
 	{/if}
-	{#if estatutario }
+	{#if estatutario } <!-- DADOS SE ESTATUTÁRIO -->
+		<fieldset>
+			<label>
+				<span>Tipo de Provimento</span>
+				<select bind:value={tpProv} >
+					<option value="1">1 - Nomeação em cargo efetivo</option>
+					<option value="2">2 - Nomeação exclusivamente em cargo em comissão</option>
+					<option value="3">3 - Incorporação ou matrícula (militar)</option>
+					<option value="5">5 - Redistribuição ou Reforma Administrativa</option>
+					<option value="6">6 - Diplomação</option>
+					<option value="7">7 - Contratação por tempo determinado</option>
+					<option value="8">8 - Remoção (em caso de alteração do órgão declarante)</option>
+					<option value="9">9 - Designação</option>
+					<option value="10">10 - Mudança de CPF</option>
+					<option value="11">11 - Estabilizados - Art. 19 do ADCT</option>
+					<option value="99">99 - Outros não relacionados acima</option>
+				</select>
+			</label>
+		</fieldset>
+		<fieldset>
+			<label>
+				<span>Data da Entrada do Exercício pelo Servidor</span>
+				<input class="input" type="date" bind:value={dtExercicio}/>
+			</label>
+		</fieldset>
+		<fieldset>
+			<label>
+				<span>Tipo de Plano de Segregação da Massa</span>
+				<select bind:value={tpPlanRP}>
+					<option value="0">0 - Sem segregação da massa</option>
+					<option value="1">1 - Fundo em capitalização</option>
+					<option value="2">2 - Fundo em repartição</option>
+					<option value="3">3 - Mantido pelo Tesouro</option>
+				</select>
+				<span>* Preenchimento obrigatório e exclusivo se Regime Próprio de Previdência Social</span>
+			</label>
+		</fieldset>
+		<fieldset>
+			<label>
+				<span>Servidor sujeito ao teto do RGPS ?</span>
+				<select bind:value={indTetoRGPS}>
+					<option value="S">Sim</option>
+					<option value="N">Não</option>
+				</select>
+				<span>* Preenchimento obrigatório e exclusivo se Regime Próprio de Previdência Social</span>
+			</label>
+		</fieldset>
+		<fieldset>
+			<label>
+				<span>Recebe abono permanência ? </span>
+				<select bind:value={indAbonoPerm} onchange={abonoUpdate}>
+					<option value="S">Sim</option>
+					<option value="N">Não</option>
+				</select>
+				<span>* Preenchimento obrigatório e exclusivo se Regime Próprio de Previdência Social</span>
+			</label>
+		</fieldset>
+		{#if abonoControl}
+		<fieldset>
+			<label>
+				<span>Data de Início do Abono Permanência</span>
+				<input type="date" class="input" bind:value={dtIniAbono}>
+			</label>
+		</fieldset>
+		{/if}
+	{/if}
 	<fieldset>
 			<label class="label">
 				<span class="label-text">Nome do Cargo</span>
@@ -1067,6 +1249,7 @@
 					class="input"
 					bind:value={vrSalFx}
 				/>
+				<span>* Se salário fixo não aplicável, preencher com "0". </span>
 			</label>
 	</fieldset>
 	<fieldset>
@@ -1088,6 +1271,7 @@
 		<label class="label">
 			<span class="label-text">Descrição do salário por tarefa ou variável</span>
 			<input type="text" placeholder="Descrição do salário por tarefa ou variável" class="input" bind:value={dscSalVar}/>
+			<span>* Obrigatório se unidade de pagamento da parte fixa "Por tarefa" ou "Não aplicável"</span>
 		</label>
 	</fieldset>
 	<fieldset>
@@ -1121,6 +1305,7 @@
 			<label class="label">
 				<span class="label-text">Objeto Determinante da Contratação por prazo determinado</span>
 				<input type="text" placeholder="Objeto Determinante da Contratação por prazo determinado ( obra, serviço, safra, etc. )" class="input" bind:value={objDet} />
+				<span>* Obrigatório se contrato por prazo determinado, vinculado à ocorrência de um fato. </span>
 			</label>
 	</fieldset>
 	<fieldset>
@@ -1138,6 +1323,7 @@
 			<label class="label">
 				<span class="label-text">Número de Inscrição do Local de Trabalho</span>
 				<input type="text" placeholder="Número de Inscrição do Local de Trabalho" class="input" bind:value={nrInscLocalTrabGeral} /> <!-- Deve ser um número de inscrição válido e existente na tabela de estabelecimentos S-1005 -->
+				<span>* Deve estar de acordo com a Tabela de Estabelecimentos S-1005</span>
 			</label>
 		</fieldset>
 				<fieldset>
@@ -1208,15 +1394,45 @@
 			</label>
 	</fieldset>
 	<fieldset>
-			<label class="label">
-				<span class="label-text">Código do Treinamento de Capacitação</span>
-				<input type="text" placeholder="Código do Treinamento de Capacitação" class="input" bind:value={codTreiCap} /> <!-- 141  conforme tabela 28 -->
-			</label>
+		<label>
+			<span>Há necessidade de Treinamento de Capacitação ? </span>
+			<select bind:value={treinamento} onchange={treinamentoUpdate}>
+				<option value="S">Sim</option>
+				<option value="N">Não</option>
+			</select>
+		</label>
 	</fieldset>
+	<!-- SEÇÃO DE TREINAMENTOS --> <!-- ------------------------------- -->
+	{#if treinamentoControl}
+	<div id='treiCapDiv'>
+		<button type="button" class="btn preset-filled" onclick={adicionarTreiCap}>Adicionar Treinamento</button>
+	</div>
+	<button id="treiCapSalvarBtn" type="button" class="btn preset-filled" onclick={treiCapUpdate} disabled >Salvar Treinamento</button>
+	{/if}
+	<!-- SEÇÃO DE TREINAMENTOS --> <!-- ------------------------------  -->
+	<fieldset>
+		<label>
+			<span>Sucessão de Vínculo ?</span>
+			<select>
+				<option value="S">Sim</option>
+				<option value="N">Não</option>
+			</select>
+		</label>
+	</fieldset>
+	<fieldset>
+		<label>
+			<span>Houve Afastamento ?</span>
+			<select bind:value={afastamento} onchange={afastamentoUpdate}>
+				<option value="S">Sim</option>
+				<option value="N">Não</option>
+			</select>
+		</label>
+	</fieldset>
+	{#if afastamentoControl}
 	<fieldset>
 			<label class="label">
 				<span class="label-text">Data do Início do Afastamento</span>
-				<input type="date" placeholder="Data de Início do Afastamento" class="input" bind:value={tpInscVinc}/>
+				<input type="date" placeholder="Data de Início do Afastamento" class="input" bind:value={dtIniAfast}/>
 			</label>
 	</fieldset>
 	<fieldset>
@@ -1225,20 +1441,43 @@
 				<input type="text" placeholder="Código do Motivo do Afastamento" class="input" bind:value={codMotAfast}/> <!-- 159  código do motivo de afastamento temporário ,  tabela 18 -->
 			</label>
 	</fieldset>
+	{/if}
+	<fieldset>
+		<label>
+			<span>Houve desligamento ? </span>
+			<select bind:value={desligamento} onchange={desligamentoUpdate}>
+				<option value="S">Sim</option>
+				<option value="N">Não</option>
+			</select>
+		</label>
+	</fieldset>
+	{#if desligamentoControl}
 	<fieldset>
 			<label class="label">
 				<span class="label-text">Data do Desligamento</span>
 				<input type="date" placeholder="Data do Desligamento" class="input" bind:value={dtDeslig}/>
 			</label>
 	</fieldset>
+	{/if}
+	<fieldset>
+		<label>
+			<span>Houve Cessão ?</span>
+			<select bind:value={cessao} onchange={cessaoUpdate}>
+				<option value="S">Sim</option>
+				<option value="N">Não</option>
+			</select>
+		</label>
+	</fieldset>
+	{#if cessaoControl}
 	<fieldset>
 			<label class="label">
 				<span class="label-text">Data do Início da Cessão</span>
 				<input type="date" placeholder="Data do Início da Cessão" class="input" bind:value={dtIniCessao} />
 			</label>
 	</fieldset>
+	{/if}
 	<button type="button" class="btn preset-filled">Imprimir Banco de dados</button>
-{/if}
+	<button type="button" class="btn preset-filled" onclick={printEvento}>Imprimir no console</button>
 {/if}
 </form>
 </div>
