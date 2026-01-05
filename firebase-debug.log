@@ -1,0 +1,133 @@
+[debug] [2026-01-05T14:59:45.820Z] ----------------------------------------------------------------------
+[debug] [2026-01-05T14:59:45.827Z] Command:       /usr/local/bin/firebase /Users/leandrobraga/.cache/firebase/tools/lib/node_modules/firebase-tools/lib/bin/firebase init
+[debug] [2026-01-05T14:59:45.827Z] CLI Version:   15.1.0
+[debug] [2026-01-05T14:59:45.827Z] Platform:      darwin
+[debug] [2026-01-05T14:59:45.827Z] Node Version:  v20.18.2
+[debug] [2026-01-05T14:59:45.827Z] Time:          Mon Jan 05 2026 11:59:45 GMT-0300 (Brasilia Standard Time)
+[debug] [2026-01-05T14:59:45.828Z] ----------------------------------------------------------------------
+[debug] 
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  /Users/leandrobraga/Desktop/EventGeneratorSveltekit
+
+[info] 
+=== Project Setup
+[info] 
+[info] First, let's associate this project directory with a Firebase project.
+[info] You can create multiple project aliases by running firebase use --add, 
+[info] 
+[debug] [2026-01-05T14:59:52.801Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-01-05T14:59:52.803Z] > authorizing via signed-in user (leandrodavilamartins@gmail.com)
+[debug] [2026-01-05T14:59:52.809Z] Checked if tokens are valid: true, expires at: 1767628090937
+[debug] [2026-01-05T14:59:52.811Z] Checked if tokens are valid: true, expires at: 1767628090937
+[debug] [2026-01-05T14:59:52.812Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/esocialapp-7f98f [none]
+[debug] [2026-01-05T14:59:53.380Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/esocialapp-7f98f 200
+[debug] [2026-01-05T14:59:53.381Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/esocialapp-7f98f {"projectId":"esocialapp-7f98f","projectNumber":"663612866996","displayName":"eSocialApp","name":"projects/esocialapp-7f98f","resources":{"hostingSite":"esocialapp-7f98f"},"state":"ACTIVE","etag":"1_6d6f4fdb-3f21-423f-9944-4ffb915373ba"}
+[info] i  Using project esocialapp-7f98f (eSocialApp) . 
+[info] 
+=== App Hosting Setup
+[debug] [2026-01-05T14:59:53.398Z] Checked if tokens are valid: true, expires at: 1767628090937
+[debug] [2026-01-05T14:59:53.398Z] Checked if tokens are valid: true, expires at: 1767628090937
+[debug] [2026-01-05T14:59:53.399Z] >>> [apiv2][query] GET https://cloudbilling.googleapis.com/v1/projects/esocialapp-7f98f/billingInfo [none]
+[debug] [2026-01-05T14:59:54.563Z] <<< [apiv2][status] GET https://cloudbilling.googleapis.com/v1/projects/esocialapp-7f98f/billingInfo 200
+[debug] [2026-01-05T14:59:54.563Z] <<< [apiv2][body] GET https://cloudbilling.googleapis.com/v1/projects/esocialapp-7f98f/billingInfo {"name":"projects/esocialapp-7f98f/billingInfo","projectId":"esocialapp-7f98f","billingAccountName":"billingAccounts/01E94B-ED6ADF-079A59","billingEnabled":true}
+[debug] [2026-01-05T14:59:54.565Z] Checked if tokens are valid: true, expires at: 1767628090937
+[debug] [2026-01-05T14:59:54.566Z] Checked if tokens are valid: true, expires at: 1767628090937
+[debug] [2026-01-05T14:59:54.566Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/esocialapp-7f98f/services/firebaseapphosting.googleapis.com [none]
+[debug] [2026-01-05T14:59:54.566Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/esocialapp-7f98f/services/firebaseapphosting.googleapis.com x-goog-quota-user=projects/esocialapp-7f98f
+[debug] [2026-01-05T14:59:56.420Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/esocialapp-7f98f/services/firebaseapphosting.googleapis.com 200
+[debug] [2026-01-05T14:59:56.420Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/esocialapp-7f98f/services/firebaseapphosting.googleapis.com [omitted]
+[debug] [2026-01-05T14:59:56.421Z] Checked if tokens are valid: true, expires at: 1767628090937
+[debug] [2026-01-05T14:59:56.421Z] Checked if tokens are valid: true, expires at: 1767628090937
+[debug] [2026-01-05T14:59:56.422Z] >>> [apiv2][query] POST https://serviceusage.googleapis.com/v1/projects/esocialapp-7f98f/services/firebaseapphosting.googleapis.com:enable [none]
+[debug] [2026-01-05T14:59:56.422Z] >>> [apiv2][(partial)header] POST https://serviceusage.googleapis.com/v1/projects/esocialapp-7f98f/services/firebaseapphosting.googleapis.com:enable x-goog-quota-user=projects/esocialapp-7f98f
+[debug] [2026-01-05T14:59:57.855Z] <<< [apiv2][status] POST https://serviceusage.googleapis.com/v1/projects/esocialapp-7f98f/services/firebaseapphosting.googleapis.com:enable 200
+[debug] [2026-01-05T14:59:57.856Z] <<< [apiv2][body] POST https://serviceusage.googleapis.com/v1/projects/esocialapp-7f98f/services/firebaseapphosting.googleapis.com:enable [omitted]
+[debug] [2026-01-05T15:00:07.875Z] Checked if tokens are valid: true, expires at: 1767628090937
+[debug] [2026-01-05T15:00:07.875Z] Checked if tokens are valid: true, expires at: 1767628090937
+[debug] [2026-01-05T15:00:07.875Z] Checked if tokens are valid: true, expires at: 1767628090937
+[debug] [2026-01-05T15:00:07.876Z] Checked if tokens are valid: true, expires at: 1767628090937
+[debug] [2026-01-05T15:00:07.877Z] Checked if tokens are valid: true, expires at: 1767628090937
+[debug] [2026-01-05T15:00:07.877Z] Checked if tokens are valid: true, expires at: 1767628090937
+[debug] [2026-01-05T15:00:07.878Z] Checked if tokens are valid: true, expires at: 1767628090937
+[debug] [2026-01-05T15:00:07.878Z] Checked if tokens are valid: true, expires at: 1767628090937
+[debug] [2026-01-05T15:00:07.878Z] Checked if tokens are valid: true, expires at: 1767628090937
+[debug] [2026-01-05T15:00:07.878Z] Checked if tokens are valid: true, expires at: 1767628090937
+[debug] [2026-01-05T15:00:07.878Z] Checked if tokens are valid: true, expires at: 1767628090937
+[debug] [2026-01-05T15:00:07.878Z] Checked if tokens are valid: true, expires at: 1767628090937
+[debug] [2026-01-05T15:00:07.880Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/esocialapp-7f98f/services/developerconnect.googleapis.com [none]
+[debug] [2026-01-05T15:00:07.880Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/esocialapp-7f98f/services/developerconnect.googleapis.com x-goog-quota-user=projects/esocialapp-7f98f
+[debug] [2026-01-05T15:00:07.883Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/esocialapp-7f98f/services/cloudbuild.googleapis.com [none]
+[debug] [2026-01-05T15:00:07.883Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/esocialapp-7f98f/services/cloudbuild.googleapis.com x-goog-quota-user=projects/esocialapp-7f98f
+[debug] [2026-01-05T15:00:07.886Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/esocialapp-7f98f/services/secretmanager.googleapis.com [none]
+[debug] [2026-01-05T15:00:07.887Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/esocialapp-7f98f/services/secretmanager.googleapis.com x-goog-quota-user=projects/esocialapp-7f98f
+[debug] [2026-01-05T15:00:07.891Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/esocialapp-7f98f/services/run.googleapis.com [none]
+[debug] [2026-01-05T15:00:07.891Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/esocialapp-7f98f/services/run.googleapis.com x-goog-quota-user=projects/esocialapp-7f98f
+[debug] [2026-01-05T15:00:07.895Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/esocialapp-7f98f/services/artifactregistry.googleapis.com [none]
+[debug] [2026-01-05T15:00:07.895Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/esocialapp-7f98f/services/artifactregistry.googleapis.com x-goog-quota-user=projects/esocialapp-7f98f
+[debug] [2026-01-05T15:00:07.899Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/esocialapp-7f98f/services/iam.googleapis.com [none]
+[debug] [2026-01-05T15:00:07.899Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/esocialapp-7f98f/services/iam.googleapis.com x-goog-quota-user=projects/esocialapp-7f98f
+[debug] [2026-01-05T15:00:09.045Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/esocialapp-7f98f/services/developerconnect.googleapis.com 200
+[debug] [2026-01-05T15:00:09.045Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/esocialapp-7f98f/services/developerconnect.googleapis.com [omitted]
+[debug] [2026-01-05T15:00:09.046Z] Checked if tokens are valid: true, expires at: 1767628090937
+[debug] [2026-01-05T15:00:09.046Z] Checked if tokens are valid: true, expires at: 1767628090937
+[debug] [2026-01-05T15:00:09.046Z] >>> [apiv2][query] POST https://serviceusage.googleapis.com/v1/projects/esocialapp-7f98f/services/developerconnect.googleapis.com:enable [none]
+[debug] [2026-01-05T15:00:09.046Z] >>> [apiv2][(partial)header] POST https://serviceusage.googleapis.com/v1/projects/esocialapp-7f98f/services/developerconnect.googleapis.com:enable x-goog-quota-user=projects/esocialapp-7f98f
+[debug] [2026-01-05T15:00:09.052Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/esocialapp-7f98f/services/cloudbuild.googleapis.com 200
+[debug] [2026-01-05T15:00:09.052Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/esocialapp-7f98f/services/cloudbuild.googleapis.com [omitted]
+[debug] [2026-01-05T15:00:09.060Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/esocialapp-7f98f/services/run.googleapis.com 200
+[debug] [2026-01-05T15:00:09.060Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/esocialapp-7f98f/services/run.googleapis.com [omitted]
+[debug] [2026-01-05T15:00:09.064Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/esocialapp-7f98f/services/secretmanager.googleapis.com 200
+[debug] [2026-01-05T15:00:09.064Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/esocialapp-7f98f/services/secretmanager.googleapis.com [omitted]
+[debug] [2026-01-05T15:00:09.070Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/esocialapp-7f98f/services/iam.googleapis.com 200
+[debug] [2026-01-05T15:00:09.070Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/esocialapp-7f98f/services/iam.googleapis.com [omitted]
+[debug] [2026-01-05T15:00:09.529Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/esocialapp-7f98f/services/artifactregistry.googleapis.com 200
+[debug] [2026-01-05T15:00:09.530Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/esocialapp-7f98f/services/artifactregistry.googleapis.com [omitted]
+[debug] [2026-01-05T15:00:10.321Z] <<< [apiv2][status] POST https://serviceusage.googleapis.com/v1/projects/esocialapp-7f98f/services/developerconnect.googleapis.com:enable 200
+[debug] [2026-01-05T15:00:10.321Z] <<< [apiv2][body] POST https://serviceusage.googleapis.com/v1/projects/esocialapp-7f98f/services/developerconnect.googleapis.com:enable [omitted]
+[debug] [2026-01-05T15:00:20.339Z] Checked if tokens are valid: true, expires at: 1767628090937
+[debug] [2026-01-05T15:00:20.340Z] Checked if tokens are valid: true, expires at: 1767628090937
+[debug] [2026-01-05T15:00:20.340Z] >>> [apiv2][query] POST https://iam.googleapis.com/v1/projects/esocialapp-7f98f/serviceAccounts/firebase-app-hosting-compute@esocialapp-7f98f.iam.gserviceaccount.com:testIamPermissions [none]
+[debug] [2026-01-05T15:00:20.340Z] >>> [apiv2][(partial)header] POST https://iam.googleapis.com/v1/projects/esocialapp-7f98f/serviceAccounts/firebase-app-hosting-compute@esocialapp-7f98f.iam.gserviceaccount.com:testIamPermissions x-goog-quota-user=projects/esocialapp-7f98f
+[debug] [2026-01-05T15:00:20.340Z] >>> [apiv2][body] POST https://iam.googleapis.com/v1/projects/esocialapp-7f98f/serviceAccounts/firebase-app-hosting-compute@esocialapp-7f98f.iam.gserviceaccount.com:testIamPermissions {"permissions":["iam.serviceAccounts.actAs"]}
+[debug] [2026-01-05T15:00:22.947Z] <<< [apiv2][status] POST https://iam.googleapis.com/v1/projects/esocialapp-7f98f/serviceAccounts/firebase-app-hosting-compute@esocialapp-7f98f.iam.gserviceaccount.com:testIamPermissions 404
+[debug] [2026-01-05T15:00:22.948Z] <<< [apiv2][body] POST https://iam.googleapis.com/v1/projects/esocialapp-7f98f/serviceAccounts/firebase-app-hosting-compute@esocialapp-7f98f.iam.gserviceaccount.com:testIamPermissions {"error":{"code":404,"message":"Unknown service account","status":"NOT_FOUND"}}
+[debug] [2026-01-05T15:00:22.951Z] Checked if tokens are valid: true, expires at: 1767628090937
+[debug] [2026-01-05T15:00:22.951Z] Checked if tokens are valid: true, expires at: 1767628090937
+[debug] [2026-01-05T15:00:22.951Z] >>> [apiv2][query] POST https://iam.googleapis.com/v1/projects/esocialapp-7f98f/serviceAccounts [none]
+[debug] [2026-01-05T15:00:22.951Z] >>> [apiv2][body] POST https://iam.googleapis.com/v1/projects/esocialapp-7f98f/serviceAccounts {"accountId":"firebase-app-hosting-compute","serviceAccount":{"displayName":"Firebase App Hosting compute service account","description":"Default service account used to run builds and deploys for Firebase App Hosting"}}
+[debug] [2026-01-05T15:00:23.653Z] <<< [apiv2][status] POST https://iam.googleapis.com/v1/projects/esocialapp-7f98f/serviceAccounts 200
+[debug] [2026-01-05T15:00:23.653Z] <<< [apiv2][body] POST https://iam.googleapis.com/v1/projects/esocialapp-7f98f/serviceAccounts [omitted]
+[debug] [2026-01-05T15:00:23.654Z] Checked if tokens are valid: true, expires at: 1767628090937
+[debug] [2026-01-05T15:00:23.654Z] Checked if tokens are valid: true, expires at: 1767628090937
+[debug] [2026-01-05T15:00:23.654Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/esocialapp-7f98f:getIamPolicy [none]
+[debug] [2026-01-05T15:00:25.393Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/esocialapp-7f98f:getIamPolicy 200
+[debug] [2026-01-05T15:00:25.393Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/esocialapp-7f98f:getIamPolicy {"version":1,"etag":"BwZHpVBVtPk=","bindings":[{"role":"roles/cloudbuild.builds.builder","members":["serviceAccount:663612866996@cloudbuild.gserviceaccount.com"]},{"role":"roles/cloudbuild.serviceAgent","members":["serviceAccount:service-663612866996@gcp-sa-cloudbuild.iam.gserviceaccount.com"]},{"role":"roles/containerregistry.ServiceAgent","members":["serviceAccount:service-663612866996@containerregistry.iam.gserviceaccount.com"]},{"role":"roles/editor","members":["serviceAccount:663612866996-compute@developer.gserviceaccount.com"]},{"role":"roles/firebase.managementServiceAgent","members":["serviceAccount:service-663612866996@gcp-sa-firebase.iam.gserviceaccount.com"]},{"role":"roles/firebase.sdkAdminServiceAgent","members":["serviceAccount:firebase-adminsdk-fbsvc@esocialapp-7f98f.iam.gserviceaccount.com"]},{"role":"roles/firebaseauth.admin","members":["serviceAccount:firebase-adminsdk-fbsvc@esocialapp-7f98f.iam.gserviceaccount.com"]},{"role":"roles/firebaserules.system","members":["serviceAccount:service-663612866996@firebase-rules.iam.gserviceaccount.com"]},{"role":"roles/firestore.serviceAgent","members":["serviceAccount:service-663612866996@gcp-sa-firestore.iam.gserviceaccount.com"]},{"role":"roles/iam.serviceAccountTokenCreator","members":["serviceAccount:firebase-adminsdk-fbsvc@esocialapp-7f98f.iam.gserviceaccount.com"]},{"role":"roles/owner","members":["user:leandrodavilamartins@gmail.com"]},{"role":"roles/run.serviceAgent","members":["serviceAccount:service-663612866996@serverless-robot-prod.iam.gserviceaccount.com"]}]}
+[debug] [2026-01-05T15:00:25.395Z] Checked if tokens are valid: true, expires at: 1767628090937
+[debug] [2026-01-05T15:00:25.395Z] Checked if tokens are valid: true, expires at: 1767628090937
+[debug] [2026-01-05T15:00:25.395Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/esocialapp-7f98f:setIamPolicy [none]
+[debug] [2026-01-05T15:00:25.395Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/esocialapp-7f98f:setIamPolicy {"policy":{"version":1,"etag":"BwZHpVBVtPk=","bindings":[{"role":"roles/cloudbuild.builds.builder","members":["serviceAccount:663612866996@cloudbuild.gserviceaccount.com"]},{"role":"roles/cloudbuild.serviceAgent","members":["serviceAccount:service-663612866996@gcp-sa-cloudbuild.iam.gserviceaccount.com"]},{"role":"roles/containerregistry.ServiceAgent","members":["serviceAccount:service-663612866996@containerregistry.iam.gserviceaccount.com"]},{"role":"roles/editor","members":["serviceAccount:663612866996-compute@developer.gserviceaccount.com"]},{"role":"roles/firebase.managementServiceAgent","members":["serviceAccount:service-663612866996@gcp-sa-firebase.iam.gserviceaccount.com"]},{"role":"roles/firebase.sdkAdminServiceAgent","members":["serviceAccount:firebase-adminsdk-fbsvc@esocialapp-7f98f.iam.gserviceaccount.com","serviceAccount:firebase-app-hosting-compute@esocialapp-7f98f.iam.gserviceaccount.com"]},{"role":"roles/firebaseauth.admin","members":["serviceAccount:firebase-adminsdk-fbsvc@esocialapp-7f98f.iam.gserviceaccount.com"]},{"role":"roles/firebaserules.system","members":["serviceAccount:service-663612866996@firebase-rules.iam.gserviceaccount.com"]},{"role":"roles/firestore.serviceAgent","members":["serviceAccount:service-663612866996@gcp-sa-firestore.iam.gserviceaccount.com"]},{"role":"roles/iam.serviceAccountTokenCreator","members":["serviceAccount:firebase-adminsdk-fbsvc@esocialapp-7f98f.iam.gserviceaccount.com"]},{"role":"roles/owner","members":["user:leandrodavilamartins@gmail.com"]},{"role":"roles/run.serviceAgent","members":["serviceAccount:service-663612866996@serverless-robot-prod.iam.gserviceaccount.com"]},{"role":"roles/firebaseapphosting.computeRunner","members":["serviceAccount:firebase-app-hosting-compute@esocialapp-7f98f.iam.gserviceaccount.com"]},{"role":"roles/developerconnect.readTokenAccessor","members":["serviceAccount:firebase-app-hosting-compute@esocialapp-7f98f.iam.gserviceaccount.com"]},{"role":"roles/storage.objectViewer","members":["serviceAccount:firebase-app-hosting-compute@esocialapp-7f98f.iam.gserviceaccount.com"]}]},"updateMask":"bindings"}
+[debug] [2026-01-05T15:00:25.935Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/esocialapp-7f98f:setIamPolicy 400
+[debug] [2026-01-05T15:00:25.936Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/esocialapp-7f98f:setIamPolicy {"error":{"code":400,"message":"Service account firebase-app-hosting-compute@esocialapp-7f98f.iam.gserviceaccount.com does not exist.","status":"INVALID_ARGUMENT"}}
+[warn] ⚠  Your App Hosting compute service account is still being provisioned in the background. If you encounter an error, please try again after a few moments. 
+[info] i  This command links your local project to Firebase App Hosting. You will be able to deploy your web app with `firebase deploy` after setup. 
+[debug] [2026-01-05T16:08:15.817Z] ExitPromptError: User force closed the prompt with SIGINT
+    at Interface.sigint (/Users/leandrobraga/.cache/firebase/tools/lib/node_modules/@inquirer/core/dist/commonjs/lib/create-prompt.js:101:37)
+    at Interface.emit (node:events:518:28)
+    at [_ttyWrite] [as _ttyWrite] (node:internal/readline/interface:1125:18)
+    at ReadStream.onkeypress (node:internal/readline/interface:264:20)
+    at ReadStream.emit (node:events:530:35)
+    at emitKeys (node:internal/readline/utils:371:14)
+    at emitKeys.next (<anonymous>)
+    at ReadStream.onData (node:internal/readline/emitKeypressEvents:64:36)
+    at ReadStream.emit (node:events:518:28)
+    at addChunk (node:internal/streams/readable:561:12)
+[error] 
+[error] Error: An unexpected error has occurred.
