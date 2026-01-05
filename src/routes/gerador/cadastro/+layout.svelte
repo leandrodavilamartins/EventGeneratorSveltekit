@@ -36,122 +36,16 @@
     // control variables 
     let dependenteFormControl = $state(''); 
     
-    let dependenteHTML = `
-    <div class="w-full space-y-4 text-center">
-        <p></p>
-	    <hr class="hr" />
-        <p></p>
-    </div>
-    <form class="mx-auto w-full max-w-md space-y-4">
-        <fieldset>
-            <label class="label">
-                <span class="label-text">Tipo de Dependente</span>
-                <select class="select">
-                    <option value="01">Cônjuge</option>
-                    <option value="02">Companheiro(a) com o(a) qual tenha filho ou viva há mais de 5 (cinco) anos ou possua declaração de união estável</option>
-                    <option value="03">Filho(a) ou enteado(a)</option>
-                    <option value="04">Filho(a) ou enteado(a), universitário(a) ou cursando escola técnica de 2º grau</option>
-                    <option value="06">Irmão(ã), neto(a) ou bisneto(a) sem arrimo dos pais, do(a) qual detenha a guarda judicial</option>
-                    <option value="07">Irmão(ã), neto(a) ou bisneto(a) sem arrimo dos pais, universitário(a) ou cursando escola técnica de 2° grau, do(a) qual detenha a guarda judicial</option>
-                    <option value="09">Pais, avós e bisavós</option>
-                    <option value="10">Menor pobre do qual detenha a guarda judicial</option>
-                    <option value="11">A pessoa absolutamente incapaz, da qual seja tutor ou curador</option>
-                    <option value="12">Ex-cônjuge</option>
-                    <option value="99">Agregado/Outros</option>
-                </select> 
-            </label>
-        </fieldset>
-        <fieldset>
-            <label class="label">
-                <span class="label-text">Nome do Dependente</span>
-                <input class="input" type="text" />
-            </label>
-        </fieldset>
-        <fieldset>
-            <label class="label">
-                <span class="label-text">Data de Nascimento</span>
-                <input class="input" type="date"/>
-            </label>
-        </fieldset>
-                <fieldset>
-            <label class="label">
-                <span class="label-text">CPF</span>
-                <input class="input" type="text" />
-            </label>
-        </fieldset>
-        <fieldset>
-            <label class="label">
-                <span class="label-text">Sexo</span>
-                <select class="select">
-                    <option value="M">Masculino</option>
-                    <option value="F">Feminino</option>
-                </select>
-                <span>*Preenchimento obrigatório em caso de dedução do Imposto de Renda</span>
-            </label>
-        </fieldset>
-        <fieldset>
-            <label class="label">
-                <span class="label-text">Dependente IRRF</span>
-                <select class="select">
-                    <option value="S">Sim</option>
-                    <option value="N">Não</option>
-                </select>
-            </label>
-        </fieldset>
-        <fieldset>
-            <label class="label">
-                <span class="label-text">Dependente Salário-Família</span>
-                <select class="select">
-                    <option value="S">Sim</option>
-                    <option value="N">Não</option>
-                </select>
-            </label>
-        </fieldset>
-        <fieldset>
-            <label class="label">
-                <span class="label-text">Incapacidade para o trabalho ? </span>
-                <select class="select">
-                    <option value="S">Sim</option>
-                    <option value="N">Não</option>
-                </select>
-            </label>
-        </fieldset>
-        <fieldset>
-            <label class="label">
-                <span class="label-text">Descrição da Dependência </span>
-                <input class="input" type="text" />
-                <span>* Obrigatório em caso de "Agregado/outros". </span>
-            </label>
-        </fieldset>
-        </form>`
 
-    // formulário do dependente
-    function dependenteForm(){
-        let msg = `
-            <dependente>
-                <tpDep></tpDep>
-                <nmDep></nmDep>
-                <dtNascto></dtNascto>
-                <cpfDep></cpfDep>
-                <sexoDep></sexoDep>
-                <depIRRF></depIRRF>
-                <depSF></depSF>
-                <incTrab></incTrab>
-                <descrDep></descrDep>
-            </dependente>`
-
-            return msg; 
-    }
-
-    function adicionarDependente(){
-        let divDependente = document.querySelector('#dependenteElement')
-        console.log(divDependente); 
-        divDependente.innerHTML = divDependente.innerHTML + dependenteHTML; 
-        window.scrollTo({top:document.body.scrollHeight, left:0, behavior:'smooth'}); 
-        return ; 
-    }
 
     function deficienciaForm() {
+        let deficienteSelectValue = document.querySelector('#deficienteSelectElement').value; 
+        if(deficienteSelectValue = 'S') {
+            deficiencia = true; 
+        } 
+        else {
+            deficiencia = false; 
+        }
         window.scrollTo({top: document.body.scrollHeight, left:0, behavior:"smooth"}); 
         return ; 
     }
@@ -236,8 +130,7 @@
         <label class="label">
             <span class="label-text">País de Nascimento</span>
             <select class="select" bind:value={paisNascto}>
-                <option disabled selected>País de Nascimento</option>
-                <option>Brasil</option>
+                <option selected>Brasil</option>
                 <option>Exterior</option>
             </select>
         </label>
@@ -384,14 +277,14 @@
     <fieldset>
         <label class="label">
             <span class="label-text">Deficiente ?</span>
-            <select class="select" bind:value={deficiencia} onclick={deficienciaForm}>
+            <select id="deficienteSelectElement"  class="select" onchange={deficienciaForm}> <!-- ERRO !!!!  -->
                 <option value="N">N - Não</option>
                 <option value="S">S - Sim</option>
             </select>
         </label>
     </fieldset>
 
-    {#if deficiencia }
+    {#if deficiencia  }
     <div class="w-full space-y-4 text-center">
         <p></p>
 	    <hr class="hr" />
@@ -493,21 +386,122 @@
            <option value="S">S - Sim</option>
         </select>
     </fieldset>
-
+    </form>
+    </div>
 
 
     <div class="w-full space-y-4 text-center">
 	    <hr class="hr" />
     </div>
-    <div id="dependenteElement" >
+
+
+    <div id="dependenteElement" > <!-- <div> que contém os formulários dos dependentes -->
     </div>
+
+    <!-- INFORMAÇÕES DOS DEPENDENTES -->
+
+    <!-- INFORMAÇÕES DOS DEPENDENTES -->
+
+    <!-- INFORMAÇÕES DOS DEPENDENTES -->
+    <div id="dependentesDiv">
     {#if dependentes == "S"}
-    <button type="button" class="btn preset-filled" onclick={adicionarDependente} transition:fade>Adicionar dependente</button>
+    <button class="btn btn preset-filled" onclick={() => dependente_01.showModal()}>Adicionar Dependente</button>
+     <dialog id="dependente_01" > <!--You could try to add some transparency to the Modal -->
+       <fieldset>
+            <label class="label">
+                <span class="label-text">Tipo de Dependente</span>
+                <select class="select">
+                    <option value="01">Cônjuge</option>
+                    <option value="02">Companheiro(a) com o(a) qual tenha filho ou viva há mais de 5 (cinco) anos ou possua declaração de união estável</option>
+                    <option value="03">Filho(a) ou enteado(a)</option>
+                    <option value="04">Filho(a) ou enteado(a), universitário(a) ou cursando escola técnica de 2º grau</option>
+                    <option value="06">Irmão(ã), neto(a) ou bisneto(a) sem arrimo dos pais, do(a) qual detenha a guarda judicial</option>
+                    <option value="07">Irmão(ã), neto(a) ou bisneto(a) sem arrimo dos pais, universitário(a) ou cursando escola técnica de 2° grau, do(a) qual detenha a guarda judicial</option>
+                    <option value="09">Pais, avós e bisavós</option>
+                    <option value="10">Menor pobre do qual detenha a guarda judicial</option>
+                    <option value="11">A pessoa absolutamente incapaz, da qual seja tutor ou curador</option>
+                    <option value="12">Ex-cônjuge</option>
+                    <option value="99">Agregado/Outros</option>
+                </select> 
+            </label>
+        </fieldset>
+        <br>
+        <fieldset>
+            <label class="label">
+                <span class="label-text">Nome do Dependente</span>
+                <input class="input" type="text" />
+            </label>
+        </fieldset>
+        <br>
+        <fieldset>
+            <label class="label">
+                <span class="label-text">Data de Nascimento</span>
+                <input class="input" type="date"/>
+            </label>
+        </fieldset>
+        <br>
+        <fieldset>
+            <label class="label">
+                <span class="label-text">CPF</span>
+                <input class="input" type="text" />
+            </label>
+        </fieldset>
+        <br>
+        <fieldset>
+            <label class="label">
+                <span class="label-text">Sexo</span>
+                <select class="select">
+                    <option value="M">Masculino</option>
+                    <option value="F">Feminino</option>
+                </select>
+                <span>*Preenchimento obrigatório em caso de dedução do Imposto de Renda</span>
+            </label>
+        </fieldset>
+        <br>
+        <fieldset>
+            <label class="label">
+                <span class="label-text">Dependente IRRF</span>
+                <select class="select">
+                    <option value="S">Sim</option>
+                    <option value="N">Não</option>
+                </select>
+            </label>
+        </fieldset>
+        <br>
+        <fieldset>
+            <label class="label">
+                <span class="label-text">Dependente Salário-Família</span>
+                <select class="select">
+                    <option value="S">Sim</option>
+                    <option value="N">Não</option>
+                </select>
+            </label>
+        </fieldset>
+        <br>
+        <fieldset>
+            <label class="label">
+                <span class="label-text">Incapacidade para o trabalho ? </span>
+                <select class="select">
+                    <option value="S">Sim</option>
+                    <option value="N">Não</option>
+                </select>
+            </label>
+        </fieldset>
+        <br>
+        <fieldset>
+            <label class="label">
+                <span class="label-text">Descrição da Dependência </span>
+                <input class="input" type="text" />
+                <span>* Obrigatório em caso de "Agregado/outros". </span>
+            </label>
+        </fieldset>
+        <br>
+        <button class="btn preset-filled" type="button">Salvar Dados do Dependente</button>
+     </dialog>
     {/if}
-    <button type="button" class="btn preset-filled" onclick={cadastrarTrab}>Finalizar Cadastro</button>
+    <button type="button" class="btn preset-filled-primary-500" onclick={cadastrarTrab}>Finalizar Cadastro</button>
     <!-- Formulário dos dependentes-->
-     </form>
-</div>
+    </div>
 
 <slot></slot>
 
@@ -517,4 +511,25 @@
         margin: auto;
         justify-content: center;
     }
+
+    #dependentesDiv{
+        display: flex;
+        margin: auto;
+        justify-content: center;
+        flex-direction: column;
+        width: 20%;
+        row-gap: 20px;
+        
+    }
+
+    dialog {
+        margin-right: auto;
+        margin-left: 40%;
+  /* Optional: for a full-height sidebar effect */
+        height: 100vh;
+        width: 20%;
+  /* Ensure no default padding interferes with alignment */
+        padding: 0; 
+    }
+
 </style>
