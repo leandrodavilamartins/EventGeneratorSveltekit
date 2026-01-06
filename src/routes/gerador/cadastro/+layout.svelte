@@ -35,6 +35,21 @@
     let emailPrinc = $state(''); 
     // control variables 
     let dependenteFormControl = $state(''); 
+
+    let dependentesObj = $state([]); 
+
+    // dependentes variables 
+    let tpDep = $state(''); 
+    let nmDep = $state(''); 
+    let dtNasctoDep = $state(''); 
+    let cpfDep = $state(''); 
+    let sexoDep = $state(''); 
+    let depIRRF = $state(''); 
+    let depSF = $state(''); 
+    let incTrab = $state(''); 
+    let descrDep = $state(''); 
+    let dependentesCounter = $state(1); 
+    let msgDependenteSalvo = $state(false); 
     
 
 
@@ -77,15 +92,78 @@
                 defIntelectual: `${defIntelectual}`,
                 reabReadap: `${reabReadap}`,
                 infoCota: `${infoCota}`,
-                observacao: `${observacao}`,
                 fonePrinc: `${fonePrinc}`,
-                emailPrinc: `${emailPrinc}`
+                emailPrinc: `${emailPrinc}`, 
+                dependentes: `${dependentesObj}`
             });
             console.log("Document written with ID: ", docRef.id);
         } catch (e) {
             console.error("Error adding document: ", e);
         }
         return ; 
+    }
+
+    function printDepObj(){
+        let obj = {"tpDep": `${tpDep}`, "nmDep": `${nmDep}`, "dtNascto": `${dtNasctoDep}`, "cpfDep": `${cpfDep}`, "sexoDep": `${sexoDep}`, "depIRRF": `${depIRRF}`, "depSF": `${depSF}`, "incTrab":`${incTrab}`, "descrDep": `${descrDep}`}; 
+        console.log(obj); 
+        dependentesObj.push(obj); 
+        return ; 
+    }
+
+    function limparCamposDep(){
+        document.querySelector('#tpDep').value = ''; 
+        document.querySelector('#nmDep').value = '';  
+        document.querySelector('#dtNasctoDep').value = ''; 
+        document.querySelector('#cpfDep').value = ''; 
+        document.querySelector('#sexoDep').value = ''; 
+        document.querySelector('#depIRRF').value = ''; 
+        document.querySelector('#depSF').value = ''; 
+        document.querySelector('#incTrab').value = ''; 
+        document.querySelector('#descrDep').value = ''; 
+        return; 
+    }
+
+    function salvarDependente(){
+        let obj = {"tpDep": `${tpDep}`, "nmDep": `${nmDep}`, "dtNascto": `${dtNasctoDep}`, "cpfDep": `${cpfDep}`, "sexoDep": `${sexoDep}`, "depIRRF": `${depIRRF}`, "depSF": `${depSF}`, "incTrab":`${incTrab}`, "descrDep": `${descrDep}`}; 
+        dependentesObj.push(obj); 
+        console.log(obj); 
+        msgDependenteSalvo = true; 
+        document.querySelector('#tpDep').disabled = true; 
+        document.querySelector('#nmDep').disabled = true;  
+        document.querySelector('#dtNasctoDep').disabled = true; 
+        document.querySelector('#cpfDep').disabled = true; 
+        document.querySelector('#sexoDep').disabled = true; 
+        document.querySelector('#depIRRF').disabled = true; 
+        document.querySelector('#depSF').disabled = true; 
+        document.querySelector('#incTrab').disabled = true; 
+        document.querySelector('#descrDep').disabled = true; 
+        document.querySelector('#salvarDepBtn').disabled = true; 
+        return ; 
+    }
+
+    function novoDependente(){
+        dependentesCounter = dependentesCounter + 1;
+        msgDependenteSalvo = false;  
+        document.querySelector('#tpDep').disabled = false; 
+        document.querySelector('#nmDep').disabled = false;  
+        document.querySelector('#dtNasctoDep').disabled = false; 
+        document.querySelector('#cpfDep').disabled = false; 
+        document.querySelector('#sexoDep').disabled = false; 
+        document.querySelector('#depIRRF').disabled = false; 
+        document.querySelector('#depSF').disabled = false; 
+        document.querySelector('#incTrab').disabled = false; 
+        document.querySelector('#descrDep').disabled = false; 
+        document.querySelector('#salvarDepBtn').disabled = false; 
+        document.querySelector('#tpDep').value = ''; 
+        document.querySelector('#nmDep').value = '';  
+        document.querySelector('#dtNasctoDep').value = ''; 
+        document.querySelector('#cpfDep').value = ''; 
+        document.querySelector('#sexoDep').value = ''; 
+        document.querySelector('#depIRRF').value = ''; 
+        document.querySelector('#depSF').value = ''; 
+        document.querySelector('#incTrab').value = ''; 
+        document.querySelector('#descrDep').value = ''; 
+        return; 
     }
 
 </script>
@@ -408,9 +486,10 @@
     <button class="btn btn preset-filled" onclick={() => dependente_01.showModal()}>Adicionar Dependente</button>
      <dialog id="dependente_01" > <!--You could try to add some transparency to the Modal -->
        <fieldset>
+            <legend>Dependente {dependentesCounter}</legend>
             <label class="label">
                 <span class="label-text">Tipo de Dependente</span>
-                <select class="select">
+                <select id="tpDep"  class="select" bind:value={tpDep}>
                     <option value="01">Cônjuge</option>
                     <option value="02">Companheiro(a) com o(a) qual tenha filho ou viva há mais de 5 (cinco) anos ou possua declaração de união estável</option>
                     <option value="03">Filho(a) ou enteado(a)</option>
@@ -429,28 +508,28 @@
         <fieldset>
             <label class="label">
                 <span class="label-text">Nome do Dependente</span>
-                <input class="input" type="text" />
+                <input id="nmDep" class="input" type="text" bind:value={nmDep} />
             </label>
         </fieldset>
         <br>
         <fieldset>
             <label class="label">
                 <span class="label-text">Data de Nascimento</span>
-                <input class="input" type="date"/>
+                <input id="dtNasctoDep" class="input" type="date" bind:value={dtNasctoDep}/>
             </label>
         </fieldset>
         <br>
         <fieldset>
             <label class="label">
                 <span class="label-text">CPF</span>
-                <input class="input" type="text" />
+                <input id="cpfDep" class="input" type="text" bind:value={cpfDep} />
             </label>
         </fieldset>
         <br>
         <fieldset>
             <label class="label">
                 <span class="label-text">Sexo</span>
-                <select class="select">
+                <select id="sexoDep" class="select" bind:value={sexoDep}>
                     <option value="M">Masculino</option>
                     <option value="F">Feminino</option>
                 </select>
@@ -461,7 +540,7 @@
         <fieldset>
             <label class="label">
                 <span class="label-text">Dependente IRRF</span>
-                <select class="select">
+                <select id="depIRRF" class="select" bind:value={depIRRF}>
                     <option value="S">Sim</option>
                     <option value="N">Não</option>
                 </select>
@@ -471,7 +550,7 @@
         <fieldset>
             <label class="label">
                 <span class="label-text">Dependente Salário-Família</span>
-                <select class="select">
+                <select id="depSF" class="select" bind:value={depSF} >
                     <option value="S">Sim</option>
                     <option value="N">Não</option>
                 </select>
@@ -481,7 +560,7 @@
         <fieldset>
             <label class="label">
                 <span class="label-text">Incapacidade para o trabalho ? </span>
-                <select class="select">
+                <select id="incTrab" class="select" bind:value={incTrab} >
                     <option value="S">Sim</option>
                     <option value="N">Não</option>
                 </select>
@@ -491,12 +570,17 @@
         <fieldset>
             <label class="label">
                 <span class="label-text">Descrição da Dependência </span>
-                <input class="input" type="text" />
+                <input id="descrDep" class="input" type="text" bind:value={descrDep} />
                 <span>* Obrigatório em caso de "Agregado/outros". </span>
             </label>
         </fieldset>
         <br>
-        <button class="btn preset-filled" type="button">Salvar Dados do Dependente</button>
+        <button id="salvarDepBtn" class="btn preset-filled" type="button" onclick={salvarDependente} >Salvar Dependente</button>
+        <button class="btn preset-filled" type="button" onclick={limparCamposDep} >Limpar</button>
+        <button class="btn preset-filled" type="button" onclick={novoDependente} >Novo Dependente</button>
+        {#if msgDependenteSalvo}
+        <p>Dependente salvo com sucesso ! </p>
+        {/if}
      </dialog>
     {/if}
     <button type="button" class="btn preset-filled-primary-500" onclick={cadastrarTrab}>Finalizar Cadastro</button>
