@@ -1,1 +1,0 @@
-<p>Página para cadastro do trabalhador no banco de dados </p>
