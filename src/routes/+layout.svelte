@@ -64,9 +64,9 @@
 {#if isAuthenticated}
 <Tabs>
     <Tabs.List>
-        <Tabs.Trigger value="Evento"><a href="/gerador/xmlAssembler">Emitir Evento</a></Tabs.Trigger>
-        <Tabs.Trigger value="Empregador">Cadastrar Empregador</Tabs.Trigger>
-        <Tabs.Trigger value="Trabalhador"><a href="/gerador/cadastro">Cadastrar Trabalhador</a></Tabs.Trigger>
+        <Tabs.Trigger value="Evento"><a href="/eventos/s2200/">Emitir Evento</a></Tabs.Trigger>
+        <Tabs.Trigger value="Empregador"><a href="/cadastro/empregador/">Cadastrar Empregador</a></Tabs.Trigger>
+        <Tabs.Trigger value="Trabalhador"><a href="/cadastro/trabalhador/">Cadastrar Trabalhador</a></Tabs.Trigger>
 		<button type="button" class="btn preset-filled" onclick={deslogar}>Sair</button>
     </Tabs.List>
 </Tabs>
