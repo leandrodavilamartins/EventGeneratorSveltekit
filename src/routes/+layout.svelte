@@ -1,10 +1,11 @@
 <script>
 	import './layout.css';
 	import favicon from '$lib/assets/favicon.svg';
+	import { app } from '$lib/firebaseApp'; 
 	import { getAuth, signInWithEmailAndPassword, signOut } from "firebase/auth"; 
 	import { Tabs } from '@skeletonlabs/skeleton-svelte'; 
 
-	const auth = getAuth(); 
+	const auth = getAuth(app); 
 	let email = $state(''); 
 	let password = $state(''); 
 	let loginForm = $state(true); 
