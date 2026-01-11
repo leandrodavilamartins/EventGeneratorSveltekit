@@ -1,0 +1,335 @@
+//    let grupos = $derived({
+//        'trabalhador': `
+//        <trabalhador>
+//            <cpfTrab>${cpfTrab}</cpfTrab>
+//            <nmTrab>${nmTrab}</nmTrab>
+//            <sexo>${sexo}</sexo>
+//            <racaCor>${racaCor}</racaCor>
+//            <estCiv>${estCiv}</estCiv>
+//            <grauInstr>${grauInstr}</grauInstr>
+//            <nmSoc></nmSoc>
+//        </trabalhador>
+//        `,
+//        'nascimento' : `
+//		<nascimento>
+//			<dtNascto>${dtNascto}</dtNascto>
+//			<paisNascto>${paisNascto}</paisNascto>
+//			<paisNac>${paisNac}</paisNac>
+//		</nascimento>
+//		`, 
+//		'brasil' : `
+//		<brasil>
+//			<tpLogra>${tpLograd}</tpLograd>
+//			<dscLograd>${dscLograd}</dscLograd>
+//			<nrLograd>${nrLograd}</nrLograd>
+//			<complemento>${complemento}</complemento>
+//			<bairro>${bairro}</bairro>
+//			<cep>${cep}</cep>
+//			<codMunic>${codMunic}</codMunic>
+//			<uf>${uf}</uf>
+//		</brasil>
+//		`,
+//		'infoDeficiencia': `
+//		<infoDeficiencia>
+//			<defFisica>${defFisica}</defFisica>
+//			<defVisual>${defVisual}</defVisual>
+//			<defAuditiva>${defAuditiva}</defAuditiva>
+//			<defMental>${defMental}</defMental>
+//			<defIntelectual>${defIntelectual}</defIntelectual>
+//			<reabReadap>${reabReadap}</reabReadap>
+//			<infoCota>${infoCota}</infoCota>
+//			<observacao>${observacaoInfoDeficiencia}</observacao>
+//		</infoDeficiencia>
+//		`,
+//		'dependente': `
+//		<dependente>
+//			<tpDep>${tpDep}</tpDep>
+//			<nmDep>${nmDep}</nmDep>
+//			<dtNascto>${dtNasctoDep}</dtNascto>
+//			<cpfDep>${cpfDep}</cpfDep>
+//			<sexoDep>${sexoDep}</sexoDep>
+//			<depIRRF>${depIRRF}</depIRRF>
+//			<depSF>${depSF}</depSF>
+//			<incTrab>${incTrab}</incTrab>
+//			<descrDep>${descrDep}</descrDep>
+//		</dependente>
+//		`, 
+//		'contato' : `
+//		<contato>
+//			<fonePrinc>${fonePrinc}</fonePrinc>
+//			<emailPrinc>${emailPrinc}</emailPrinc>
+//		</contato>
+//		`, 
+//		'vinculo': `
+//		<matricula>${matricula}</matricula>
+//		<tpRegTrab>${tpRegTrab}</tpRegTrab>
+//		<tpRegPrev>${tpRegPrev}</tpRegPrev>
+//		<cadIni>${cadIni}</cadIni>
+//		`, 
+//		'infoCeletista': `
+//		<infoCeletista>
+//			<dtAdm>${dtAdm}</dtAdm>
+//			<tpAdmissao>${tpAdmissao}</tpAdmissao>
+//			<indAdmissao>${indAdmissao}</indAdmissao>
+//			<nrProcTrab>${nrProcTrab}</nrProcTrab>
+//			<tpRegJor>${tpRegJor}</tpRegJor>
+//			<natAtividade>${natAtividade}</natAtividade>
+//			<dtBase>${dtBase}</dtBase>
+//			<cnpjSindCategProf>${cnpjSindCategProf}</cnpjSindCategProf>
+//			<matAnotJud>${matAnotJud}</matAnotJud>
+//			${grupos.FGTS}
+//			${grupos.trabTemporario}
+//			${grupos.aprend}	
+//		</infoCeletista>
+//		`,
+//		'FGTS' : `
+//		<FGTS>
+//			<dtOpcFGTS>${dtOpcFGTS}</dtOpcFGTS>
+//		</FGTS>
+//		`,
+//		'trabTemporario':`
+//		<trabTemporario>
+//			<hipLeg>${hipLeg}</hipLeg>
+//			<justContr>${justContr}</justContr>
+//			${grupos.ideEstabVinc}
+//			${grupos.ideTrabSubstituido}
+//		</trabTemporario>
+//		`,
+//		'ideEstabVinc':`
+//			<ideEstabVinc>
+//				<tpInsc>${tpInscVinc}</tpInsc>
+//				<nrInsc>${nrInscVinc}</nrInsc>	
+//			</ideEstabVinc>
+//		`, 
+//		'ideTrabSubstituido': `
+//			<ideTrabSubstituido>
+//				<cpfTrabSubst>${cpfTrabSubst}</cpfTrabSubst>
+//			<ideTrabSubstituido>
+//		`,
+//		'aprend' : `
+//		<aprend>
+//			<indAprend>${indAprend}</indAprend>
+//			<cnpjEntQual>${cnpjEntQual}</cnpjEntQual>
+//			<tpInsc>${tpInscAprend}</tpInsc>
+//			<nrInsc>${nrInscAprend}</nrInsc>
+//			<cnpjPrat>${cnpjPrat}</cnpjPrat>
+//		</aprend>
+//		`,
+//		'infoEstatutario': `
+//			<infoEstatutario>
+//				<tpProv>${tpProv}</tpProv>
+//				<dtExercicio>${dtExercicio}</dtExercicio>
+//				<tpPlanRP>${tpPlanRP}</tpPlanRP>
+//				<indTetoRGPS>${indTetoRGPS}</indTetoRGPS>
+//				<indAbonoPerm>${indAbonoPerm}</indAbonoPerm>
+//				<dtIniAbono>${dtIniAbono}</dtIniAbono>
+//			</infoEstatutario>
+//		`,
+//		'infoContrato': `
+//			<infoContrato>
+//				<nmCargo>${nmCargo}</nmCargo>
+//				<CBOCargo>${CBOCargo}</CBOCargo>
+//				<dtIngrCargo>${dtIngrCargo}</dtIngrCargo>
+//				<nmFuncao>${nmFuncao}</nmFuncao>
+//				<CBOFuncao>${CBOFuncao}</CBOFuncao>
+//				<acumCargo>${acumCargo}</acumCargo>
+//				<codCateg>${codCateg}</codCateg>
+//				${grupos.remuneracao}
+//				${grupos.duracao}
+//				<localTrabalho>
+//					${grupos.localTrabGeral}
+//					${grupos.localTempDom}	
+//				</localTrabalho>
+//				${grupos.horContratual}
+//				${grupos.alvaraJudicial}
+//				${grupos.observacoes}
+//				${grupos.treiCap}
+//			</infoContrato>
+//		`,
+//		'remuneracao' : `
+//			<remuneracao>
+//				<vrSalFx>${vrSalFx}</vrSalFx>
+//				<undSalFixo>${undSalFixo}</undSalFixo>
+//				<dscSalVar>${dscSalVar}</dscSalVar>
+//			</remuneracao>
+//		`,
+//		'duracao': `
+//			<duracao>
+//				<tpContr>${tpContr}</tpContr>
+//				<dtTerm>${dtTerm}</dtTerm>
+//				<clauAssec>${clauAssec}</clauAssec>
+//				<objDet>${objDet}</objDet>	
+//			</duracao>
+//		`,
+//		'localTrabGeral': `
+//			<localTrabGeral>
+//				<tpInsc>${tpInscLocalTrabGeral}</tpInsc>
+//				<nrInsc>${nrInscLocalTrabGeral}</nrInsc>
+//				<descComp>${descComp}</descComp>
+//			</localTrabGeral>
+//		`,
+//		'horContratual': `
+//			<horContratual>
+//				<qtdHrsSem>${qtdHrsSem}</qtdHrsSem>
+//				<tpJornada>${tpJornada}</tpJornada>
+//				<tmpParc>${tmpParc}</tmpParc>
+//				<horNoturno>${horNoturno}</horNoturno>
+//				<dscJorn>${dscJorn}</dscJorn>
+//			</horContratual>
+//		`,
+//		'alvaraJudicial': `
+//			<alvaraJudicial>
+//				<nrProcJud>${nrProcJud}</nrProcJud>	
+//			</alvaraJudicial>
+//		`,
+//		'observacoes': `
+//			<observacoes>
+//				<observacao>${observacao}</observacao>
+//			</observacoes>
+//		`,
+//		'treiCap': `
+//			<treiCap>
+//				<codTreiCap>${codTreiCap}</codTreiCap>	
+//			</treiCap>
+//		`,
+//		'sucessaoVinc' : `
+//			<sucessaoVinc>
+//				<tpInsc>${tpInscVinc}</tpInsc>
+//				<nrInsc>${nrInscVinc}</nrInsc>
+//				<matricAnt>${matricAnt}</matricAnt>
+//				<dtTransf>${dtTransfVinc}</dtTransf>
+//				<observacao>${observacaoVinc}<observacao>
+//			</sucessaoVinc>
+//		`,
+//		'transfDom' : `
+//			<transfDom>
+//				<cpfSubstituido>${cpfSubstituido}</cpfSubstituido>
+//				<matricAnt>${matriculaAntTransfDom}</matricAnt>
+//				<dtTransf>${dtTransfTransfDom}</dtTransf>	
+//			</transfDom>
+//		`,
+//		'mudancaCPF': `
+//			<mudancaCPF>
+//				<cpfAnt>${cpfAnt}</cpfAnt>
+//				<matricAnt>${matricAntMudancaCPF}</matricAnt>
+//				<dtAltCPF>${dtAltCPF}</dtAltCPF>
+//				<observacao>${observacaoMudancaCPF}</observacao>	
+//			</mudancaCPF>
+//		`,
+//		'afastamento': `
+//			<afastamento>
+//				<dtIniAfast>${dtIniAfast}</dtIniAfast>
+//				<codMotAfast>${codMotAfast}</codMotAfast>	
+//			</afastamento>
+//		`,
+//		'desligamento': `
+//			<desligamento>
+//				<dtDeslig>${dtDeslig}</dtDeslig>
+//			</desligamento>
+//		`,
+//		'cessao': `
+//			<cessao>
+//				<dtIniCessao>${dtIniCessao}</dtIniCessao>
+//			</cessao>
+//		`,
+//		'localTempDom' : `
+//			<localTempDom>${localTempDom}</localTempDom>
+//		`,
+//		'ideEvento': `
+//			<ideEvento>
+//				<indRetif>${indRetif}</indRetif>
+//				<nrRecibo>${nrRecibo}</nrRecibo>
+//				<tpAmb>${tpAmb}</tpAmb>
+//				<procEmi>${procEmi}</procEmi>
+//				<verProc>${verProc}</verProc>
+//			</ideEvento>
+//		`,
+//		'ideEmpregador': `
+//			<ideEmpregador>
+//				<tpInsc>${tpInscIdeEmpregador}</tpInsc>
+//				<nrInsc>${nrInscIdeEmpregador}</nrInsc>	
+//			</ideEmpregador>
+//		`,
+//		'ideVinculo' : `
+//			<ideVinculo>
+//				<cpfTrab>${cpfTrabIdeVinculo}</cpfTrab>
+//				<matricula>${matriculaIdeVinculo}</matricula>
+//				<codCateg>${codCategIdeVinculo}</codCateg>
+//			</ideVinculo>
+//		`,
+//		'exMedOcup' : `
+//			<exMedOcup>
+//				<tpExameOcup>${tpExameOcup}</tpExameOcup>
+//			</exMedOcup>
+//		`,
+//		'aso': `
+//			<aso>
+//				<dtAso>${dtAso}</dtAso>
+//				<resAso>${resAso}</resAso>
+//			</aso>
+//		`,
+//		'exame' : `
+//			<exame>
+//				<dtExm>${dtExm}</dtExm>
+//				<procRealizado>${procRealizado}</procRealizado>
+//				<obsProc>${obsProc}</obsProc>
+//				<ordExame>${ordExame}</ordExame>
+//				<indResult>${indResult}</indResult>	
+//			</exame>
+//			
+//		`,
+//		'medico' : `
+//			<medico>
+//				<nmMed>${nmMed}</nmMed>
+//				<nrCRM>${nrCRM}</nrCRM>
+//				<ufCRM>${ufCRM}</ufCRM>
+//			</medico>
+//		`,
+//		'respMonit' : `
+//			<respMonit>
+//				<cpfResp>${cpfResp}</cpfResp>
+//				<nmResp>${nmResp}</nmResp>
+//				<nrCRM>${nrCRMRespMonit}</nrCRM>
+//				<ufCRM>${ufCRMRespMonit}</ufCRM>
+//			</respMonit>
+//		`,
+//    })
+//
+//	let gruposCompostos = $derived({"trabalhador": `
+//		<trabalhador>
+//			<cpfTrab>${cpfTrab}</cpfTrab>
+//            <nmTrab>${nmTrab}</nmTrab>
+//            <sexo>${sexo}</sexo>
+//            <racaCor>${racaCor}</racaCor>
+//            <estCiv>${estCiv}</estCiv>
+//            <grauInstr>${grauInstr}</grauInstr>
+//            <nmSoc></nmSoc>
+//			${grupos.nascimento}
+//			<endereco>
+//				${grupos.brasil}
+//				${grupos.exterior}
+//			</endereco>
+//			${grupos.infoDeficiencia}
+//			${grupos.dependente}
+//			${grupos.contato}
+//		</trabalhador>
+//	`, 
+//	"vinculo" : `
+//		<vinculo>
+//			<matricula>${matriculaVinc}</matricula>
+//			<tpRegTrab>${tpRegTrab}</tpRegTrab>
+//			<tpRegPrev>${tpRegPrev}</tpRegPrev>
+//			<cadIni>${cadIni}</cadIni>
+//			<infoRegimeTrab>
+//				${grupos.infoCeletista}
+//				${grupos.infoEstatutario}
+//			</infoRegimeTrab>
+//			${grupos.infoContrato}
+//			${grupos.sucessaoVinc}
+//			${grupos.transfDom}
+//			${grupos.mudancaCPF}
+//			${grupos.afastamento}
+//			${grupos.desligamento}
+//			${grupos.cessao}
+//		</vinculo>
+//	`,})

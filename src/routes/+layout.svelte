@@ -64,10 +64,10 @@
 {#if isAuthenticated}
 <Tabs>
     <Tabs.List>
-        <Tabs.Trigger value="Evento"><a href="/eventos/s2200/">Emitir Evento</a></Tabs.Trigger>
+        <Tabs.Trigger value="Evento"><a href="/eventos/">Emitir Evento</a></Tabs.Trigger>
         <Tabs.Trigger value="Empregador"><a href="/cadastro/empregador/">Cadastrar Empregador</a></Tabs.Trigger>
         <Tabs.Trigger value="Trabalhador"><a href="/cadastro/trabalhador/">Cadastrar Trabalhador</a></Tabs.Trigger>
-		<button type="button" class="btn preset-filled" onclick={deslogar}>Sair</button>
+		<button type="button" class="btn preset-filled" onclick={deslogar}><a href="/">Sair</a></button>
     </Tabs.List>
 </Tabs>
 

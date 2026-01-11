@@ -1,4 +1,5 @@
 <script>
+    let { children } = $props(); 
     import {db} from '$lib/firebaseApp'
     import {collection, addDoc, setDoc, doc} from 'firebase/firestore'; 
     import { fade, fly } from 'svelte/transition'; 
@@ -587,7 +588,7 @@
     <!-- Formulário dos dependentes-->
     </div>
 
-<slot></slot>
+{@render children()}
 
 <style>
     .container{
