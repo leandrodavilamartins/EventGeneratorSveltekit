@@ -1,5 +1,7 @@
 <script>
 	import xmlFormat from 'xml-formatter'; 
+	import { db } from '$lib/firebaseApp';
+	import { collection, getDocs } from "firebase/firestore";
 
 	let { children } = $props(); 
 
@@ -156,8 +158,7 @@
 	let dtAltCPF = $state(''); 
 	let observacaoMudancaCPF = $state(''); 
 	// control variables 
-	let eventoTab = $state(true);  
-	let empregadorTab = $state(false); 
+	let empregadorTab = $state(true); 
 	let trabalhadorTab = $state(false);  
 	let vinculoTab = $state(false); 
 	let celetista = $derived(tpRegTrab == '1'); // avalia condição ( true or false )
@@ -197,6 +198,9 @@
 
 	let nrTreinamentos = $state(1); // número de treinamentos realizados 
 	let treiCapCodArray = $state([]); // Array que contém os códigos dos treinamentos de capacitação 
+
+	let empregadoresList = $state();
+
 	function salvarBtn() {
 		eventoTab = false; 
 		empregadorTab = true;
@@ -587,66 +591,49 @@
 		console.log(lote); 
 		return ; 
 	}
-</script>
-{#if eventoTab}
-<div class="container">
-	<form class="w-full max-w-md space-y-4 p-4">
-		<fieldset>
-		<label class="label">
-		<span class="label-text">Selecione o tipo de Evento ( original ou retificação )</span>
-		<select class="select" bind:value={indRetif} placeholder="Tipo de Evento">
-			<option checked disabled>Tipo de Evento</option>
-			<option value="1">1 - Original</option>
-			<option value="2">2 - Retificação</option>
-		</select>
-		</label>
-		</fieldset>
 
-	{#if indRetif == "2"}
-	<fieldset>
-		<label class="label">
-			<span><br></span>
-			<span class="label-text">Digite o número do recibo</span>
-			<input class="input" placeholder="Número do Recibo" bind:value={nrRecibo}/>
-			<span>*Obrigatório em caso de Retificação</span>
-		</label>
-	</fieldset>
-	{/if}
-	<fieldset>
-		<label class="label">
-			<span class="label-text">Evento</span>
-			<select class="select" bind:value={evento}>
-				<option disabled checked>Selecionar Evento</option>
-				<option value="s2200">S-2200</option>
-				<option value="s2220">S-2220</option>
-			</select>
-		</label>
-	</fieldset>
-	<span></span>
-	<button type="button" class="btn preset-filled" onclick={salvarBtn}>Salvar</button>
-	</form>
-</div>
-{/if}
+	async function buscarEmpregadores(){
+		// lógica para buscar empregadores
+		console.log("Buscar empregadores clicado"); 
+		const empregadoresCol = collection(db, 'empregadores');
+		const empregadoresSnapshot = await getDocs(empregadoresCol);
+		empregadoresList = empregadoresSnapshot.docs.map(doc => doc.data());
+		console.log(empregadoresList);
+
+	}
+</script>
+
 
 {#if empregadorTab}
 <div class="container">
-	<form class="w-full max-w-md space-y-4 p-4">
-		<fieldset>
-			<legend>Dados do Empregador</legend>
-			<br>
-			<label class="label">
-				<span class="label-text">Tipo de Inscrição ( 1-CNPJ ; 2-CPF )</span>
-				<input class="input" type="text" placeholder="CPF" bind:value={tpInscIdeEmpregador} onchange={completionZerosUpdate}/>
-			</label>
-		</fieldset>
-		<fieldset>
-			<label class="label">
-				<span class="label-text">Número de Inscrição</span>
-				<input class="input" type="text" placeholder="Número de Inscrição" bind:value={nrInscIdeEmpregador}/>
-			</label>
-		</fieldset>
-		<button type="button" class="btn preset-filled" onclick={gerarFormBtn}>Gerar Formulário</button>
-	</form>
+	<button type="button" class="btn preset-filled" onclick={buscarEmpregadores}>Buscar Empregadores</button>
+
+	<div class="table-wrap">
+		<table class="table caption-bottom">
+				<thead>
+					<tr>
+						<th>First Name</th>
+						<th>Last Name</th>
+						<th>Email</th>
+						<th>&nbsp;</th>
+					</tr>
+				</thead>
+				<tbody>
+				{#each empregadoresList as empregador}
+						<tr>
+							<td>{empregador.first}</td>
+							<td>{empregador.last}</td>
+							<td>{empregador.email}</td>
+							<td class="text-right">
+								<a class="btn btn-sm preset-filled" href="#">
+									View &rarr;
+								</a>
+							</td>
+						</tr>
+				{/each}
+			</tbody>
+		</table>
+	</div>
 </div>
 {/if}
 

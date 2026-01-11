@@ -1,7 +1,7 @@
 <script>
     let { children } = $props(); 
     import {db} from '$lib/firebaseApp'
-    import {collection, addDoc, setDoc, doc} from 'firebase/firestore'; 
+    import {collection, addDoc, setDoc, doc, getDocs} from 'firebase/firestore'; 
     import { fade, fly } from 'svelte/transition'; 
 
     const estados = ['AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA', 'MT', 'MS', 'MG', 'PA', 'PB', 'PR', 'PE', 'PI', 'RJ', 'RN', 'RS', 'RO', 'RR', 'SC', 'SP', 'SE', 'TO']
@@ -51,6 +51,7 @@
     let descrDep = $state(''); 
     let dependentesCounter = $state(1); 
     let msgDependenteSalvo = $state(false); 
+    let empregadoresList = $state([]);
     
 
 
@@ -167,7 +168,49 @@
         return; 
     }
 
+    async function buscarEmpregadores(){
+        // lógica para buscar empregadores
+        console.log("Buscar empregadores clicado"); 
+        let empregadoresCol = collection(db, 'empregadores');
+        let empregadoresSnapshot = await getDocs(empregadoresCol);
+        empregadoresList = empregadoresSnapshot.docs.map(doc => doc.data());
+        console.log(empregadoresList[0]);
+    }
+
 </script>
+
+<div>
+    <p>Antes de iniciar o cadastro, selecione o empregador : </p>
+    <button type="button" class="btn preset-filled" onclick={buscarEmpregadores}>Buscar Empregadores</button>
+
+    <div class="table-wrap">
+	<table class="table caption-bottom">
+			<thead>
+				<tr>
+					<th>Nome</th>
+					<th>CPF</th>
+					<th>Email</th>
+					<th>&nbsp;</th>
+				</tr>
+			</thead>
+            <tbody>
+			{#each empregadoresList as empregador}
+                    <tr>
+						<td>{empregador.nome}</td>
+						<td>{empregador.cpf}</td>
+						<td>{empregador.email}</td>
+						<td class="text-right">
+							<a class="btn btn-sm preset-filled" href="#">
+								View &rarr;
+							</a>
+						</td>
+					</tr>
+            {/each}
+		</tbody>
+	</table>
+</div>
+
+</div>
 
 <div class="container" >
     <form class="w-full max-w-md space-y-4 p-4">
