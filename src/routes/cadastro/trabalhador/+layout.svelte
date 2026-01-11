@@ -35,7 +35,9 @@
     let fonePrinc = $state(''); 
     let emailPrinc = $state(''); 
     // control variables 
-    let dependenteFormControl = $state(''); 
+    let dependenteFormControl = $state('');
+    let trabalhadorForm = $state(false);  
+    let empregadorTableVisible = $state(false);
 
     let dependentesObj = $state([]); 
 
@@ -167,6 +169,13 @@
         document.querySelector('#descrDep').value = ''; 
         return; 
     }
+    function tableButtonAction(){
+        empregadorTableVisible = false;
+        trabalhadorForm = true; 
+        window.scrollTo({top: document.body.scrollHeight, left:0, behavior:"smooth"}); 
+        return ;
+    }
+
 
     async function buscarEmpregadores(){
         // lógica para buscar empregadores
@@ -174,15 +183,18 @@
         let empregadoresCol = collection(db, 'empregadores');
         let empregadoresSnapshot = await getDocs(empregadoresCol);
         empregadoresList = empregadoresSnapshot.docs.map(doc => doc.data());
-        console.log(empregadoresList[0]);
+        console.log(empregadoresList);
+        empregadorTableVisible = true;
     }
 
 </script>
+
 
 <div>
     <p>Antes de iniciar o cadastro, selecione o empregador : </p>
     <button type="button" class="btn preset-filled" onclick={buscarEmpregadores}>Buscar Empregadores</button>
 
+    {#if empregadorTableVisible}
     <div class="table-wrap">
 	<table class="table caption-bottom">
 			<thead>
@@ -200,18 +212,20 @@
 						<td>{empregador.cpf}</td>
 						<td>{empregador.email}</td>
 						<td class="text-right">
-							<a class="btn btn-sm preset-filled" href="#">
-								View &rarr;
+							<a class="btn btn-sm preset-filled" href="#" onclick={tableButtonAction}>
+								Adicionar Trabalhador &rarr;
 							</a>
 						</td>
 					</tr>
             {/each}
-		</tbody>
-	</table>
+		    </tbody>
+	    </table>
+    </div>
+    {/if}
 </div>
 
-</div>
 
+{#if trabalhadorForm}
 <div class="container" >
     <form class="w-full max-w-md space-y-4 p-4">
 
@@ -630,6 +644,7 @@
     <button type="button" class="btn preset-filled-primary-500" onclick={cadastrarTrab}>Finalizar Cadastro</button>
     <!-- Formulário dos dependentes-->
     </div>
+{/if}
 
 {@render children()}
 

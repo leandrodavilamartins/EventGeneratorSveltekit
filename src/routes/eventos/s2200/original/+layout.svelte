@@ -199,7 +199,10 @@
 	let nrTreinamentos = $state(1); // número de treinamentos realizados 
 	let treiCapCodArray = $state([]); // Array que contém os códigos dos treinamentos de capacitação 
 
-	let empregadoresList = $state();
+	let empregadoresList = $state(); // Lista de empregadores do Firestore 
+	let trabalhadoresList = $state();  // LIsta de trabalhadores relacionados ao empregador selecionado 
+
+	let empregadorSelecionado = $state(''); // empregador da tabela selecionado 
 
 	function salvarBtn() {
 		eventoTab = false; 
@@ -601,6 +604,34 @@
 		console.log(empregadoresList);
 
 	}
+
+	async function buscarTrabalhadores(){
+		// lógica para buscar trabalhadores
+		console.log("Buscar trabalhadores clicado"); 
+		const trabalhadoresCol = collection(db, `empregadores/${empregadorSelecionado}/trabalhadores`);
+		const trabalhadoresSnapshot = await getDocs(trabalhadoresCol);
+		trabalhadoresList = trabalhadoresSnapshot.docs.map(doc => doc.data());
+		console.log(trabalhadoresList);	
+		
+	}
+
+	function getEmpregadorSelecionado(event){
+		cpfEmpregador = event.target.name; 
+		console.log("Empregador selecionado CPF: ", cpfEmpregador); 
+		empregadorSelecionado = cpfEmpregador;
+		trabalhadorTab = true; 
+		empregadorTab = false;
+		return ; 
+	}
+
+	function getTrabalhadorSelecionado(event){
+		nrTrab = event.target.name; 
+		console.log("Trabalhador selecionado Nome: ", nrTrab); 
+		trabalhadorTab = false; 
+		vinculoTab = true; 
+		return ; 
+	}
+
 </script>
 
 
@@ -612,8 +643,9 @@
 		<table class="table caption-bottom">
 				<thead>
 					<tr>
-						<th>First Name</th>
-						<th>Last Name</th>
+						<th>Index</th>
+						<th>Nome</th>
+						<th>CPF</th>
 						<th>Email</th>
 						<th>&nbsp;</th>
 					</tr>
@@ -621,12 +653,13 @@
 				<tbody>
 				{#each empregadoresList as empregador}
 						<tr>
-							<td>{empregador.first}</td>
-							<td>{empregador.last}</td>
+							<td>{empregador.id}</td>
+							<td>{empregador.nome}</td>
+							<td>{empregador.cpf}</td>
 							<td>{empregador.email}</td>
 							<td class="text-right">
-								<a class="btn btn-sm preset-filled" href="#">
-									View &rarr;
+								<a class="btn btn-sm preset-filled" name={empregador.cpf} href="#" onclick={getEmpregadorSelecionado}>
+									Selecionar &rarr;
 								</a>
 							</td>
 						</tr>
@@ -639,6 +672,32 @@
 
 {#if trabalhadorTab}
 <div class="container">
+	<button type="button" class="btn preset-filled" onclick={buscarTrabalhadores}>Buscar Trabalhador</button>
+
+	<div class="table-wrap">
+		<table class="table caption-bottom">
+				<thead>
+					<tr>
+						<th>Nome</th>
+						<th>CPF</th>
+						<th>&nbsp;</th>
+					</tr>
+				</thead>
+				<tbody>
+				{#each trabalhadoresList as trabalhador}
+						<tr>
+							<td>{trabalhador.nome}</td>
+							<td>{trabalhador.cpf}</td>
+							<td class="text-right">
+								<a class="btn btn-sm preset-filled" name={trabalhador.nome} href="#" onclick={getTrabalhadorSelecionado}>
+									Selecionar &rarr;
+								</a>
+							</td>
+						</tr>
+				{/each}
+			</tbody>
+		</table>
+	</div>
 	<!--Informcações relativas ao empregador --> <!-- Grupo :  'ideEmpregador' -->
     <button type="button" class="btn preset-filled" onclick={criarVinculoBtn}>Criar Vínculo</button>
 </div>
